@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="1">
+                <source>This email does not have a valid domain name.</source>
+                <target>Cette valeur doit être fausse.</target>
+            </trans-unit>
+            <trans-unit id="2">
+                <source>This value is not a valid phone number.</source>
+                <target>Cette valeur n'est pas un numéro de téléphone valide.</target>
+            </trans-unit>
+            <trans-unit id="3">
+                <source>This phone number is too short.</source>
+                <target>Ce numéro de téléphone est trop court.</target>
+            </trans-unit>
+            <trans-unit id="4">
+                <source>This phone number is too long.</source>
+                <target>Ce numéro de téléphone est trop long.</target>
+            </trans-unit>
+            <trans-unit id="5">
+                <source>This phone number does not exist.</source>
+                <target>Ce numéro de téléphone n'existe pas.</target>
+            </trans-unit>
+            <trans-unit id="6">
+                <source>This type of phone number is not accepted.</source>
+                <target>Ce type de numéro de téléphone n'est pas accepté.</target>
+            </trans-unit>
+            <trans-unit id="7">
+                <source>This value is not a valid landline phone number.</source>
+                <target>Cette valeur n'est pas un numéro de téléphone fixe valide.</target>
+            </trans-unit>
+            <trans-unit id="8">
+                <source>This value is not a valid mobile phone number.</source>
+                <target>Cette valeur n'est pas un numéro de téléphone portable valide.</target>
+            </trans-unit>
+            <trans-unit id="8">
+                <source>The float precision is limited to {{ precision }} numbers.</source>
+                <target>La précision est limitée à {{ precision }} chiffres après la virgule.</target>
+            </trans-unit>
+            <trans-unit id="10">
+                <source>This value is not a valid timezone.</source>
+                <target>Cette valeur n'est pas un fuseau horaire valide.</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

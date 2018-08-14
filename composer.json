@@ -1,0 +1,37 @@
+{
+  "name": "assoconnect/validator-bundle",
+  "description": "Custom Symfony validators for common scalar types.",
+  "type": "symfony-bundle",
+  "license": "MIT",
+  "keywords": ["Symfony", "Validation"],
+  "authors": [
+    {
+      "name": "AssoConnect",
+      "homepage": "https://www.assoconnect.com"
+    },
+    {
+      "name": "Sylvain Fabre"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "AssoConnect\\ValidatorBundle\\": ""
+    },
+    "exclude-from-classmap": [
+      "/Tests/"
+    ]
+  },
+  "require": {
+    "giggsey/libphonenumber-for-php": "8.*",
+    "php": "^7.1",
+    "symfony/validator": "^4.1",
+    "umpirsky/tld-list": "^1.0"
+  },
+  "require-dev": {
+    "doctrine/cache": "~1.0",
+    "doctrine/annotations": "~1.0",
+    "phpunit/phpunit": "^7.0",
+    "symfony/framework-bundle": "^4.1",
+    "symfony/yaml": "^4.1"
+  }
+}

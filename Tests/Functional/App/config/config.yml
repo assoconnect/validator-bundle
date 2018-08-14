@@ -1,0 +1,8 @@
+framework:
+    test: ~
+    secret: test
+    profiler:
+        enabled: false
+    validation:
+        enabled: true
+        enable_annotations: true
