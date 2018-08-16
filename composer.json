@@ -25,7 +25,8 @@
     "giggsey/libphonenumber-for-php": "8.*",
     "php": "^7.1",
     "symfony/validator": "^4.1",
-    "umpirsky/tld-list": "^1.0"
+    "umpirsky/tld-list": "^1.0",
+    "egulias/email-validator": "^2.1"
   },
   "require-dev": {
     "doctrine/cache": "~1.0",

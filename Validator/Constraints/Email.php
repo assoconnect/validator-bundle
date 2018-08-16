@@ -13,6 +13,8 @@ Class Email extends _Email
 
     public $TLDMessage = 'This email does not have a valid domain name.';
 
+    public $mode = 'strict';
+
     public function __construct($options = null)
     {
         // Parent constructor
