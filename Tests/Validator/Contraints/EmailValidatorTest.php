@@ -4,6 +4,7 @@ namespace AssoConnect\ValidatorBundle\Tests\Validator\Constraints;
 
 use AssoConnect\ValidatorBundle\Validator\Constraints\Email;
 use AssoConnect\ValidatorBundle\Validator\Constraints\EmailValidator;
+use LayerShifter\TLDDatabase\Store;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 class EmailValidatorTest extends ConstraintValidatorTestCase
@@ -11,7 +12,8 @@ class EmailValidatorTest extends ConstraintValidatorTestCase
 
     public function createValidator()
     {
-        return new EmailValidator();
+        $store = new Store();
+        return new EmailValidator($store);
     }
 
     public function testNullIsValid()
