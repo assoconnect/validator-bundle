@@ -1,1 +1,15 @@
 services:
+
+    assoconnect_validator_bundle.email_validator:
+        alias: AssoConnect\ValidatorBundle\Validator\Constraints\EmailValidator
+        public: true
+
+    AssoConnect\ValidatorBundle\Validator\Constraints\EmailValidator:
+        arguments:
+            $store: "@assoconnect_validator_bundle.tld_store"
+
+    assoconnect_validator_bundle.tld_store:
+        alias: LayerShifter\TLDDatabase\Store2
+
+    LayerShifter\TLDDatabase\Store2:
+        class: LayerShifter\TLDDatabase\Store
