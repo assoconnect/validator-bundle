@@ -7,9 +7,11 @@ services:
     AssoConnect\ValidatorBundle\Validator\Constraints\EmailValidator:
         arguments:
             $store: "@assoconnect_validator_bundle.tld_store"
+        tags:
+            - validator.constraint_validator
 
     assoconnect_validator_bundle.tld_store:
-        alias: LayerShifter\TLDDatabase\Store2
+        alias: LayerShifter\TLDDatabase\Store
 
-    LayerShifter\TLDDatabase\Store2:
+    LayerShifter\TLDDatabase\Store:
         class: LayerShifter\TLDDatabase\Store
