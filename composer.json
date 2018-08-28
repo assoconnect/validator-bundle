@@ -22,7 +22,7 @@
     ]
   },
   "require": {
-    "giggsey/libphonenumber-for-php": "8.*",
+    "giggsey/libphonenumber-for-php": "^8.9",
     "php": "^7.1",
     "symfony/validator": "^4.1",
     "egulias/email-validator": "^2.1",
