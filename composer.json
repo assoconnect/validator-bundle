@@ -26,7 +26,8 @@
     "php": "^7.1",
     "symfony/validator": "^4.1",
     "egulias/email-validator": "^2.1",
-    "layershifter/tld-database": "^1.0"
+    "layershifter/tld-database": "^1.0",
+    "symfony/property-access": "^4.3"
   },
   "require-dev": {
     "doctrine/cache": "~1.0",
