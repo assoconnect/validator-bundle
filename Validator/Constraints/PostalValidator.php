@@ -308,14 +308,20 @@ class PostalValidator extends ConstraintValidator
         }
 
         if (!array_key_exists($country, self::POSTALS)) {
-            throw new \DomainException('Unexpected country');
+            $this->context->buildViolation(Postal::getErrorName(Postal::UNEXPECTED_COUNTRY_ERROR))
+                ->setParameter('{{ value }}', $this->formatValue($country))
+                ->setCode(Postal::UNEXPECTED_COUNTRY_ERROR)
+                ->addViolation()
+            ;
+
+            return;
         }
 
         if (null === $value || '' === $value) {
             // There is no postal value
             if (null !== self::POSTALS[$country]) {
                 // But the country requires one
-                $this->context->buildViolation($constraint::getErrorName(Postal::MISSING_ERROR))
+                $this->context->buildViolation(Postal::getErrorName(Postal::MISSING_ERROR))
                     ->setCode(Postal::MISSING_ERROR)
                     ->addViolation();
             }
@@ -324,7 +330,7 @@ class PostalValidator extends ConstraintValidator
         // There is a postal value
         if (null === self::POSTALS[$country]) {
             // But the country does not require one
-            $this->context->buildViolation($constraint::getErrorName(Postal::NOT_REQUIRED_ERROR))
+            $this->context->buildViolation(Postal::getErrorName(Postal::NOT_REQUIRED_ERROR))
                 ->setCode(Postal::NOT_REQUIRED_ERROR)
                 ->addViolation();
 
@@ -333,7 +339,7 @@ class PostalValidator extends ConstraintValidator
 
         if (!preg_match('/' . self::POSTALS[$country] . '/', $value)) {
             // And the country requires one but the postal format does not match the country's requirement
-            $this->context->buildViolation($constraint::getErrorName(Postal::INVALID_FORMAT_ERROR))
+            $this->context->buildViolation(Postal::getErrorName(Postal::INVALID_FORMAT_ERROR))
                 ->setParameter('{{ value }}', $this->formatValue($value))
                 ->setCode(Postal::INVALID_FORMAT_ERROR)
                 ->addViolation();

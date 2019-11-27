@@ -68,9 +68,14 @@ class PostalValidatorTest extends ConstraintValidatorTestCase
         $constraint = new Postal();
         $constraint->countryPropertyPath = 'country';
 
-        $this->expectException(\DomainException::class);
-
         $this->validator->validate(null, $constraint);
+
+        $this
+            ->buildViolation(Postal::getErrorName(Postal::UNEXPECTED_COUNTRY_ERROR))
+            ->setParameter('{{ value }}', '"KK"')
+            ->setCode(Postal::UNEXPECTED_COUNTRY_ERROR)
+            ->assertRaised()
+        ;
     }
 
     public function testMissingPostalError()
@@ -87,7 +92,7 @@ class PostalValidatorTest extends ConstraintValidatorTestCase
         $this->validator->validate(null, $constraint);
 
         $this
-            ->buildViolation($constraint::getErrorName(Postal::MISSING_ERROR))
+            ->buildViolation(Postal::getErrorName(Postal::MISSING_ERROR))
             ->setCode(Postal::MISSING_ERROR)
             ->assertRaised();
     }
@@ -106,7 +111,7 @@ class PostalValidatorTest extends ConstraintValidatorTestCase
         $this->validator->validate('postal', $constraint);
 
         $this
-            ->buildViolation($constraint::getErrorName(Postal::NOT_REQUIRED_ERROR))
+            ->buildViolation(Postal::getErrorName(Postal::NOT_REQUIRED_ERROR))
             ->setCode(Postal::NOT_REQUIRED_ERROR)
             ->assertRaised();
     }
@@ -125,7 +130,7 @@ class PostalValidatorTest extends ConstraintValidatorTestCase
         $this->validator->validate('foo', $constraint);
 
         $this
-            ->buildViolation($constraint::getErrorName(Postal::INVALID_FORMAT_ERROR))
+            ->buildViolation(Postal::getErrorName(Postal::INVALID_FORMAT_ERROR))
             ->setParameter('{{ value }}', '"foo"')
             ->setCode(Postal::INVALID_FORMAT_ERROR)
             ->assertRaised();
