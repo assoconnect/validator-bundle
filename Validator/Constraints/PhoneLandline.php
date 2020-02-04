@@ -16,12 +16,12 @@ Class PhoneLandline extends Phone
     public $validTypes = [
         PhoneNumberType::FIXED_LINE_OR_MOBILE,
         PhoneNumberType::FIXED_LINE,
+        PhoneNumberType::VOIP,
     ];
 
     public $invalidTypes = [
         PhoneNumberType::MOBILE,
         PhoneNumberType::SHARED_COST,
-        PhoneNumberType::VOIP,
     ];
 
     public $invalidTypeMessage = 'This value is not a valid landline phone number.';
