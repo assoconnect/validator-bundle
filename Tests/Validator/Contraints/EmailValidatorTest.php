@@ -4,16 +4,18 @@ namespace AssoConnect\ValidatorBundle\Tests\Validator\Constraints;
 
 use AssoConnect\ValidatorBundle\Validator\Constraints\Email;
 use AssoConnect\ValidatorBundle\Validator\Constraints\EmailValidator;
-use LayerShifter\TLDDatabase\Store;
+use Pdp\Cache;
+use Pdp\CurlHttpClient;
+use Pdp\Manager;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 class EmailValidatorTest extends ConstraintValidatorTestCase
 {
-
-    public function createValidator()
+    public function createValidator(): EmailValidator
     {
-        $store = new Store();
-        return new EmailValidator($store);
+        $manager = new Manager(new Cache(), new CurlHttpClient());
+
+        return new EmailValidator($manager);
     }
 
     public function testNullIsValid()
@@ -105,14 +107,10 @@ class EmailValidatorTest extends ConstraintValidatorTestCase
     public function providerValidValues()
     {
         return [
-            // Valid
-            // #0
             ['valid@mail.com'],
-            // #1
             ['valid.valid@mail.com'],
-            // #2
             ['valid+valid@mail.com'],
+            ['valid+valid@gmail.com'],
         ];
     }
-
 }

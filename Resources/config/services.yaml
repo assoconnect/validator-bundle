@@ -1,17 +1,18 @@
 services:
+    Pdp\Cache:
+        class: Pdp\Cache
 
-    assoconnect_validator_bundle.email_validator:
-        alias: AssoConnect\ValidatorBundle\Validator\Constraints\EmailValidator
-        public: true
+    Pdp\CurlHttpClient:
+        class: Pdp\CurlHttpClient
+
+    Pdp\Manager:
+        class: Pdp\Manager
+        arguments:
+            - '@Pdp\Cache'
+            - '@Pdp\CurlHttpClient'
 
     AssoConnect\ValidatorBundle\Validator\Constraints\EmailValidator:
         arguments:
-            $store: "@assoconnect_validator_bundle.tld_store"
+            $manager: '@Pdp\Manager'
         tags:
             - validator.constraint_validator
-
-    assoconnect_validator_bundle.tld_store:
-        alias: LayerShifter\TLDDatabase\Store
-
-    LayerShifter\TLDDatabase\Store:
-        class: LayerShifter\TLDDatabase\Store
