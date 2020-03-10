@@ -1,6 +1,8 @@
 services:
     Pdp\Cache:
         class: Pdp\Cache
+        arguments:
+            - '%kernel.cache_dir%/assoconnect/validator-bundle'
 
     Pdp\CurlHttpClient:
         class: Pdp\CurlHttpClient
