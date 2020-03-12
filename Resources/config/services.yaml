@@ -1,8 +1,11 @@
+parameters:
+    cacheFolder: 'assoconnect/validator-bundle'
+
 services:
     Pdp\Cache:
         class: Pdp\Cache
         arguments:
-            - '%kernel.cache_dir%/assoconnect/validator-bundle'
+            - '%kernel.cache_dir%/%cacheFolder%'
 
     Pdp\CurlHttpClient:
         class: Pdp\CurlHttpClient
@@ -18,3 +21,9 @@ services:
             $manager: '@Pdp\Manager'
         tags:
             - validator.constraint_validator
+
+    AssoConnect\ValidatorBundle\Cache\CacheWarmer:
+        arguments:
+            - "%cacheFolder%"
+        tags:
+            - { name: kernel.cache_warmer, priority: 0 }
