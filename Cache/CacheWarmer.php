@@ -19,7 +19,7 @@ class CacheWarmer implements CacheWarmerInterface
         $this->cacheFolder = $cacheFolder;
     }
 
-    public function warmUp($cacheDir)
+    public function warmUp(string $cacheDir)
     {
         $filesystem = new Filesystem();
 
