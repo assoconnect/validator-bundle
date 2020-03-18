@@ -1,0 +1,38 @@
+parameters:
+    cacheFolder: 'assoconnect/validator-bundle'
+
+services:
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        public: false       # Allows optimizing the container by removing unused services; this also means
+                            # fetching services directly from the container via $container->get() won't work.
+                            # The best practice is to be explicit about your dependencies anyway.
+    Pdp\Cache:
+        class: Pdp\Cache
+        arguments:
+            - '%kernel.cache_dir%/%cacheFolder%'
+
+    Pdp\CurlHttpClient:
+        class: Pdp\CurlHttpClient
+
+    Pdp\Manager:
+        class: Pdp\Manager
+        arguments:
+            - '@Pdp\Cache'
+            - '@Pdp\CurlHttpClient'
+
+    AssoConnect\ValidatorBundle\Validator\Constraints\EmailValidator:
+        arguments:
+            $manager: '@Pdp\Manager'
+        tags:
+            - validator.constraint_validator
+
+    AssoConnect\ValidatorBundle\Cache\CacheWarmer:
+        arguments:
+            - "%cacheFolder%"
+        tags:
+            - { name: kernel.cache_warmer, priority: 0 }
+
+    AssoConnect\ValidatorBundle\Validator\Constraints\EntityValidator:
+        class: AssoConnect\ValidatorBundle\Validator\Constraints\EntityValidator

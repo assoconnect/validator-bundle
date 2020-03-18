@@ -1,0 +1,20 @@
+framework:
+    test: ~
+    secret: test
+    profiler:
+        enabled: false
+    validation:
+        enabled: true
+        enable_annotations: true
+doctrine:
+    orm:
+        mappings:
+            AssoConnect:
+                is_bundle: false
+                type: annotation
+                dir: '%kernel.project_dir%/src/Test/Functional/App/Entity'
+                prefix: 'AssoConnect\ValidatorBundle\Test\Functional\App\Entity'
+                alias: App
+    dbal:
+        driver: 'pdo_mysql'
+        server_version: '5.7'

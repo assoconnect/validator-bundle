@@ -16,4 +16,4 @@ This Symfony4 bundle provides validators for common scalar values:
 
 See the different constraints source code for available options.
 
-[How to use](Resources/doc/index.md)
+[How to use](src/Resources/doc/index.md)
