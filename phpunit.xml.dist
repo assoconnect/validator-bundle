@@ -15,7 +15,7 @@
     </php>
     <testsuites>
         <testsuite name="AssoConnectValidatorBundle Test Suite">
-            <directory>./Tests</directory>
+            <directory>./tests</directory>
         </testsuite>
     </testsuites>
     <filter>
