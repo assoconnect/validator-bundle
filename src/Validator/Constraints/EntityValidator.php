@@ -2,11 +2,10 @@
 
 namespace AssoConnect\ValidatorBundle\Validator\Constraints;
 
-// TODO : When assoconnect/doctrine-types is updated, fix imports & calls to types constants
-//use AssoConnect\DoctrineTypesBundle\Doctrine\DBAL\Types\LatitudeType;
-//use AssoConnect\DoctrineTypesBundle\Doctrine\DBAL\Types\LongitudeType;
-//use AssoConnect\DoctrineTypesBundle\Doctrine\DBAL\Types\MoneyType;
-//use AssoConnect\DoctrineTypesBundle\Doctrine\DBAL\Types\PercentType;
+use AssoConnect\DoctrineTypesBundle\Doctrine\DBAL\Types\LatitudeType;
+use AssoConnect\DoctrineTypesBundle\Doctrine\DBAL\Types\LongitudeType;
+use AssoConnect\DoctrineTypesBundle\Doctrine\DBAL\Types\MoneyType;
+use AssoConnect\DoctrineTypesBundle\Doctrine\DBAL\Types\PercentType;
 use AssoConnect\PHPDate\AbsoluteDate;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -142,8 +141,7 @@ class EntityValidator extends ConstraintValidator
                 break;
             case 'latitude':
                 $constraints[] = new Latitude();
-                $constraints[] = new FloatScale($fieldMapping['scale'] ? : 4);
-                // $constraints[] = new FloatScale($fieldMapping['scale'] ? : LatitudeType::DEFAULT_SCALE);
+                $constraints[] = new FloatScale($fieldMapping['scale'] ? : LatitudeType::DEFAULT_SCALE);
                 break;
             case 'locale':
                 $options['canonicalize'] = true;
@@ -151,18 +149,15 @@ class EntityValidator extends ConstraintValidator
                 break;
             case 'longitude':
                 $constraints[] = new Longitude();
-                $constraints[] = new FloatScale($fieldMapping['scale'] ? : 4);
-                // $constraints[] = new FloatScale($fieldMapping['scale'] ? : LongitudeType::DEFAULT_SCALE);
+                $constraints[] = new FloatScale($fieldMapping['scale'] ? : LongitudeType::DEFAULT_SCALE);
                 break;
             case 'money':
                 $constraints[] = new Money();
-                $constraints[] = new FloatScale($fieldMapping['scale'] ? : 4);
-                // $constraints[] = new FloatScale($fieldMapping['scale'] ? : MoneyType::DEFAULT_SCALE);
+                $constraints[] = new FloatScale($fieldMapping['scale'] ? : MoneyType::DEFAULT_SCALE);
                 break;
             case 'percent':
                 $constraints[] = new Percent();
-                $constraints[] = new FloatScale($fieldMapping['scale'] ? : 4);
-                // $constraints[] = new FloatScale($fieldMapping['scale'] ? : PercentType::DEFAULT_SCALE);
+                $constraints[] = new FloatScale($fieldMapping['scale'] ? : PercentType::DEFAULT_SCALE);
                 break;
             case 'phone':
                 $constraints[] = new Phone();

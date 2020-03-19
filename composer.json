@@ -21,7 +21,14 @@
       "AssoConnect\\ValidatorBundle\\": "src/"
     }
   },
+  "repositories": [
+    {
+      "type": "git",
+      "url": "https://github.com/assoconnect/doctrine-validator-bundle"
+    }
+  ],
   "require": {
+    "assoconnect/doctrine-validator-bundle": "dev-clean_type_definition",
     "doctrine/doctrine-bundle": "^1.9|^2.0",
     "giggsey/libphonenumber-for-php": "^8.9",
     "php": "^7.1",
