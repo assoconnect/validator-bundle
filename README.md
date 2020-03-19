@@ -1,18 +1,15 @@
 # AssoConnectValidatorBundle
 
-[![Build status](https://gitlab.com/assoconnect/validator-bundle/badges/master/build.svg)](https://gitlab.com/assoconnect/validator-bundle/commits/master)
-[![Overall test coverage](https://gitlab.com/assoconnect/validator-bundle/badges/master/coverage.svg)](https://gitlab.com/assoconnect/validator-bundle/pipelines)
-
+![Build status](https://travis-ci.org/assoconnect/validator-bundle.svg?branch=master)
 
 This Symfony4 bundle provides validators for common scalar values:
 
-- email address
-- phone number
-- latitude and longitude values
-- monetary value
-- percent value
-- phone numbers (both mobile and landline)
-- timezone value
+- [Email address](/src/Validator/Constraints/EmailValidator.php)
+- [Phone Number](/src/Validator/Constraints/PhoneValidator.php)
+- [Latitude](/src/Validator/Constraints/LatitudeValidator.php) and [Longitude](/src/Validator/Constraints/LongitudeValidator.php) values
+- [Monetary value](/src/Validator/Constraints/MoneyValidator.php)
+- [Percent value](/src/Validator/Constraints/PercentValidator.php)
+- [Timezone value](/src/Validator/Constraints/TimezoneValidator.php)
 
 See the different constraints source code for available options.
 
