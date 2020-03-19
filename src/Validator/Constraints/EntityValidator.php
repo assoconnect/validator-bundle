@@ -86,10 +86,7 @@ class EntityValidator extends ConstraintValidator
                 break;
             case 'bigint':
                 $constraints[] = new Type('integer');
-                if (
-                    isset($fieldMapping['options']['unsigned'])
-                    && true === $fieldMapping['options']['unsigned']
-                ) {
+                if (isset($fieldMapping['options']['unsigned']) && true === $fieldMapping['options']['unsigned']) {
                     $constraints[] = new GreaterThanOrEqual(0);
                     $constraints[] = new LessThanOrEqual(pow(2, 64) - 1);
                 } else {
@@ -170,10 +167,7 @@ class EntityValidator extends ConstraintValidator
                 break;
             case 'smallint':
                 $constraints[] = new Type('integer');
-                if (
-                    isset($fieldMapping['options']['unsigned'])
-                    && true === $fieldMapping['options']['unsigned']
-                ) {
+                if (isset($fieldMapping['options']['unsigned']) && true === $fieldMapping['options']['unsigned']) {
                     $constraints[] = new GreaterThan(0);
                     $constraints[] = new LessThanOrEqual(pow(2, 16) - 1);
                 } else {
@@ -236,10 +230,7 @@ class EntityValidator extends ConstraintValidator
                     // ToOne
                     $constraints[] = new Type($fieldMapping['targetEntity']);
                     // Nullable field
-                    if (
-                        isset($fieldMapping['joinColumns'][0]['nullable'])
-                        && $fieldMapping['joinColumns'][0]['nullable'] === false
-                    ) {
+                    if (isset($fieldMapping['joinColumns'][0]['nullable']) && $fieldMapping['joinColumns'][0]['nullable'] === false) {
                         $constraints[] = new NotNull();
                     }
                 } elseif ($fieldMapping['type'] & ClassMetadata::TO_MANY) {
