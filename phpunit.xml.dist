@@ -22,8 +22,12 @@
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">./</directory>
             <exclude>
-                <directory>./Resources</directory>
-                <directory>./Tests</directory>
+                <directory>./src/Cache</directory>
+                <directory>./src/DependencyInjection</directory>
+                <directory>./src/Resources</directory>
+                <directory>./src/Test</directory>
+                <directory>./tests</directory>
+                <directory>var</directory>
                 <directory>./vendor</directory>
             </exclude>
         </whitelist>

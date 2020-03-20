@@ -75,7 +75,7 @@ class EntityValidator extends ConstraintValidator
         }
     }
 
-    protected function getConstraintsForType(array $fieldMapping): array
+    public function getConstraintsForType(array $fieldMapping): array
     {
         $constraints = [];
 
@@ -118,7 +118,7 @@ class EntityValidator extends ConstraintValidator
             case 'email':
                 $constraints[] = new Email();
                 $length = $fieldMapping['length'] ?? 255;
-                $constraints[] = new Length(array('max' => $length));
+                $constraints[] = new Length(['max' => $length]);
                 break;
             case 'float':
                 $constraints[] = new Type('float');
@@ -131,7 +131,7 @@ class EntityValidator extends ConstraintValidator
                 $constraints[] = new Type('integer');
                 break;
             case 'ip':
-                $constraints[] = new Ip(array('version' => 'all'));
+                $constraints[] = new Ip(['version' => 'all']);
                 break;
             case 'json':
                 // TODO: implement JSON validation?
@@ -177,11 +177,11 @@ class EntityValidator extends ConstraintValidator
                 break;
             case 'string':
                 $length = $fieldMapping['length'] ?? 255;
-                $constraints[] = new Length(array('max' => $length));
+                $constraints[] = new Length(['max' => $length]);
                 break;
             case 'text':
                 $length = $fieldMapping['length'] ?? 65535;
-                $constraints[] = new Length(array('max' => $length, 'charset' => '8bit'));
+                $constraints[] = new Length(['max' => $length, 'charset' => '8bit']);
                 break;
             case 'timezone':
                 $constraints[] = new Timezone();
@@ -197,7 +197,6 @@ class EntityValidator extends ConstraintValidator
                 break;
             default:
                 throw new \DomainException('Unsupported field type: ' . $fieldMapping['type']);
-                break;
         }
 
         return $constraints;
@@ -250,7 +249,6 @@ class EntityValidator extends ConstraintValidator
         } else {
             throw new \LogicException('Unknown field: ' . $class  . '::$' . $field);
         }
-
         return $constraints;
     }
 }

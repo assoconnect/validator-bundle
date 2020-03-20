@@ -1,4 +1,5 @@
 .idea
+coverage
 var
 vendor
 composer.lock
