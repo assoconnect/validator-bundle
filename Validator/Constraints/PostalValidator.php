@@ -21,6 +21,7 @@ class PostalValidator extends ConstraintValidator
      * @link https://en.wikipedia.org/wiki/List_of_postal_codes
      */
     private const POSTALS = [
+        null => null,
         'AD' => '^AD[0-9]{3}$', // Andora
         'AE' => null, // United Arab Emirates
         'AF' => '^[0-9]{4}$', // Afghanistan
