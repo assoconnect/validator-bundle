@@ -27,4 +27,14 @@ class Postal extends Constraint
     );
 
     public $countryPropertyPath;
+
+    public function getDefaultOption()
+    {
+        return 'countryPropertyPath';
+    }
+
+    public function getRequiredOptions()
+    {
+        return ['countryPropertyPath'];
+    }
 }

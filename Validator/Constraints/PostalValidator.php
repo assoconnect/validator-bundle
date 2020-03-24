@@ -284,9 +284,7 @@ class PostalValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, Postal::class);
         }
 
-        if (null === $path = $constraint->countryPropertyPath) {
-            throw new ConstraintDefinitionException('Missing property path');
-        }
+        $path = $constraint->countryPropertyPath;
 
         if (null === $object = $this->context->getObject()) {
             throw new ConstraintDefinitionException('Missing object from context');
