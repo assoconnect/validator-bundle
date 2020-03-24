@@ -1,6 +1,7 @@
 # AssoConnectValidatorBundle
 
 ![Build status](https://travis-ci.org/assoconnect/validator-bundle.svg?branch=master)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=assoconnect_validator-bundle&metric=coverage)](https://sonarcloud.io/dashboard?id=assoconnect_validator-bundle)
 
 This Symfony4 bundle provides validators for common scalar values:
 
