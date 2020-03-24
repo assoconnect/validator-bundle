@@ -16,5 +16,4 @@ abstract class ConstraintValidatorTestCase extends SymfonyConstraintValidatorTes
     {
         self::assertThat($array1, new ArrayContainSameObjectsConstraint($array2), $message);
     }
-
 }

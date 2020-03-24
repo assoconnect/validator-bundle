@@ -22,7 +22,7 @@ class ArrayContainSameObjectsConstraint extends Constraint
             return false;
         }
 
-        foreach($other as $key => $element) {
+        foreach ($other as $key => $element) {
             if (get_class($element) !== get_class($this->expected[$key])) {
                 return false;
             }

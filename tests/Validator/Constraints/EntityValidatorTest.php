@@ -85,7 +85,8 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
     public function testGetConstraintsForType($fieldMapping, $constraints)
     {
         $this->assertArrayContainsSameObjects(
-            $this->validator->getConstraintsForType($fieldMapping), $constraints
+            $this->validator->getConstraintsForType($fieldMapping),
+            $constraints
         );
     }
 

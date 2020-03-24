@@ -8,7 +8,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-Abstract class ConstraintValidatorWithKernelTestCase extends KernelTestCase
+abstract class ConstraintValidatorWithKernelTestCase extends KernelTestCase
 {
 
     /**
@@ -29,7 +29,7 @@ Abstract class ConstraintValidatorWithKernelTestCase extends KernelTestCase
     public static function setUpBeforeClass()
     {
         $fs = new Filesystem();
-        $fs->remove(sys_get_temp_dir().'/AssoConnectValidatorBundle/');
+        $fs->remove(sys_get_temp_dir() . '/AssoConnectValidatorBundle/');
     }
 
     protected static function getKernelClass()
@@ -42,7 +42,7 @@ Abstract class ConstraintValidatorWithKernelTestCase extends KernelTestCase
         self::assertThat($array1, new ArrayContainSameObjectsConstraint($array2), $message);
     }
 
-    public abstract function getConstraint($options = []): Constraint;
+    abstract public function getConstraint($options = []): Constraint;
 
     /**
      * @dataProvider providerValidValue
@@ -54,7 +54,7 @@ Abstract class ConstraintValidatorWithKernelTestCase extends KernelTestCase
         $this->assertCount(0, $errors);
     }
 
-    public abstract function providerValidValue() :array ;
+    abstract public function providerValidValue(): array;
 
 
     /**
@@ -66,7 +66,7 @@ Abstract class ConstraintValidatorWithKernelTestCase extends KernelTestCase
 
         $actualCodes = [];
         $message = [];
-        foreach($errors as $error){
+        foreach ($errors as $error) {
             $actualCodes[] = $error->getCode();
             $message[] = $error->getCode() . ' (' . $error->getMessage() . ')';
         }
@@ -75,6 +75,5 @@ Abstract class ConstraintValidatorWithKernelTestCase extends KernelTestCase
         sort($actualCodes);
         $this->assertSame($expectedCodes, $actualCodes, implode(', ', $message));
     }
-    public abstract function providerInvalidValue() :array;
-
+    abstract public function providerInvalidValue(): array;
 }

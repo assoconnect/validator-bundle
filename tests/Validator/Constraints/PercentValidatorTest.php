@@ -67,7 +67,7 @@ class PercentValidatorTest extends ConstraintValidatorWithKernelTestCase
         ];
     }
 
-    public function providerValidValue() :array
+    public function providerValidValue(): array
     {
         return [
             [null],
@@ -79,7 +79,7 @@ class PercentValidatorTest extends ConstraintValidatorWithKernelTestCase
         ];
     }
 
-    public function providerInvalidValue() :array
+    public function providerInvalidValue(): array
     {
         return [
             // Value type
