@@ -28,7 +28,7 @@ class PhoneValidatorTest extends ConstraintValidatorTestCase
      */
     public function testValidateUnknownConstraint()
     {
-        $this->validato->validate('phone', new NotNull());
+        $this->validator->validate('phone', new NotNull());
     }
 
     public function testNullIsValid()

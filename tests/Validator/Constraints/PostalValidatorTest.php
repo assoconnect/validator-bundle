@@ -30,7 +30,7 @@ class PostalValidatorTest extends ConstraintValidatorTestCase
     }
 
     /**
-     * @expectedException \Symfony\Component\Validator\Exception\ConstraintDefinitionException
+     * @expectedException \Symfony\Component\Validator\Exception\MissingOptionsException
      */
     public function testMissingPropertyPath()
     {
