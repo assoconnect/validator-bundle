@@ -29,10 +29,8 @@ abstract class ComposeValidator extends ConstraintValidator
             return;
         }
 
-        if ($value === '') {
-            if ($this->isEmptyStringAccepted()) {
-                return;
-            }
+        if ($value === '' && $this->isEmptyStringAccepted()) {
+            return;
         }
 
         $validator = $this->context->getValidator()->inContext($this->context);

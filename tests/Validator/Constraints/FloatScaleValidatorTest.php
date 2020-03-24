@@ -2,31 +2,54 @@
 
 namespace AssoConnect\ValidatorBundle\Tests\Validator\Constraints;
 
-use AssoConnect\ValidatorBundle\Test\ConstraintValidatorWithKernelTestCase;
+use AssoConnect\ValidatorBundle\Test\ConstraintValidatorTestCase;
+use AssoConnect\ValidatorBundle\Validator\Constraints\Email;
 use AssoConnect\ValidatorBundle\Validator\Constraints\FloatScale;
+use AssoConnect\ValidatorBundle\Validator\Constraints\FloatScaleValidator;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\ConstraintValidatorInterface;
 
-class FloatScaleValidator extends ConstraintValidatorWithKernelTestCase
+class FloatScaleValidatorTest extends ConstraintValidatorTestCase
 {
-    public function getContraint($options = []): Constraint
+    public function getConstraint($options = []): Constraint
     {
         return new FloatScale($options);
     }
 
-    public function providerValidValue(): array
+    public function createValidator(): ConstraintValidatorInterface
     {
-        return [
-            [null, 0],
-            ['', 0],
-            [1.1, 1],
-            [1.01, 2],
-        ];
+        return new FloatScaleValidator();
     }
 
-    public function providerInvalidValue(): array
+    public function testValidateValue()
     {
-        return [
-            [1.001, 2, [FloatScale::TOO_PRECISE_ERROR]],
-        ];
+        $this->validator->validate(2.1, $this->getConstraint(['scale' => 2]));
+        $this->assertNoViolation();
+    }
+
+    public function testValidateTooPrecise()
+    {
+        $this->validator->validate(0.0001, $this->getConstraint(['scale' => 2]));
+
+        $this->buildViolation('The float precision is limited to {{ scale }} numbers.')
+            ->setParameter('{{ scale }}', '2')
+            ->setParameter('{{ value }}', '0.0001')
+            ->setCode(FloatScale::TOO_PRECISE_ERROR)
+            ->assertRaised();
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Validator\Exception\UnexpectedTypeException
+     */
+    public function testValidateUnknownConstraint()
+    {
+        $this->validator->validate(0, new Email());
+    }
+
+    public function testValidateNotFloatValue()
+    {
+        $this->validator->validate('2.01', $this->getConstraint(['scale' => 2]));
+
+        $this->assertNoViolation();
     }
 }

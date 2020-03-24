@@ -10,11 +10,11 @@ class FloatScaleValidator extends ConstraintValidator
 {
     public function validate($value, Constraint $constraint)
     {
-        if ($constraint instanceof FloatScale === false) {
+        if (!$constraint instanceof FloatScale) {
             throw new UnexpectedTypeException($constraint, __NAMESPACE__ . '\FloatScale');
         }
 
-        if (is_float($value) === false) {
+        if (!is_float($value)) {
             return;
         }
 

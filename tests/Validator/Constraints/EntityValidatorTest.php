@@ -2,13 +2,12 @@
 
 namespace AssoConnect\ValidatorBundle\Tests\Validator\Constraints;
 
-use AssoConnect\ValidatorBundle\Test\Functional\App\Entity\MyEmbeddable;
-use AssoConnect\ValidatorBundle\Test\Functional\App\Entity\MyEntity;
+use AssoConnect\ValidatorBundle\Test\ConstraintValidatorTestCase;
 use AssoConnect\ValidatorBundle\Test\Functional\App\Entity\MyEntityParent;
-use AssoConnect\ValidatorBundle\Validator\Constraints\Entity;
-use AssoConnect\ValidatorBundle\Validator\Constraints\EntityValidator;
 use AssoConnect\PHPDate\AbsoluteDate;
 use AssoConnect\ValidatorBundle\Validator\Constraints\Email;
+use AssoConnect\ValidatorBundle\Validator\Constraints\Entity;
+use AssoConnect\ValidatorBundle\Validator\Constraints\EntityValidator;
 use AssoConnect\ValidatorBundle\Validator\Constraints\FloatScale;
 use AssoConnect\ValidatorBundle\Validator\Constraints\Latitude;
 use AssoConnect\ValidatorBundle\Validator\Constraints\Longitude;
@@ -19,8 +18,7 @@ use AssoConnect\ValidatorBundle\Validator\Constraints\PhoneLandline;
 use AssoConnect\ValidatorBundle\Validator\Constraints\PhoneMobile;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
-use Money\Currency;
-use PHPUnit\Framework\TestCase;
+use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Bic;
 use Symfony\Component\Validator\Constraints\Country;
@@ -38,16 +36,11 @@ use Symfony\Component\Validator\Constraints\Timezone;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\Constraints\Uuid;
 use Symfony\Component\Validator\Constraints\Valid;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Validator\Constraints\Currency as CurrencyConstraint;
+use Symfony\Component\Validator\ConstraintValidatorInterface;
 
-class EntityValidatorTest extends TestCase
+class EntityValidatorTest extends ConstraintValidatorTestCase
 {
-    /**
-     * @var ValidatorInterface
-     */
-    protected $validator;
-
     /**
      * @var EntityManagerInterface
      */
@@ -62,8 +55,18 @@ class EntityValidatorTest extends TestCase
     {
         $this->entityManager = $this->createMock(EntityManagerInterface::class);
         $this->entityManager->method('getClassMetadata')->willReturn($this->getMockClassMetadata());
-        $this->validator = new EntityValidator($this->entityManager);
 
+        parent::setUp();
+    }
+
+    public function getConstraint($options = []): Constraint
+    {
+        return new Entity($options);
+    }
+
+    public function createValidator(): ConstraintValidatorInterface
+    {
+        return new EntityValidator($this->entityManager);
     }
 
     public function testGetConstraintsForTypeUnknown()
@@ -81,10 +84,8 @@ class EntityValidatorTest extends TestCase
      */
     public function testGetConstraintsForType($fieldMapping, $constraints)
     {
-        $this->assertTrue(
-            $this->assertArrayContainsSameObjects(
-                $this->validator->getConstraintsForType($fieldMapping), $constraints
-            )
+        $this->assertArrayContainsSameObjects(
+            $this->validator->getConstraintsForType($fieldMapping), $constraints
         );
     }
 
@@ -237,31 +238,25 @@ class EntityValidatorTest extends TestCase
 
     public function testGetConstraintsForNullableField()
     {
-        $this->assertTrue(
-            $this->assertArrayContainsSameObjects(
-                $this->validator->getConstraints('class', 'nullable'),
-                [new Country()]
-            )
+        $this->assertArrayContainsSameObjects(
+            $this->validator->getConstraints('class', 'nullable'),
+            [new Country()]
         );
     }
 
     public function testGetConstraintsForNotNullableField()
     {
-        $this->assertTrue(
-            $this->assertArrayContainsSameObjects(
-                $this->validator->getConstraints('class', 'notnullable'),
-                [new NotNull(), new Country()]
-            )
+        $this->assertArrayContainsSameObjects(
+            $this->validator->getConstraints('class', 'notnullable'),
+            [new NotNull(), new Country()]
         );
     }
 
     public function testGetConstraintsForEmbeddable()
     {
-        $this->assertTrue(
-            $this->assertArrayContainsSameObjects(
-                $this->validator->getConstraints('class', 'embedded'),
-                [new Valid()]
-            )
+        $this->assertArrayContainsSameObjects(
+            $this->validator->getConstraints('class', 'embedded'),
+            [new Valid()]
         );
     }
 
@@ -272,38 +267,30 @@ class EntityValidatorTest extends TestCase
 
     public function testGetConstraintsForRelationToOne()
     {
-        $this->assertTrue(
-            $this->assertArrayContainsSameObjects(
-                $this->validator->getConstraints('class', 'owningToOne'),
-                [new Type(MyEntityParent::class)]
-            )
+        $this->assertArrayContainsSameObjects(
+            $this->validator->getConstraints('class', 'owningToOne'),
+            [new Type(MyEntityParent::class)]
         );
     }
 
     public function testGetConstraintsForRelationToOneNotNullable()
     {
-        $this->assertTrue(
-            $this->assertArrayContainsSameObjects(
-                $this->validator->getConstraints('class', 'owningToOneNotNull'),
-                [new Type(MyEntityParent::class), new NotNull()]
-            )
+        $this->assertArrayContainsSameObjects(
+            $this->validator->getConstraints('class', 'owningToOneNotNull'),
+            [new Type(MyEntityParent::class), new NotNull()]
         );
     }
 
     public function testGetConstraintsForRelationToMany()
     {
         $constraints = $this->validator->getConstraints('class', 'owningToMany');
-        $this->assertTrue(
-            $this->assertArrayContainsSameObjects(
-                $constraints,
-                [new All(['constraints' => [new Type(MyEntityParent::class)]])]
-            )
+        $this->assertArrayContainsSameObjects(
+            $constraints,
+            [new All(['constraints' => [new Type(MyEntityParent::class)]])]
         );
-        $this->assertTrue(
-            $this->assertArrayContainsSameObjects(
-                $constraints[0]->constraints,
-                [new Type(MyEntityParent::class)]
-            )
+        $this->assertArrayContainsSameObjects(
+            $constraints[0]->constraints,
+            [new Type(MyEntityParent::class)]
         );
     }
 
@@ -321,202 +308,14 @@ class EntityValidatorTest extends TestCase
         $this->validator->getConstraints('class', 'unknown');
     }
 
-    public function testValidate()
+    public function providerInvalidValue(): array
     {
-        $metadata = $this->createMock(ClassMetadata::class);
-        $metadata->method('getReflectionProperties')->willReturn(['nullable' => '']);
-        $this->entityManager->method('getClassMetadata')->will(
-            $this->onConsecutiveCalls($metadata, $this->getMockClassMetadata())
-        );
+        return [];
     }
 
-    public function TestValidValues()
+    public function providerValidValue(): array
     {
-        $entity = new MyEntity();
-
-        $entity->id = 123;
-        $entity->bic = 'SOGEFRPP';
-        $entity->bigint = -123456789;
-        $entity->bigintUnsigned = 123456789;
-        $entity->boolean = true;
-        $entity->country = 'FR';
-        $entity->currency = new Currency('EUR');
-        $entity->date = new \DateTime();
-        $entity->datetime = new \DateTime();
-        $entity->decimal = 99.999;
-        $entity->email = 'foo@bar.com';
-        $entity->float = 1.2;
-        $entity->latitude = 2.3;
-        $entity->locale = 'fr_FR';
-        $entity->longitude = 3.4;
-        $entity->iban = 'CH9300762011623852957';
-        $entity->integer = 123;
-        $entity->ip = '172.16.254.1';
-        $entity->json = array();
-        $entity->money = 4.5;
-        $entity->notNullable = 'oui';
-        $entity->percent = 5.6;
-        $entity->phone = '+33123456789';
-        $entity->phonelandline = '+33123456789';
-        $entity->phonemobile = '+33623456789';
-        $entity->smallint = -12345;
-        $entity->smallintUnsigned = 12345;
-        $entity->string = 'hello';
-        $entity->text = 'world';
-        $entity->timezone = 'Europe/Paris';
-        $entity->uuid = '863c9c0f-59db-4ac7-9fd2-787c070b037c';
-        $entity->uuid_binary_ordered_time = '6381fbe0-e651-46f5-b171-3f25518bd8e9';
-        $entity->absoluteDate = new AbsoluteDate('2020-01-01');
-
-        $entity->parentNullable = null;
-        $entity->parentNotNullable = new MyEntityParent();
-        $entity->parents = [new MyEntityParent()];
-
-        $entity->embeddable = new MyEmbeddable(true);
-
-        $errors = $this->validator->validate($entity, new Entity());
-        foreach ($errors as $error) {
-            var_dump($error->getPropertyPath() . ': ' . $error->getMessage());
-        }
-        $this->assertCount(0, $errors);
-    }
-
-    public function TestInvalidValues()
-    {
-        $entity = new MyEntity();
-        $codes = [];
-
-        $codes['id'] = [NotNull::IS_NULL_ERROR];
-
-        $entity->bic = 'SOGEFRPPA';
-        $codes['bic'] = [Bic::INVALID_LENGTH_ERROR];
-
-        $entity->bigint = pow(2, 64);
-        $codes['bigint'] = [Type::INVALID_TYPE_ERROR, LessThanOrEqual::TOO_HIGH_ERROR];
-
-        $entity->bigintUnsigned = -12;
-        $codes['bigintUnsigned'] = [GreaterThanOrEqual::TOO_LOW_ERROR];
-
-        $entity->boolean = 1;
-        $codes['boolean'] = [Type::INVALID_TYPE_ERROR];
-
-        $entity->country = 'Hello';
-        $codes['country'] = [Country::NO_SUCH_COUNTRY_ERROR];
-
-        $entity->currency = 'foo';
-        $codes['currency'] = [CurrencyConstraint::NO_SUCH_CURRENCY_ERROR];
-
-        $entity->date = 'hello';
-        $codes['date'] = [Type::INVALID_TYPE_ERROR];
-
-        $entity->datetime = 'world';
-        $codes['datetime'] = [Type::INVALID_TYPE_ERROR];
-
-        $entity->decimal = 100.0;
-        $codes['decimal'] = [LessThan::TOO_HIGH_ERROR];
-
-        $entity->email = 'foo@bar.comcom';
-        $codes['email'] = [Email::INVALID_TLD_ERROR];
-
-        $entity->float = 'a';
-        $codes['float'] = [Type::INVALID_TYPE_ERROR];
-
-        $entity->iban = 'CH9300762011623852958';
-        $codes['iban'] = [Iban::CHECKSUM_FAILED_ERROR];
-
-        $entity->integer = 'abc';
-        $codes['integer'] = [Type::INVALID_TYPE_ERROR];
-
-        $entity->ip = 'bar';
-        $codes['ip'] = [Ip::INVALID_IP_ERROR];
-
-        $entity->json = array();
-        // TODO: implement JSON validation?
-        $entity->latitude = 91.0;
-        $codes['latitude'] = [LessThanOrEqual::TOO_HIGH_ERROR];
-
-        $entity->locale = 'foo';
-        $codes['locale'] = [Locale::NO_SUCH_LOCALE_ERROR];
-
-        $entity->longitude = 181.0;
-        $codes['longitude'] = [LessThanOrEqual::TOO_HIGH_ERROR];
-
-        $entity->money = -1;
-        $codes['money'] = [GreaterThanOrEqual::TOO_LOW_ERROR];
-
-        $entity->notNullable = null;
-        $codes['notNullable'] = [NotNull::IS_NULL_ERROR];
-
-        $entity->percent = -1;
-        $codes['percent'] = [GreaterThanOrEqual::TOO_LOW_ERROR];
-
-        $entity->phone = '+331234567890';
-        $codes['phone'] = [Phone::PHONE_NUMBER_NOT_EXIST];
-
-        $entity->phonelandline = '+33623456789';
-        $codes['phonelandline'] = [Phone::INVALID_TYPE_ERROR];
-
-        $entity->phonemobile = '+33123456789';
-        $codes['phonemobile'] = [Phone::INVALID_TYPE_ERROR];
-
-        $entity->smallint = pow(2, 16);
-        $codes['smallint'] = [LessThanOrEqual::TOO_HIGH_ERROR];
-
-        $entity->smallintUnsigned = -12;
-        $codes['smallintUnsigned'] = [GreaterThan::TOO_LOW_ERROR];
-
-        $entity->string = str_repeat('a', 11);
-        $codes['string'] = [Length::TOO_LONG_ERROR];
-
-        $entity->text = str_repeat('💩', 3);
-        $codes['text'] = [Length::TOO_LONG_ERROR];
-
-        $entity->timezone = 'foo';
-        $codes['timezone'] = [Timezone::TIMEZONE_IDENTIFIER_ERROR];
-
-        $entity->uuid = 'foo';
-        $codes['uuid'] = [Uuid::INVALID_CHARACTERS_ERROR];
-
-        $entity->uuid_binary_ordered_time = 'bar';
-        $codes['uuid_binary_ordered_time'] = [Uuid::INVALID_CHARACTERS_ERROR];
-
-        $entity->parentNullable = new MyEntity();
-        $codes['parentNullable'] = [Type::INVALID_TYPE_ERROR];
-
-        $entity->parentNotNullable = null;
-        $codes['parentNotNullable'] = [NotNull::IS_NULL_ERROR];
-
-        $entity->parents = [new MyEmbeddable('hello')];
-        $codes['parents[0]'] = [Type::INVALID_TYPE_ERROR];
-
-        $entity->embeddable = new MyEmbeddable('hello');
-        $codes['embeddable.bool'] = [Type::INVALID_TYPE_ERROR];
-
-        $entity->absoluteDate = 'invalid absolute date';
-        $codes['absoluteDate'] = [Type::INVALID_TYPE_ERROR];
-
-        $errors = $this->validator->validate($entity, new Entity());
-        $errorsPerPath = [];
-        foreach ($errors as $error) {
-            $errorsPerPath[$error->getPropertyPath()][] = $error->getCode();
-        }
-        ksort($codes);
-        ksort($errorsPerPath);
-        $this->assertSame($codes, $errorsPerPath);
-    }
-
-    private function assertArrayContainsSameObjects(array $array1, array $array2)
-    {
-        if (count($array1) != count($array2)) {
-            return false;
-        }
-
-        foreach($array1 as $key => $element) {
-            if (get_class($element) !== get_class($array2[$key])) {
-                return false;
-            }
-        }
-        return true;
+        return [];
     }
 
     private function getMockClassMetadata()

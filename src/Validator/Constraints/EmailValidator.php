@@ -19,7 +19,7 @@ class EmailValidator extends _EmailValidator
 
     public function validate($value, Constraint $constraint)
     {
-        if ($constraint instanceof Email === false) {
+        if (!$constraint instanceof Email) {
             throw new UnexpectedTypeException($constraint, __NAMESPACE__ . '\Email');
         }
         if ($value === null || $value === '') {

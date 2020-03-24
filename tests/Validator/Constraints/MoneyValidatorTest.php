@@ -2,42 +2,56 @@
 
 namespace AssoConnect\ValidatorBundle\Tests\Validator\Constraints;
 
-use AssoConnect\ValidatorBundle\Test\ConstraintValidatorWithKernelTestCase;
+use AssoConnect\ValidatorBundle\Test\ConstraintValidatorTestCase;
 use AssoConnect\ValidatorBundle\Validator\Constraints\Money;
+use AssoConnect\ValidatorBundle\Validator\Constraints\MoneyValidator;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Validator\Constraints\LessThan;
 use Symfony\Component\Validator\Constraints\Type;
+use Symfony\Component\Validator\ConstraintValidatorInterface;
 
-class MoneyValidatorTest extends ConstraintValidatorWithKernelTestCase
+class MoneyValidatorTest extends ConstraintValidatorTestCase
 {
-    public function getContraint($options = []): Constraint
+    public function getConstraint($options = []): Constraint
     {
         return new Money($options);
     }
 
-    public function providerValidValue(): array
+    public function createValidator(): ConstraintValidatorInterface
     {
-        return [
-            [null],
-            [0.0],
-            [0],
-            [100.0],
-            [Money::MAX - 0.1],
-        ];
+        return new MoneyValidator();
     }
 
-    public function providerInvalidValue(): array
+    public function testIsEmptyStringAccepted()
+    {
+        $this->assertFalse($this->validator->isEmptyStringAccepted());
+    }
+
+    public function testGetSupportedConstraint()
+    {
+        $this->assertSame(Money::class, $this->validator->getSupportedConstraint());
+    }
+
+    /**
+     * @dataProvider getConstraintsProvider
+     * @param $value
+     * @param $constraints
+     */
+    public function testGetConstraints($value, $constraints)
+    {
+        $this->assertArrayContainsSameObjects(
+            $constraints,
+            $this->validator->getConstraints($value, $this->getConstraint(['min' => 0, 'max' => 90]))
+        );
+    }
+
+    public function getConstraintsProvider(): array
     {
         return [
-            // Value type
-            ['', array(), [Type::INVALID_TYPE_ERROR]],
-            // Default range
-            [-1.0, array(), [GreaterThanOrEqual::TOO_LOW_ERROR]],
-            [Money::MAX + 1, array(), [LessThan::TOO_HIGH_ERROR]],
-            // Custom range
-            [0.0, array('min' => 10), [GreaterThanOrEqual::TOO_LOW_ERROR]],
-            [11.0, array('max' => 10), [LessThan::TOO_HIGH_ERROR]],
+            [18.1, [new GreaterThanOrEqual(0), new LessThan(90)]],
+            [18, [new GreaterThanOrEqual(0), new LessThan(90)]],
+            ['18', [new Type('float')]]
         ];
     }
 }

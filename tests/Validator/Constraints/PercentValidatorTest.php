@@ -4,19 +4,70 @@ namespace AssoConnect\ValidatorBundle\Tests\Validator\Constraints;
 
 use AssoConnect\ValidatorBundle\Test\ConstraintValidatorWithKernelTestCase;
 use AssoConnect\ValidatorBundle\Validator\Constraints\Percent;
+use AssoConnect\ValidatorBundle\Validator\Constraints\PercentValidator;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Validator\Constraints\LessThanOrEqual;
 use Symfony\Component\Validator\Constraints\Type;
+use Symfony\Component\Validator\ConstraintValidatorInterface;
 
 class PercentValidatorTest extends ConstraintValidatorWithKernelTestCase
 {
-    public function getContraint($options = []): Constraint
+    /**
+     * @var ConstraintValidatorInterface
+     */
+    private $percentValidator;
+
+    public function setUp()
+    {
+        self::bootKernel();
+
+        $this->validator = self::$kernel->getContainer()->get('validator');
+        $this->percentValidator = $this->createValidator();
+    }
+    public function getConstraint($options = []): Constraint
     {
         return new Percent($options);
     }
 
-    public function providerValidValue(): array
+    public function createValidator(): ConstraintValidatorInterface
+    {
+        return new PercentValidator();
+    }
+
+    public function testIsEmptyStringAccepted()
+    {
+        $this->assertFalse($this->percentValidator->isEmptyStringAccepted());
+    }
+
+    public function testGetSupportedConstraint()
+    {
+        $this->assertSame(Percent::class, $this->percentValidator->getSupportedConstraint());
+    }
+
+    /**
+     * @dataProvider getConstraintsProvider
+     * @param $value
+     * @param $constraints
+     */
+    public function testGetConstraints($value, $constraints)
+    {
+        $this->assertArrayContainsSameObjects(
+            $constraints,
+            $this->percentValidator->getConstraints($value, $this->getConstraint(['min' => 0, 'max' => 90]))
+        );
+    }
+
+    public function getConstraintsProvider(): array
+    {
+        return [
+            [18.1, [new GreaterThanOrEqual(0), new LessThanOrEqual(90)]],
+            [18, [new GreaterThanOrEqual(0), new LessThanOrEqual(90)]],
+            ['18', [new Type('float')]]
+        ];
+    }
+
+    public function providerValidValue() :array
     {
         return [
             [null],
@@ -28,7 +79,7 @@ class PercentValidatorTest extends ConstraintValidatorWithKernelTestCase
         ];
     }
 
-    public function providerInvalidValue(): array
+    public function providerInvalidValue() :array
     {
         return [
             // Value type

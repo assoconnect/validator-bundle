@@ -2,17 +2,33 @@
 
 namespace AssoConnect\ValidatorBundle\Tests\Validator\Constraints;
 
+use AssoConnect\ValidatorBundle\Test\ConstraintValidatorTestCase;
 use AssoConnect\ValidatorBundle\Validator\Constraints\Phone;
 use AssoConnect\ValidatorBundle\Validator\Constraints\PhoneLandline;
 use AssoConnect\ValidatorBundle\Validator\Constraints\PhoneMobile;
 use AssoConnect\ValidatorBundle\Validator\Constraints\PhoneValidator;
-use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
+use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\ConstraintValidatorInterface;
 
 class PhoneValidatorTest extends ConstraintValidatorTestCase
 {
-    public function createValidator()
+    public function getConstraint($options = []): Constraint
+    {
+        return new Phone($options);
+    }
+
+    public function createValidator(): ConstraintValidatorInterface
     {
         return new PhoneValidator();
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Validator\Exception\UnexpectedTypeException
+     */
+    public function testValidateUnknownConstraint()
+    {
+        $this->validato->validate('phone', new NotNull());
     }
 
     public function testNullIsValid()
@@ -29,6 +45,10 @@ class PhoneValidatorTest extends ConstraintValidatorTestCase
 
     /**
      * @dataProvider providerInvalidValues
+     * @param $constraint
+     * @param $value
+     * @param $messageField
+     * @param $code
      */
     public function testInvalidValues($constraint, $value, $messageField, $code)
     {
@@ -59,6 +79,8 @@ class PhoneValidatorTest extends ConstraintValidatorTestCase
 
     /**
      * @dataProvider providerValidValues
+     * @param $constraint
+     * @param $value
      */
     public function testValidValues($constraint, $value)
     {

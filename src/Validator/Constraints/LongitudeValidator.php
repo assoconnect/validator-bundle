@@ -9,12 +9,12 @@ use Symfony\Component\Validator\Constraints\Type;
 
 class LongitudeValidator extends ComposeValidator
 {
-    protected function getSupportedConstraint(): string
+    public function getSupportedConstraint(): string
     {
         return Longitude::class;
     }
 
-    protected function getConstraints($value, Constraint $constraint): array
+    public function getConstraints($value, Constraint $constraint): array
     {
         if (is_float($value) or is_integer($value)) {
             return [
@@ -28,7 +28,7 @@ class LongitudeValidator extends ComposeValidator
         }
     }
 
-    protected function isEmptyStringAccepted(): bool
+    public function isEmptyStringAccepted(): bool
     {
         return false;
     }

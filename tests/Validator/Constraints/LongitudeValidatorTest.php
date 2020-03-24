@@ -2,38 +2,56 @@
 
 namespace AssoConnect\ValidatorBundle\Tests\Validator\Constraints;
 
-use AssoConnect\ValidatorBundle\Test\ConstraintValidatorWithKernelTestCase;
+use AssoConnect\ValidatorBundle\Test\ConstraintValidatorTestCase;
 use AssoConnect\ValidatorBundle\Validator\Constraints\Longitude;
+use AssoConnect\ValidatorBundle\Validator\Constraints\LongitudeValidator;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Validator\Constraints\LessThanOrEqual;
 use Symfony\Component\Validator\Constraints\Type;
+use Symfony\Component\Validator\ConstraintValidatorInterface;
 
-class LongitudeValidatorTest extends ConstraintValidatorWithKernelTestCase
+class LongitudeValidatorTest extends ConstraintValidatorTestCase
 {
-    public function getContraint($options = []): Constraint
+    public function getConstraint($options = []): Constraint
     {
         return new Longitude($options);
     }
 
-    public function providerValidValue(): array
+    public function createValidator(): ConstraintValidatorInterface
     {
-        return [
-            [null],
-            [-180.0],
-            [0],
-            [180.0],
-        ];
+        return new LongitudeValidator();
     }
 
-    public function providerInvalidValue(): array
+    public function testIsEmptyStringAccepted()
+    {
+        $this->assertFalse($this->validator->isEmptyStringAccepted());
+    }
+
+    public function testGetSupportedConstraint()
+    {
+        $this->assertSame(Longitude::class, $this->validator->getSupportedConstraint());
+    }
+
+    /**
+     * @dataProvider getConstraintsProvider
+     * @param $value
+     * @param $constraints
+     */
+    public function testGetConstraints($value, $constraints)
+    {
+        $this->assertArrayContainsSameObjects(
+            $constraints,
+            $this->validator->getConstraints($value, $this->getConstraint())
+        );
+    }
+
+    public function getConstraintsProvider(): array
     {
         return [
-            // Value type
-            ['', array(), [Type::INVALID_TYPE_ERROR]],
-            // Default range
-            [-181.0, array(), [GreaterThanOrEqual::TOO_LOW_ERROR]],
-            [181.0, array(), [LessThanOrEqual::TOO_HIGH_ERROR]],
+            [18.1, [new GreaterThanOrEqual(-90), new LessThanOrEqual(90)]],
+            [18, [new GreaterThanOrEqual(-90), new LessThanOrEqual(90)]],
+            ['18', [new Type('float')]]
         ];
     }
 }

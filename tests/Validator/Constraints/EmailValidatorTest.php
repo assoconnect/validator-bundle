@@ -2,20 +2,60 @@
 
 namespace AssoConnect\ValidatorBundle\Tests\Validator\Constraints;
 
+use AssoConnect\ValidatorBundle\Test\ConstraintValidatorTestCase;
 use AssoConnect\ValidatorBundle\Validator\Constraints\Email;
 use AssoConnect\ValidatorBundle\Validator\Constraints\EmailValidator;
-use Pdp\Cache;
-use Pdp\CurlHttpClient;
+use DG\BypassFinals;
+use Pdp\Domain;
 use Pdp\Manager;
-use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
+use Pdp\Rules;
+use PHPUnit\Framework\MockObject\MockObject;
+use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\ConstraintValidatorInterface;
 
 class EmailValidatorTest extends ConstraintValidatorTestCase
 {
-    public function createValidator(): EmailValidator
-    {
-        $manager = new Manager(new Cache(), new CurlHttpClient());
+    /**
+     * @var MockObject
+     */
+    private $manager;
+    /**
+     * @var MockObject
+     */
+    private $rules;
+    /**
+     * @var MockObject
+     */
+    private $domain;
 
-        return new EmailValidator($manager);
+    public function setUp(): void
+    {
+        BypassFinals::enable();
+        parent::setUp();
+    }
+
+    public function createValidator(): ConstraintValidatorInterface
+    {
+        $this->manager = $this->createMock(Manager::class);
+        $this->rules = $this->createMock(Rules::class);
+        $this->domain = $this->createMock(Domain::class);
+        $this->manager->method('getRules')->willReturn($this->rules);
+        $this->rules->method('resolve')->willReturn($this->domain);
+        return new EmailValidator($this->manager);
+    }
+
+    public function getConstraint($options = []): Constraint
+    {
+        return new Email(['message' => 'myMessage', 'TLDMessage' => 'myMessage']);
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Validator\Exception\UnexpectedTypeException
+     */
+    public function testValidateUnknownConstraint()
+    {
+        $this->validator->validate('email', new NotNull());
     }
 
     public function testNullIsValid()
@@ -31,80 +71,75 @@ class EmailValidatorTest extends ConstraintValidatorTestCase
     }
 
     /**
-     * @dataProvider providerInvalidValues
+     * @dataProvider providerInvalidValue
+     * @param string $value
+     * @param string $code
      */
-    public function testInvalidValues($value, $messageField, $code)
+    public function testInvalidValues($value, $code)
     {
-        $this->validator->validate(
-            $value,
-            new Email([
-                $messageField => 'myMessage',
-            ])
-        );
-        $this
-            ->buildViolation('myMessage')
+        $this->validator->validate($value, $this->getConstraint());
+
+        $this->buildViolation('myMessage')
             ->setParameter('{{ value }}', '"' . $value . '"')
             ->setCode($code)
-            ->assertRaised();
+            ->assertRaised()
+        ;
     }
-    public function providerInvalidValues()
+    public function providerInvalidValue(): array
     {
         return [
             // Format
             // #0
             [
                 'format',
-                'message',
                 Email::INVALID_FORMAT_ERROR,
             ],
             // #1
             [
                 'format;format@mail.com',
-                'message',
                 Email::INVALID_FORMAT_ERROR,
             ],
             // #2
             [
                 'mailto:format@mail.com',
-                'message',
                 Email::INVALID_FORMAT_ERROR,
             ],
             // #3
             [
                 ' format@mail.com',
-                'message',
                 Email::INVALID_FORMAT_ERROR,
             ],
             // #4
             [
                 'format@mail.com ',
-                'message',
                 Email::INVALID_FORMAT_ERROR,
             ],
             // #5
             [
                 'format@mail.com.',
-                'message',
                 Email::INVALID_FORMAT_ERROR,
             ],
             // #6 TLD
             [
                 'tld@mail.error',
-                'TLDMessage',
                 Email::INVALID_TLD_ERROR,
             ],
         ];
     }
 
     /**
-     * @dataProvider providerValidValues
+     * @dataProvider providerValidValue
+     * @param string $value
      */
     public function testValidValues($value)
     {
-        $this->validator->validate($value, new Email());
+        $this->domain->method('isKnown')->willReturn(true);
+        $this->validator->validate($value, $this->getConstraint());
+
         $this->assertNoViolation();
     }
-    public function providerValidValues()
+
+    public function providerValidValue(): array
     {
         return [
             ['valid@mail.com'],
