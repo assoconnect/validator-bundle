@@ -212,7 +212,7 @@ class EntityValidator extends ConstraintValidator
             $fieldMapping = $metadata->fieldMappings[$field];
 
             // Nullable field
-            if ($fieldMapping['nullable'] === false) {
+            if (!$fieldMapping['nullable']) {
                 $constraints[] = [new NotNull()];
             }
 
@@ -229,7 +229,7 @@ class EntityValidator extends ConstraintValidator
                     // ToOne
                     $constraints[] = new Type($fieldMapping['targetEntity']);
                     // Nullable field
-                    if (isset($fieldMapping['joinColumns'][0]['nullable']) && $fieldMapping['joinColumns'][0]['nullable'] === false) {
+                    if (isset($fieldMapping['joinColumns'][0]['nullable']) && !$fieldMapping['joinColumns'][0]['nullable']) {
                         $constraints[] = new NotNull();
                     }
                 } elseif ($fieldMapping['type'] & ClassMetadata::TO_MANY) {

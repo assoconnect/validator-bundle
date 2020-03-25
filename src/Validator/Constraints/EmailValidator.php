@@ -26,7 +26,7 @@ class EmailValidator extends _EmailValidator
             return;
         }
 
-        if (filter_var($value, FILTER_VALIDATE_EMAIL) === false) {
+        if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ value }}', $this->formatValue($value))
                 ->setCode(Email::INVALID_FORMAT_ERROR)
@@ -40,7 +40,7 @@ class EmailValidator extends _EmailValidator
         $domain = $rules->resolve($domainName);
 
 
-        if ($domain->isKnown() === false) {
+        if (!$domain->isKnown()) {
             $this->context->buildViolation($constraint->TLDMessage)
                 ->setParameter('{{ value }}', $this->formatValue($value))
                 ->setCode(Email::INVALID_TLD_ERROR)
