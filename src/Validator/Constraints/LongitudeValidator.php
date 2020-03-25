@@ -16,7 +16,7 @@ class LongitudeValidator extends ComposeValidator
 
     public function getConstraints($value, Constraint $constraint): array
     {
-        if (is_float($value) or is_integer($value)) {
+        if (is_float($value) || is_integer($value)) {
             return [
                 new GreaterThanOrEqual(-180),
                 new LessThanOrEqual(180),

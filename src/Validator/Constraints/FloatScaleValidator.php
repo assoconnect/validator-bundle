@@ -24,7 +24,6 @@ class FloatScaleValidator extends ConstraintValidator
                 ->setParameter('{{ scale }}', $constraint->scale)
                 ->setCode(FloatScale::TOO_PRECISE_ERROR)
                 ->addViolation();
-            return;
         }
     }
 }
