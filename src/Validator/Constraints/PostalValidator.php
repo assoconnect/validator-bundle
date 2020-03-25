@@ -15,7 +15,6 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
  */
 class PostalValidator extends ConstraintValidator
 {
-
     const THREE_DIGIT_FORMAT = '^[0-9]{3}$';
     const FOUR_DIGIT_FORMAT = '^[0-9]{4}$';
     const FIVE_DIGIT_FORMAT = '^[0-9]{5}$';
