@@ -258,7 +258,7 @@ class PostalValidator extends ConstraintValidator
         'UA' => self::FIVE_DIGIT_FORMAT, // Ukraine
         'UM' => self::FIVE_DIGIT_FORMAT, // United States Minor Outlying Islands
         'UG' => null, // Uganda
-        'US' => self::FIVE_DIGIT_FORMAT, // United States of America
+        'US' => '[0-9]{5}(\-[0-9]{4})?$', // United States of America
         'UY' => self::FIVE_DIGIT_FORMAT, // Uruguay
         'UZ' => self::SIX_DIGIT_FORMAT, // Uzbekistan
         'VA' => '^00120$', // Holy See
