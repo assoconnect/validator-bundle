@@ -2,6 +2,7 @@
 
 namespace AssoConnect\ValidatorBundle\Validator\Constraints;
 
+use Egulias\EmailValidator\Validation\DNSCheckValidation;
 use Pdp\Manager;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\EmailValidator as _EmailValidator;
@@ -34,20 +35,30 @@ class EmailValidator extends _EmailValidator
             return;
         }
 
-        $domainName = explode('@', $value)[1];
         $rules = $this->manager->getRules();
 
+        $domainName = explode('@', $value)[1];
         $domain = $rules->resolve($domainName);
 
-
         if (!$domain->isKnown()) {
-            $this->context->buildViolation($constraint->TLDMessage)
-                ->setParameter('{{ value }}', $this->formatValue($value))
-                ->setCode(Email::INVALID_TLD_ERROR)
-                ->addViolation();
+            $this->buildTldError($value, $constraint);
+            return;
+        }
+
+        $validator = new \Egulias\EmailValidator\EmailValidator();
+        if (!$validator->isValid($value, new DNSCheckValidation())) {
+            $this->buildTldError($value, $constraint);
             return;
         }
 
         parent::validate($value, $constraint);
+    }
+
+    private function buildTldError($value, Constraint $constraint)
+    {
+        $this->context->buildViolation($constraint->TLDMessage)
+            ->setParameter('{{ value }}', $this->formatValue($value))
+            ->setCode(Email::INVALID_TLD_ERROR)
+            ->addViolation();
     }
 }
