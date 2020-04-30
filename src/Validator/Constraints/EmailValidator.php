@@ -35,21 +35,18 @@ class EmailValidator extends _EmailValidator
             return;
         }
 
-
-
-        $validator = new \Egulias\EmailValidator\EmailValidator();
-        if (!$validator->isValid($value, new DNSCheckValidation())) {
-            $this->buildTldError($value, $constraint);
-            return;
-        }
-
         $rules = $this->manager->getRules();
 
         $domainName = explode('@', $value)[1];
         $domain = $rules->resolve($domainName);
 
-
         if (!$domain->isKnown()) {
+            $this->buildTldError($value, $constraint);
+            return;
+        }
+
+        $validator = new \Egulias\EmailValidator\EmailValidator();
+        if (!$validator->isValid($value, new DNSCheckValidation())) {
             $this->buildTldError($value, $constraint);
             return;
         }
