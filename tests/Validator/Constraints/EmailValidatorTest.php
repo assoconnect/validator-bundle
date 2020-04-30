@@ -13,6 +13,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
+use Symfony\Contracts\Cache\CacheInterface;
 
 class EmailValidatorTest extends ConstraintValidatorTestCase
 {
@@ -20,6 +21,12 @@ class EmailValidatorTest extends ConstraintValidatorTestCase
      * @var MockObject
      */
     private $manager;
+
+    /**
+     * @var MockObject
+     */
+    private $cache;
+
     /**
      * @var MockObject
      */
@@ -124,6 +131,12 @@ class EmailValidatorTest extends ConstraintValidatorTestCase
                 'tld@mail.error',
                 Email::INVALID_TLD_ERROR,
             ],
+            // #7 DNS
+            [
+                'john.doe@xn--gmail-9fa.com',
+                Email::INVALID_TLD_ERROR,
+            ]
+
         ];
     }
 
