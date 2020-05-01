@@ -5,7 +5,10 @@ namespace AssoConnect\ValidatorBundle\Validator\Constraints;
 use Symfony\Component\Validator\Constraints\Email as _Email;
 
 /**
- * {@inheritdoc}
+ * @Annotation
+ * @Target({"PROPERTY", "METHOD", "ANNOTATION"})
+ *
+ * @author Sylvain Fabre <sylvain.fabre@assoconnect.com>
  */
 class Email extends _Email
 {
