@@ -22,12 +22,6 @@
       "AssoConnect\\ValidatorBundle\\": "src/"
     }
   },
-  "repositories": [
-    {
-      "type": "git",
-      "url": "https://github.com/assoconnect/doctrine-validator-bundle"
-    }
-  ],
   "require": {
     "doctrine/doctrine-bundle": "^1.9|^2.0",
     "giggsey/libphonenumber-for-php": "^8.9",
@@ -40,7 +34,8 @@
     "moneyphp/money": "^3.3",
     "assoconnect/php-date": "^2.0",
     "doctrine/orm": "^2.7",
-    "symfony/intl": "^4.3|^5.0"
+    "symfony/intl": "^4.3|^5.0",
+    "assoconnect/doctrine-validator-bundle": "^2.1"
   },
   "require-dev": {
     "doctrine/cache": "~1.0",
