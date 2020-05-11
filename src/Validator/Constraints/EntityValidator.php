@@ -195,6 +195,12 @@ class EntityValidator extends ConstraintValidator
             case 'date_absolute':
                 $constraints[] = new Type(AbsoluteDate::class);
                 break;
+            case 'frenchsiren':
+                $constraints[] = new FrenchSiren();
+                break;
+            case 'frenchrna':
+                $constraints[] = new FrenchRna();
+                break;
             default:
                 throw new \DomainException('Unsupported field type: ' . $fieldMapping['type']);
         }

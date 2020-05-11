@@ -214,4 +214,14 @@ class MyEntity
      * @ORM\Column(type="date_absolute")
      */
     public $absoluteDate;
+
+    /**
+     * @ORM\Column(type="frenchrna")
+     */
+    public $frenchRNA;
+
+    /**
+     * @ORM\Column(type="frenchsiren")
+     */
+    public $frenchSIREN;
 }
