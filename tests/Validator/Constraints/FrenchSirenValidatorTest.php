@@ -23,6 +23,11 @@ class FrenchSirenValidatorTest extends ConstraintValidatorTestCase
         return new FrenchSirenValidator();
     }
 
+    public function testGetSupportedConstraint()
+    {
+        $this->assertSame(FrenchSiren::class, $this->validator->getSupportedConstraint());
+    }
+
     public function testValidateValue()
     {
         $this->validator->validate('732829320', $this->getConstraint());

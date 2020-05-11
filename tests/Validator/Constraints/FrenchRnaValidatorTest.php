@@ -23,6 +23,11 @@ class FrenchRnaValidatorTest extends ConstraintValidatorTestCase
         return new FrenchRnaValidator();
     }
 
+    public function testGetSupportedConstraint()
+    {
+        $this->assertSame(FrenchRna::class, $this->validator->getSupportedConstraint());
+    }
+
     /**
      * @dataProvider validValueDataProvider
      */
