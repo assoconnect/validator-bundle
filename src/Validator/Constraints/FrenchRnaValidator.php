@@ -15,8 +15,8 @@ class FrenchRnaValidator extends ConstraintValidator
     public function validate($value, Constraint $constraint)
     {
         // Source : https://www.data.gouv.fr/fr/datasets/repertoire-national-des-associations/
-        // the "jJGgmMrRtT" is a specific letter for the DOM-TOM
-        if (preg_match('/(^[wW]\d[\djJGgmMrRtT]\d{7}$)|(^\d[\djJGgmMrRtT]\d[pPsS]\d{10}$)/', $value) !== 1) {
+        // the "jgmrt" is a specific letter for the DOM-TOM
+        if (preg_match('/(^w\d[\djgmrt]\d{7}$)|(^\d[\djgmrt]\d[ps]\d{10}$)/i', $value) !== 1) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ value }}', $this->formatValue($value))
                 ->setCode(FrenchRna::INVALID_FORMAT_ERROR)
