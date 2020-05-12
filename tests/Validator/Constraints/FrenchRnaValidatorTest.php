@@ -41,7 +41,6 @@ class FrenchRnaValidatorTest extends ConstraintValidatorTestCase
     {
         yield 'Old Valid RNA' => ['891P0891000843'];
         yield 'Old Valid DOM-TOM RNA' => ['9R4S9744000501'];
-        yield 'Old Valid DOM-TOM RNA with only lowercase letters' => ['9r4s9744000501'];
         yield 'Classic Valid DOM-TOM RNA' => ['W9J1003281'];
         yield 'Classic RNA' => ['W941009978'];
     }
@@ -64,8 +63,8 @@ class FrenchRnaValidatorTest extends ConstraintValidatorTestCase
         yield 'RNA with no W at the beginning' => ['A941009978'];
         yield 'Too short RNA' => ['W94100997'];
         yield 'Too long RNA (new format) or too short (old format)' => ['W9410055997'];
-        yield 'Classic RNA with a mix of uppercase and lowercase letters' => ['W9j1003281'];
-        yield 'Old RNA with a mix of uppercase and lowercase letters' => ['9r4S9744000501'];
+        yield 'Classic RNA with lowercase letter' => ['W9j1003281'];
+        yield 'Old RNA with a lowercase letter' => ['9r4S9744000501'];
     }
 
 }
