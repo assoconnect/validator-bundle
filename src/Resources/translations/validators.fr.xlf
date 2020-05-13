@@ -4,7 +4,7 @@
         <body>
             <trans-unit id="1">
                 <source>This email does not have a valid domain name.</source>
-                <target>Cette valeur doit être fausse.</target>
+                <target>Le nom de domaine de cet email est invalide.</target>
             </trans-unit>
             <trans-unit id="2">
                 <source>This value is not a valid phone number.</source>
