@@ -35,7 +35,7 @@
     "assoconnect/php-date": "^2.0",
     "doctrine/orm": "^2.7",
     "symfony/intl": "^4.3|^5.0",
-    "assoconnect/doctrine-validator-bundle": "^2.1"
+    "assoconnect/doctrine-validator-bundle": "^2.2"
   },
   "require-dev": {
     "doctrine/cache": "~1.0",
