@@ -6,6 +6,8 @@ use AssoConnect\ValidatorBundle\Test\ConstraintValidatorTestCase;
 use AssoConnect\ValidatorBundle\Validator\Constraints\Email;
 use AssoConnect\ValidatorBundle\Validator\Constraints\EmailValidator;
 use DG\BypassFinals;
+use Pdp\Cache;
+use Pdp\CurlHttpClient;
 use Pdp\Domain;
 use Pdp\Manager;
 use Pdp\Rules;
@@ -17,24 +19,6 @@ use Symfony\Contracts\Cache\CacheInterface;
 
 class EmailValidatorTest extends ConstraintValidatorTestCase
 {
-    /**
-     * @var MockObject
-     */
-    private $manager;
-
-    /**
-     * @var MockObject
-     */
-    private $cache;
-
-    /**
-     * @var MockObject
-     */
-    private $rules;
-    /**
-     * @var MockObject
-     */
-    private $domain;
 
     public function setUp(): void
     {
@@ -44,12 +28,10 @@ class EmailValidatorTest extends ConstraintValidatorTestCase
 
     public function createValidator(): ConstraintValidatorInterface
     {
-        $this->manager = $this->createMock(Manager::class);
-        $this->rules = $this->createMock(Rules::class);
-        $this->domain = $this->createMock(Domain::class);
-        $this->manager->method('getRules')->willReturn($this->rules);
-        $this->rules->method('resolve')->willReturn($this->domain);
-        return new EmailValidator($this->manager);
+        $cache = new Cache();
+        $http = new CurlHttpClient();
+        $manager = new Manager($cache, $http);
+        return new EmailValidator($manager);
     }
 
     public function getConstraint($options = []): Constraint
@@ -146,7 +128,6 @@ class EmailValidatorTest extends ConstraintValidatorTestCase
      */
     public function testValidValues($value)
     {
-        $this->domain->method('isKnown')->willReturn(true);
         $this->validator->validate($value, $this->getConstraint());
 
         $this->assertNoViolation();
@@ -159,6 +140,7 @@ class EmailValidatorTest extends ConstraintValidatorTestCase
             ['valid.valid@mail.com'],
             ['valid+valid@mail.com'],
             ['valid+valid@gmail.com'],
+            ['valid@notaires.fr'],
         ];
     }
 }
