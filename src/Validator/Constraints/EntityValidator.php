@@ -221,9 +221,11 @@ class EntityValidator extends ConstraintValidator
                 $constraints[] = new PhoneMobile();
                 break;
             case 'postal':
-                $constraints[] = new Postal([
-                    'countryPropertyPath' => $this->postalCountryPropertyPath
-                ]);
+                if ($this->postalCountryPropertyPath) {
+                    $constraints[] = new Postal([
+                        'countryPropertyPath' => $this->postalCountryPropertyPath
+                    ]);
+                }
                 break;
             case 'smallint':
                 $constraints[] = new Type('integer');
