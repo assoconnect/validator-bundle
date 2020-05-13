@@ -195,10 +195,10 @@ class EntityValidator extends ConstraintValidator
             case 'date_absolute':
                 $constraints[] = new Type(AbsoluteDate::class);
                 break;
-            case 'frenchsiren':
+            case 'frenchSiren':
                 $constraints[] = new FrenchSiren();
                 break;
-            case 'frenchrna':
+            case 'frenchRna':
                 $constraints[] = new FrenchRna();
                 break;
             default:

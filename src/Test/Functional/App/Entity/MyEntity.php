@@ -216,12 +216,12 @@ class MyEntity
     public $absoluteDate;
 
     /**
-     * @ORM\Column(type="frenchrna")
+     * @ORM\Column(type="frenchRna")
      */
     public $frenchRNA;
 
     /**
-     * @ORM\Column(type="frenchsiren")
+     * @ORM\Column(type="frenchSiren")
      */
     public $frenchSIREN;
 }

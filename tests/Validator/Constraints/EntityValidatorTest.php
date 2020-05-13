@@ -237,10 +237,10 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
                 ['type' => 'uuid_binary_ordered_time'], [new Uuid()]
             ],
             [
-                ['type' => 'frenchrna'], [new FrenchRna()]
+                ['type' => 'frenchRna'], [new FrenchRna()]
             ],
             [
-                ['type' => 'frenchsiren'], [new FrenchSiren()]
+                ['type' => 'frenchSiren'], [new FrenchSiren()]
             ]
         ];
     }
