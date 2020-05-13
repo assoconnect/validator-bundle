@@ -37,7 +37,10 @@ class EmailValidator extends _EmailValidator
 
         $rules = $this->manager->getRules();
 
-        $domainName = explode('@', $value)[1];
+        // We add a sub. prefix in case the domain is a Public Suffix
+        // https://github.com/jeremykendall/php-domain-parser/blob/develop/src/Domain.php#L166
+        // A CouldNotResolvePublicSuffix would be raised
+        $domainName = 'sub.' . explode('@', $value)[1];
         $domain = $rules->resolve($domainName);
 
         if (!$domain->isKnown()) {
