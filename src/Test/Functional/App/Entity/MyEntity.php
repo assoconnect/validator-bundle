@@ -140,6 +140,11 @@ class MyEntity
     public $phonemobile;
 
     /**
+    * @ORM\Column(type="postal")
+    */
+    public $postal;
+
+    /**
      * @ORM\Column(type="smallint")
      */
     public $smallint;

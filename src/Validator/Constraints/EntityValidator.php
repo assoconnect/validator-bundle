@@ -37,6 +37,8 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class EntityValidator extends ConstraintValidator
 {
+    public $postalCountryPropertyPath = null;
+
     /**
      * @var EntityManagerInterface
      */
@@ -75,6 +77,56 @@ class EntityValidator extends ConstraintValidator
         }
     }
 
+    public function getConstraints(string $class, string $field): array
+    {
+        $metadata = $this->em->getClassMetadata($class);
+
+        $constraints = [];
+
+        if (array_key_exists($field, $metadata->fieldMappings)) {
+            $fieldMapping = $metadata->fieldMappings[$field];
+
+            // Nullable field
+            if (!$fieldMapping['nullable']) {
+                $constraints[] = [new NotNull()];
+            }
+
+            $constraints[] = $this->getConstraintsForType($fieldMapping);
+
+            $constraints = call_user_func_array('array_merge', $constraints);
+        } elseif (array_key_exists($field, $metadata->embeddedClasses)) {
+            $constraints[] = new Valid();
+        } elseif (array_key_exists($field, $metadata->associationMappings)) {
+            $fieldMapping = $metadata->associationMappings[$field];
+
+            if ($fieldMapping['isOwningSide']) {
+                if ($fieldMapping['type'] & ClassMetadata::TO_ONE) {
+                    // ToOne
+                    $constraints[] = new Type($fieldMapping['targetEntity']);
+                    // Nullable field
+                    if (isset($fieldMapping['joinColumns'][0]['nullable']) && !$fieldMapping['joinColumns'][0]['nullable']) {
+                        $constraints[] = new NotNull();
+                    }
+                } elseif ($fieldMapping['type'] & ClassMetadata::TO_MANY) {
+                    // ToMany
+                    $constraints[] = new All(
+                        [
+                        'constraints' => [
+                            new Type($fieldMapping['targetEntity']),
+                        ],
+                        ]
+                    );
+                } else {
+                    // Unknown
+                    throw new \DomainException('Unknown type: ' . $fieldMapping['type']);
+                }
+            }
+        } else {
+            //throw new \LogicException('Unknown field: ' . $class  . '::$' . $field);
+        }
+        return $constraints;
+    }
+
     public function getConstraintsForType(array $fieldMapping): array
     {
         $constraints = [];
@@ -108,6 +160,9 @@ class EntityValidator extends ConstraintValidator
             case 'datetimetz':
             case 'datetimeutc':
                 $constraints[] = new Type(\DateTime::class);
+                break;
+            case 'date_absolute':
+                $constraints[] = new Type(AbsoluteDate::class);
                 break;
             case 'decimal':
                 $constraints[] = new Type('float');
@@ -165,6 +220,11 @@ class EntityValidator extends ConstraintValidator
             case 'phonemobile':
                 $constraints[] = new PhoneMobile();
                 break;
+            case 'postal':
+                $constraints[] = new Postal([
+                    'countryPropertyPath' => $this->postalCountryPropertyPath
+                ]);
+                break;
             case 'smallint':
                 $constraints[] = new Type('integer');
                 if (isset($fieldMapping['options']['unsigned']) && true === $fieldMapping['options']['unsigned']) {
@@ -190,65 +250,10 @@ class EntityValidator extends ConstraintValidator
             case 'uuid_binary_ordered_time':
                 $constraints[] = new Uuid();
                 break;
-            case 'postal':
-                break;
-            case 'date_absolute':
-                $constraints[] = new Type(AbsoluteDate::class);
-                break;
             default:
                 throw new \DomainException('Unsupported field type: ' . $fieldMapping['type']);
         }
 
-        return $constraints;
-    }
-
-    public function getConstraints(string $class, string $field): array
-    {
-        $metadata = $this->em->getClassMetadata($class);
-
-        $constraints = [];
-
-        if (array_key_exists($field, $metadata->fieldMappings)) {
-            $fieldMapping = $metadata->fieldMappings[$field];
-
-            // Nullable field
-            if (!$fieldMapping['nullable']) {
-                $constraints[] = [new NotNull()];
-            }
-
-            $constraints[] = $this->getConstraintsForType($fieldMapping);
-
-            $constraints = call_user_func_array('array_merge', $constraints);
-        } elseif (array_key_exists($field, $metadata->embeddedClasses)) {
-            $constraints[] = new Valid();
-        } elseif (array_key_exists($field, $metadata->associationMappings)) {
-            $fieldMapping = $metadata->associationMappings[$field];
-
-            if ($fieldMapping['isOwningSide']) {
-                if ($fieldMapping['type'] & ClassMetadata::TO_ONE) {
-                    // ToOne
-                    $constraints[] = new Type($fieldMapping['targetEntity']);
-                    // Nullable field
-                    if (isset($fieldMapping['joinColumns'][0]['nullable']) && !$fieldMapping['joinColumns'][0]['nullable']) {
-                        $constraints[] = new NotNull();
-                    }
-                } elseif ($fieldMapping['type'] & ClassMetadata::TO_MANY) {
-                    // ToMany
-                    $constraints[] = new All(
-                        [
-                        'constraints' => [
-                            new Type($fieldMapping['targetEntity']),
-                        ],
-                        ]
-                    );
-                } else {
-                    // Unknown
-                    throw new \DomainException('Unknown type: ' . $fieldMapping['type']);
-                }
-            }
-        } else {
-            throw new \LogicException('Unknown field: ' . $class  . '::$' . $field);
-        }
         return $constraints;
     }
 }

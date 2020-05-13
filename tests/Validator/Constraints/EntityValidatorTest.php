@@ -3,6 +3,7 @@
 namespace AssoConnect\ValidatorBundle\Tests\Validator\Constraints;
 
 use AssoConnect\ValidatorBundle\Test\ConstraintValidatorTestCase;
+use AssoConnect\ValidatorBundle\Test\Functional\App\Entity\MyEntity;
 use AssoConnect\ValidatorBundle\Test\Functional\App\Entity\MyEntityParent;
 use AssoConnect\PHPDate\AbsoluteDate;
 use AssoConnect\ValidatorBundle\Validator\Constraints\Email;
@@ -16,8 +17,10 @@ use AssoConnect\ValidatorBundle\Validator\Constraints\Percent;
 use AssoConnect\ValidatorBundle\Validator\Constraints\Phone;
 use AssoConnect\ValidatorBundle\Validator\Constraints\PhoneLandline;
 use AssoConnect\ValidatorBundle\Validator\Constraints\PhoneMobile;
+use AssoConnect\ValidatorBundle\Validator\Constraints\Postal;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Entity\TestEntity;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Bic;
@@ -66,7 +69,19 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
 
     public function createValidator(): ConstraintValidatorInterface
     {
-        return new EntityValidator($this->entityManager);
+        $entityValidator = new EntityValidator($this->entityManager);
+        $entityValidator->postalCountryPropertyPath = 'FR';
+        return $entityValidator;
+    }
+
+    public function testValidateDoctrineEntity()
+    {
+        $entity = new MyEntity();
+        $entity->postal = "59270";
+        $entity->country = "FR";
+
+        var_dump($this->validator->validate($entity, $this->getConstraint()));
+        exit;
     }
 
     public function testGetConstraintsForTypeUnknown()
@@ -199,7 +214,9 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
                 ['type' => 'phonemobile'], [ new PhoneMobile()],
             ],
             [
-                ['type' => 'postal'], [],
+                ['type' => 'postal'], [ new Postal([
+                    'countryPropertyPath' => 'country'
+                ]) ],
             ],
             [
                 ['type' => 'smallint', 'options' => [ 'unsigned' => true]],
@@ -321,49 +338,61 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
 
     private function getMockClassMetadata()
     {
-        $metadata = new \stdClass();
-        $metadata->fieldMappings = [
-            'nullable' => [
-                'type' => 'country',
-                'nullable' => true,
-            ],
-            'notnullable' => [
-                'type' => 'country',
-                'nullable' => false,
-            ],
-        ];
-        $metadata->embeddedClasses = [
-            'embedded' => [
-                'type' => 'bic'
-            ],
-        ];
-        $metadata->associationMappings = [
-            'notowning' => [
-                'isOwningSide' => false,
-                'targetEntity' => MyEntityParent::class,
-                'type' => ClassMetadata::TO_ONE,
-            ],
-            'owningToOne' => [
-                'isOwningSide' => true,
-                'type' => ClassMetadata::TO_ONE,
-                'targetEntity' => MyEntityParent::class,
-            ],
-            'owningToOneNotNull' => [
-                'isOwningSide' => true,
-                'type' => ClassMetadata::TO_ONE,
-                'targetEntity' => MyEntityParent::class,
-                'joinColumns' => [['nullable' => false]],
-            ],
-            'owningToMany' => [
-                'isOwningSide' => true,
-                'type' => ClassMetadata::TO_MANY,
-                'targetEntity' => MyEntityParent::class,
-            ],
-            'owningUnknown' => [
-                'isOwningSide' => true,
-                'type' => 0,
-            ],
-        ];
+        $metadata = new class {
+            public $fieldMappings = [
+                'nullable' => [
+                    'type' => 'country',
+                    'nullable' => true,
+                ],
+                'notnullable' => [
+                    'type' => 'country',
+                    'nullable' => false,
+                ],
+                'postal' => [
+                    'type' => 'postal',
+                    'nullable' => false,
+                ]
+            ];
+
+            public $embeddedClasses = [
+                'embedded' => [
+                    'type' => 'bic'
+                ],
+            ];
+
+            public $associationMappings = [
+                'notowning' => [
+                    'isOwningSide' => false,
+                    'targetEntity' => MyEntityParent::class,
+                    'type' => ClassMetadata::TO_ONE,
+                ],
+                'owningToOne' => [
+                    'isOwningSide' => true,
+                    'type' => ClassMetadata::TO_ONE,
+                    'targetEntity' => MyEntityParent::class,
+                ],
+                'owningToOneNotNull' => [
+                    'isOwningSide' => true,
+                    'type' => ClassMetadata::TO_ONE,
+                    'targetEntity' => MyEntityParent::class,
+                    'joinColumns' => [['nullable' => false]],
+                ],
+                'owningToMany' => [
+                    'isOwningSide' => true,
+                    'type' => ClassMetadata::TO_MANY,
+                    'targetEntity' => MyEntityParent::class,
+                ],
+                'owningUnknown' => [
+                    'isOwningSide' => true,
+                    'type' => 0,
+                ],
+            ];
+
+            public function getReflectionProperties()
+            {
+                return get_object_vars(new MyEntity());
+            }
+        };
 
         return $metadata;
     }

@@ -10,11 +10,15 @@ use Pdp\Domain;
 use Pdp\Manager;
 use Pdp\Rules;
 use PHPUnit\Framework\MockObject\MockObject;
+use Symfony\Bridge\PhpUnit\DnsMock;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 
+/**
+ * @group dns-sensitive
+ */
 class EmailValidatorTest extends ConstraintValidatorTestCase
 {
     /**
@@ -39,6 +43,13 @@ class EmailValidatorTest extends ConstraintValidatorTestCase
     public function setUp(): void
     {
         BypassFinals::enable();
+
+        DnsMock::withMockedHosts([
+            'mail.com' => [['type' => 'A', 'ip' => '1.2.3.4']],
+            'mail.error' => [['type' => 'A', 'ip' => '1.2.3.4']],
+            'xn--gmail-9fa.com' => [['type' => 'A', 'ip' => '1.2.3.4']],
+        ]);
+
         parent::setUp();
     }
 
