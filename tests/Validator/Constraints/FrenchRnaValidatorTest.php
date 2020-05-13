@@ -66,5 +66,4 @@ class FrenchRnaValidatorTest extends ConstraintValidatorTestCase
         yield 'Classic RNA with lowercase letter' => ['W9j1003281'];
         yield 'Old RNA with a lowercase letter' => ['9r4S9744000501'];
     }
-
 }
