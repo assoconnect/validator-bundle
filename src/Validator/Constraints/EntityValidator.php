@@ -37,7 +37,7 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class EntityValidator extends ConstraintValidator
 {
-    public $postalCountryPropertyPath = null;
+    private $postalCountryPropertyPath = null;
 
     /**
      * @var EntityManagerInterface
@@ -59,6 +59,9 @@ class EntityValidator extends ConstraintValidator
         $fields = array_keys($metadata->getReflectionProperties());
         $validator = $this->context->getValidator()->inContext($this->context);
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
+
+        // We get the option from the constraint
+        $this->postalCountryPropertyPath = $constraint->postalCountryPropertyPath;
 
         foreach ($fields as $field) {
             $constraints = $this->getConstraints($class, $field);

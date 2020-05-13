@@ -9,6 +9,8 @@ use Symfony\Component\Validator\Constraint;
  */
 class Entity extends Constraint
 {
+    public $postalCountryPropertyPath = null;
+
     public function getTargets()
     {
         return self::CLASS_CONSTRAINT;
