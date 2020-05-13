@@ -9,6 +9,8 @@ use AssoConnect\ValidatorBundle\Validator\Constraints\Email;
 use AssoConnect\ValidatorBundle\Validator\Constraints\Entity;
 use AssoConnect\ValidatorBundle\Validator\Constraints\EntityValidator;
 use AssoConnect\ValidatorBundle\Validator\Constraints\FloatScale;
+use AssoConnect\ValidatorBundle\Validator\Constraints\FrenchRna;
+use AssoConnect\ValidatorBundle\Validator\Constraints\FrenchSiren;
 use AssoConnect\ValidatorBundle\Validator\Constraints\Latitude;
 use AssoConnect\ValidatorBundle\Validator\Constraints\Longitude;
 use AssoConnect\ValidatorBundle\Validator\Constraints\Money;
@@ -233,6 +235,12 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
             ],
             [
                 ['type' => 'uuid_binary_ordered_time'], [new Uuid()]
+            ],
+            [
+                ['type' => 'frenchRna'], [new FrenchRna()]
+            ],
+            [
+                ['type' => 'frenchSiren'], [new FrenchSiren()]
             ]
         ];
     }

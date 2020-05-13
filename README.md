@@ -11,6 +11,8 @@ This Symfony4 bundle provides validators for common scalar values:
 - [Monetary value](/src/Validator/Constraints/MoneyValidator.php)
 - [Percent value](/src/Validator/Constraints/PercentValidator.php)
 - [Timezone value](/src/Validator/Constraints/TimezoneValidator.php)
+- [French RNA value](/src/Validator/Constraints/FrenchRnaValidator.php)
+- [French SIREN value](/src/Validator/Constraints/FrenchSirenValidator.php)
 
 See the different constraints source code for available options.
 
