@@ -28,10 +28,31 @@ class FrenchSirenValidatorTest extends ConstraintValidatorTestCase
         $this->assertSame(FrenchSiren::class, $this->validator->getSupportedConstraint());
     }
 
-    public function testValidateValue()
+    /**
+     * @dataProvider validateValueDataProvider
+     */
+    public function testValidateValue(?string $value)
     {
-        $this->validator->validate('732829320', $this->getConstraint());
+        $this->validator->validate($value, $this->getConstraint());
         $this->assertNoViolation();
+    }
+
+    public function validateValueDataProvider()
+    {
+        yield 'empty value' => [''];
+        yield 'null value' => [null];
+        yield 'valid SIREN' => ['732829320'];
+    }
+
+    public function testWrongTypeValue()
+    {
+        $value = 42;
+        $this->validator->validate($value, $this->getConstraint());
+
+        $this->buildViolation('This value {{ value }} is not valid.')
+            ->setParameter('{{ value }}', $value)
+            ->setCode(FrenchSiren::INVALID_FORMAT_ERROR)
+            ->assertRaised();
     }
 
     /**
@@ -50,7 +71,6 @@ class FrenchSirenValidatorTest extends ConstraintValidatorTestCase
     public function invalidValueDataProvider()
     {
         yield 'SIREN with alphabetic character' => ['123456A789', FrenchSiren::INVALID_FORMAT_ERROR];
-        yield 'Empty SIREN' => ['', FrenchSiren::INVALID_FORMAT_ERROR];
         yield 'Too short SIREN' => ['73282320', FrenchSiren::INVALID_FORMAT_ERROR];
         yield 'Wrong SIREN' => ['732829321', FrenchSiren::CHECKSUM_FAILED_ERROR];
     }

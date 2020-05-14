@@ -14,7 +14,11 @@ class FrenchSirenValidator extends LuhnValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        if (preg_match('/(^\d{9}$)/', $value) !== 1) {
+        if (null === $value || '' === $value) {
+            return;
+        }
+
+        if (!is_string($value) || preg_match('/(^\d{9}$)/', $value) !== 1) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ value }}', $this->formatValue($value))
                 ->setCode(FrenchSiren::INVALID_FORMAT_ERROR)

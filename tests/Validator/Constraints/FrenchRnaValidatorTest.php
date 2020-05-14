@@ -31,7 +31,7 @@ class FrenchRnaValidatorTest extends ConstraintValidatorTestCase
     /**
      * @dataProvider validValueDataProvider
      */
-    public function testValidateValue(string $value)
+    public function testValidateValue(?string $value)
     {
         $this->validator->validate($value, $this->getConstraint());
         $this->assertNoViolation();
@@ -39,6 +39,8 @@ class FrenchRnaValidatorTest extends ConstraintValidatorTestCase
 
     public function validValueDataProvider()
     {
+        yield 'empty RNA' => [''];
+        yield 'null RNA' => [null];
         yield 'Old Valid RNA' => ['891P0891000843'];
         yield 'Old Valid DOM-TOM RNA' => ['9R4S9744000501'];
         yield 'Old Valid Corse 2B RNA' => ['2B2P02B1000013'];
@@ -47,6 +49,17 @@ class FrenchRnaValidatorTest extends ConstraintValidatorTestCase
         yield 'Classic RNA' => ['W941009978'];
         yield 'Classic Corse 2B RNA' => ['W2B2000016'];
         yield 'Classic Corse 2A RNA' => ['W2A1000119'];
+    }
+
+    public function testWrongTypeValue()
+    {
+        $value = 42;
+        $this->validator->validate($value, $this->getConstraint());
+
+        $this->buildViolation('This value {{ value }} is not valid.')
+            ->setParameter('{{ value }}', $value)
+            ->setCode(FrenchRna::INVALID_FORMAT_ERROR)
+            ->assertRaised();
     }
 
     /**
