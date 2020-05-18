@@ -6,6 +6,12 @@ namespace AssoConnect\ValidatorBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraints\Luhn;
 
+/**
+ * @Annotation
+ * @Target({"PROPERTY", "METHOD", "ANNOTATION"})
+ *
+ * @author Florian Guimier <florian.guimier@assoconnect.com>
+ */
 class FrenchSiren extends Luhn
 {
     public const INVALID_FORMAT_ERROR = '4d762774-3g50-4bd5-a6d5-b10a3299d8d3';
