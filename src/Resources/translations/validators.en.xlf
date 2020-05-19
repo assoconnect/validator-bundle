@@ -3,42 +3,46 @@
     <file source-language="en" datatype="plaintext" original="file.ext">
         <body>
             <trans-unit id="1">
-                <source>This email does not have a valid domain name.</source>
-                <target>This email does not have a valid domain name.</target>
+                <source>{{ domain }} is not a valid domain name.</source>
+                <target>{{ domain }} is not a valid domain name.</target>
             </trans-unit>
             <trans-unit id="2">
+                <source>{{ domain }} is not setup to received emails.</source>
+                <target>{{ domain }} is not setup to received emails.</target>
+            </trans-unit>
+            <trans-unit id="3">
                 <source>This value is not a valid phone number.</source>
                 <target>This value is not a valid phone number.</target>
             </trans-unit>
-            <trans-unit id="3">
+            <trans-unit id="4">
                 <source>This phone number is too short.</source>
                 <target>This phone number is too short.</target>
             </trans-unit>
-            <trans-unit id="4">
+            <trans-unit id="5">
                 <source>This phone number is too long.</source>
                 <target>This phone number is too long.</target>
             </trans-unit>
-            <trans-unit id="5">
+            <trans-unit id="6">
                 <source>This phone number does not exist.</source>
                 <target>This phone number does not exist.</target>
             </trans-unit>
-            <trans-unit id="6">
+            <trans-unit id="7">
                 <source>This type of phone number is not accepted.</source>
                 <target>This type of phone number is not accepted.</target>
             </trans-unit>
-            <trans-unit id="7">
+            <trans-unit id="8">
                 <source>This value is not a valid landline phone number.</source>
                 <target>This value is not a valid landline phone number.</target>
             </trans-unit>
-            <trans-unit id="8">
+            <trans-unit id="9">
                 <source>This value is not a valid mobile phone number.</source>
                 <target>This value is not a valid mobile phone number.</target>
             </trans-unit>
-            <trans-unit id="9">
+            <trans-unit id="10">
                 <source>The float precision is limited to {{ precision }} numbers.</source>
                 <target>The float precision is limited to {{ precision }} numbers.</target>
             </trans-unit>
-            <trans-unit id="10">
+            <trans-unit id="11">
                 <source>This value is not a valid timezone.</source>
                 <target>This value is not a valid timezone.</target>
             </trans-unit>

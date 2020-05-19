@@ -8,14 +8,10 @@ use AssoConnect\ValidatorBundle\Validator\Constraints\EmailValidator;
 use DG\BypassFinals;
 use Pdp\Cache;
 use Pdp\CurlHttpClient;
-use Pdp\Domain;
 use Pdp\Manager;
-use Pdp\Rules;
-use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
-use Symfony\Contracts\Cache\CacheInterface;
 
 class EmailValidatorTest extends ConstraintValidatorTestCase
 {
@@ -36,7 +32,11 @@ class EmailValidatorTest extends ConstraintValidatorTestCase
 
     public function getConstraint($options = []): Constraint
     {
-        return new Email(['message' => 'myMessage', 'TLDMessage' => 'myMessage']);
+        return new Email([
+            'message' => 'myMessage',
+            'tldMessage' => 'myTldMessage',
+            'dnsMessage' => 'myDnsMessage',
+        ]);
     }
 
     /**
@@ -61,64 +61,78 @@ class EmailValidatorTest extends ConstraintValidatorTestCase
 
     /**
      * @dataProvider providerInvalidValue
-     * @param string $value
-     * @param string $code
      */
-    public function testInvalidValues($value, $code)
+    public function testInvalidValues(string $value, string $code, string $message, array $parameters): void
     {
         $this->validator->validate($value, $this->getConstraint());
 
-        $this->buildViolation('myMessage')
-            ->setParameter('{{ value }}', '"' . $value . '"')
+        $this->buildViolation($message)
             ->setCode($code)
-            ->assertRaised()
-        ;
+            ->setParameters($parameters)
+            ->assertRaised();
     }
-    public function providerInvalidValue(): array
+    public function providerInvalidValue(): \Iterator
     {
-        return [
-            // Format
-            // #0
-            [
-                'format',
-                Email::INVALID_FORMAT_ERROR,
-            ],
-            // #1
-            [
-                'format;format@mail.com',
-                Email::INVALID_FORMAT_ERROR,
-            ],
-            // #2
-            [
-                'mailto:format@mail.com',
-                Email::INVALID_FORMAT_ERROR,
-            ],
-            // #3
-            [
-                ' format@mail.com',
-                Email::INVALID_FORMAT_ERROR,
-            ],
-            // #4
-            [
-                'format@mail.com ',
-                Email::INVALID_FORMAT_ERROR,
-            ],
-            // #5
-            [
-                'format@mail.com.',
-                Email::INVALID_FORMAT_ERROR,
-            ],
-            // #6 TLD
-            [
-                'tld@mail.error',
-                Email::INVALID_TLD_ERROR,
-            ],
-            // #7 DNS
-            [
-                'john.doe@xn--gmail-9fa.com',
-                Email::INVALID_TLD_ERROR,
-            ]
+        yield [
+            'format',
+            Email::INVALID_FORMAT_ERROR,
+            'myMessage',
+            ['{{ value }}' => '"format"'],
+        ];
 
+        yield [
+            'format;format@mail.com',
+            Email::INVALID_FORMAT_ERROR,
+            'myMessage',
+            ['{{ value }}' => '"format;format@mail.com"'],
+        ];
+
+        yield [
+            'mailto:format@mail.com',
+            Email::INVALID_FORMAT_ERROR,
+            'myMessage',
+            ['{{ value }}' => '"mailto:format@mail.com"'],
+        ];
+
+        yield 'leading space' => [
+            ' format@mail.com',
+            Email::INVALID_FORMAT_ERROR,
+            'myMessage',
+            ['{{ value }}' => '" format@mail.com"'],
+        ];
+
+        yield 'trailing space' => [
+            'format@mail.com ',
+            Email::INVALID_FORMAT_ERROR,
+            'myMessage',
+            ['{{ value }}' => '"format@mail.com "'],
+        ];
+
+        yield 'trailing dot' => [
+            'format@mail.com.',
+            Email::INVALID_FORMAT_ERROR,
+            'myMessage',
+            ['{{ value }}' => '"format@mail.com."'],
+        ];
+
+        yield 'invalid public suffix' => [
+            'tld@mail.error',
+            Email::INVALID_TLD_ERROR,
+            'myTldMessage',
+            [
+                '{{ value }}' => '"tld@mail.error"',
+                '{{ domain }}' => '"mail.error"',
+            ],
+        ];
+
+        yield 'no MX server' => [
+            'john.doe@xn--gmail-9fa.com',
+            Email::INVALID_DNS_ERROR,
+            'myDnsMessage',
+            [
+                '{{ value }}' => '"john.doe@xn--gmail-9fa.com"',
+                '{{ domain }}' => '"xn--gmail-9fa.com"',
+            ],
         ];
     }
 
