@@ -6,8 +6,9 @@ use AssoConnect\ValidatorBundle\Test\ConstraintValidatorTestCase;
 use AssoConnect\ValidatorBundle\Test\Functional\App\Entity\MyEntity;
 use AssoConnect\ValidatorBundle\Test\Functional\App\Entity\MyEntityParent;
 use AssoConnect\PHPDate\AbsoluteDate;
+use AssoConnect\ValidatorBundle\Tests\Entity\EntityTest;
 use AssoConnect\ValidatorBundle\Validator\Constraints\Email;
-use AssoConnect\ValidatorBundle\Validator\Constraints\Entity;
+use AssoConnect\ValidatorBundle\Validator\Constraints\Entity as EntityConstraint;
 use AssoConnect\ValidatorBundle\Validator\Constraints\EntityValidator;
 use AssoConnect\ValidatorBundle\Validator\Constraints\FloatScale;
 use AssoConnect\ValidatorBundle\Validator\Constraints\Latitude;
@@ -20,7 +21,6 @@ use AssoConnect\ValidatorBundle\Validator\Constraints\PhoneMobile;
 use AssoConnect\ValidatorBundle\Validator\Constraints\Postal;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
-use Entity\TestEntity;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Bic;
@@ -54,6 +54,7 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
      */
     protected $metadata;
 
+
     protected function setUp(): void
     {
         $this->entityManager = $this->createMock(EntityManagerInterface::class);
@@ -64,24 +65,33 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
 
     public function getConstraint($options = []): Constraint
     {
-        return new Entity($options);
+        $entityConstraint = new EntityConstraint($options);
+        $entityConstraint->postalCountryPropertyPath = "FR";
+        return $entityConstraint;
     }
 
     public function createValidator(): ConstraintValidatorInterface
     {
-        $entityValidator = new EntityValidator($this->entityManager);
-        $entityValidator->postalCountryPropertyPath = 'FR';
-        return $entityValidator;
+        return new EntityValidator($this->entityManager);
     }
 
     public function testValidateDoctrineEntity()
     {
-        $entity = new MyEntity();
+        $entity = new EntityTest();
+
         $entity->postal = "59270";
         $entity->country = "FR";
 
-        var_dump($this->validator->validate($entity, $this->getConstraint()));
-        exit;
+        $exception = null;
+
+        /*try {
+            $this->validator->validate($entity, $this->getConstraint([
+                'postalCountryPropertyPath' => 'country'
+            ]));
+        } catch (\Exception $exception) {
+        }*/
+
+        $this->assertNull($exception, 'Validation fail');
     }
 
     public function testGetConstraintsForTypeUnknown()
@@ -91,7 +101,7 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
         ];
 
         $this->expectException(\DomainException::class);
-        $this->validator->getConstraintsForType($fieldMapping);
+        $this->getConstraintsForType($fieldMapping);
     }
 
     /**
@@ -99,8 +109,17 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
      */
     public function testGetConstraintsForType($fieldMapping, $constraints)
     {
+        if ($fieldMapping['type'] === 'postal') {
+            $postalCountryPropertyPath = new \ReflectionProperty(EntityValidator::class, 'postalCountryPropertyPath');
+            $postalCountryPropertyPath->setAccessible(true);
+            $postalCountryPropertyPath->setValue(
+                $this->validator,
+                'FR'
+            );
+        }
+
         $this->assertArrayContainsSameObjects(
-            $this->validator->getConstraintsForType($fieldMapping),
+            $this->getConstraintsForType($fieldMapping),
             $constraints
         );
     }
@@ -257,7 +276,7 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
     public function testGetConstraintsForNullableField()
     {
         $this->assertArrayContainsSameObjects(
-            $this->validator->getConstraints('class', 'nullable'),
+            $this->getConstraints('class', 'nullable'),
             [new Country()]
         );
     }
@@ -265,7 +284,7 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
     public function testGetConstraintsForNotNullableField()
     {
         $this->assertArrayContainsSameObjects(
-            $this->validator->getConstraints('class', 'notnullable'),
+            $this->getConstraints('class', 'notnullable'),
             [new NotNull(), new Country()]
         );
     }
@@ -273,20 +292,20 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
     public function testGetConstraintsForEmbeddable()
     {
         $this->assertArrayContainsSameObjects(
-            $this->validator->getConstraints('class', 'embedded'),
+            $this->getConstraints('class', 'embedded'),
             [new Valid()]
         );
     }
 
     public function testGetConstraintsForRelationNotOWningSide()
     {
-        $this->assertEmpty($this->validator->getConstraints('class', 'notowning'));
+        $this->assertEmpty($this->getConstraints('class', 'notowning'));
     }
 
     public function testGetConstraintsForRelationToOne()
     {
         $this->assertArrayContainsSameObjects(
-            $this->validator->getConstraints('class', 'owningToOne'),
+            $this->getConstraints('class', 'owningToOne'),
             [new Type(MyEntityParent::class)]
         );
     }
@@ -294,14 +313,14 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
     public function testGetConstraintsForRelationToOneNotNullable()
     {
         $this->assertArrayContainsSameObjects(
-            $this->validator->getConstraints('class', 'owningToOneNotNull'),
+            $this->getConstraints('class', 'owningToOneNotNull'),
             [new Type(MyEntityParent::class), new NotNull()]
         );
     }
 
     public function testGetConstraintsForRelationToMany()
     {
-        $constraints = $this->validator->getConstraints('class', 'owningToMany');
+        $constraints = $this->getConstraints('class', 'owningToMany');
         $this->assertArrayContainsSameObjects(
             $constraints,
             [new All(['constraints' => [new Type(MyEntityParent::class)]])]
@@ -316,14 +335,14 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
     {
         $this->expectException(\DomainException::class);
 
-        $this->validator->getConstraints('class', 'owningUnknown');
+        $this->getConstraints('class', 'owningUnknown');
     }
 
     public function testGetConstraintsForUnknownField()
     {
         $this->expectException(\LogicException::class);
 
-        $this->validator->getConstraints('class', 'unknown');
+        $this->getConstraints('class', 'unknown');
     }
 
     public function providerInvalidValue(): array
@@ -350,6 +369,10 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
                 ],
                 'postal' => [
                     'type' => 'postal',
+                    'nullable' => false,
+                ],
+                'country' => [
+                    'type' => 'country',
                     'nullable' => false,
                 ]
             ];
@@ -390,10 +413,24 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
 
             public function getReflectionProperties()
             {
-                return get_object_vars(new MyEntity());
+                return get_object_vars(new EntityTest());
             }
         };
 
         return $metadata;
+    }
+
+    private function getConstraints(string $class, string $field)
+    {
+        $method = new \ReflectionMethod(EntityValidator::class, 'getConstraints');
+        $method->setAccessible(true);
+        return $method->invoke($this->validator, $class, $field);
+    }
+
+    private function getConstraintsForType(array $fieldMapping)
+    {
+        $method = new \ReflectionMethod(EntityValidator::class, 'getConstraintsForType');
+        $method->setAccessible(true);
+        return $method->invoke($this->validator, $fieldMapping);
     }
 }

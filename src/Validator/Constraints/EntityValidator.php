@@ -80,7 +80,7 @@ class EntityValidator extends ConstraintValidator
         }
     }
 
-    public function getConstraints(string $class, string $field): array
+    private function getConstraints(string $class, string $field): array
     {
         $metadata = $this->em->getClassMetadata($class);
 
@@ -125,12 +125,12 @@ class EntityValidator extends ConstraintValidator
                 }
             }
         } else {
-            //throw new \LogicException('Unknown field: ' . $class  . '::$' . $field);
+            throw new \LogicException('Unknown field: ' . $class  . '::$' . $field);
         }
         return $constraints;
     }
 
-    public function getConstraintsForType(array $fieldMapping): array
+    private function getConstraintsForType(array $fieldMapping): array
     {
         $constraints = [];
 
