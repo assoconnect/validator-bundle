@@ -8,6 +8,13 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\EmailValidator as _EmailValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
+/**
+ * The 4 steps for validation are:
+ * 1. PHP filter_var() function
+ * 2. Does the domain use a valid public suffix?
+ * 3. Is there at least one MX server for the domain?
+ * 4. Default Symfony validation
+ */
 class EmailValidator extends _EmailValidator
 {
     private $manager;
@@ -27,6 +34,8 @@ class EmailValidator extends _EmailValidator
             return;
         }
 
+        // 1. PHP filter_var() function
+        // First one because it is a quick one
         if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ value }}', $this->formatValue($value))
@@ -35,33 +44,37 @@ class EmailValidator extends _EmailValidator
             return;
         }
 
-        $rules = $this->manager->getRules();
 
-        // We add a sub. prefix in case the domain is a Public Suffix
+        // 2. Does the domain use a valid public suffix?
+        // See https://en.wikipedia.org/wiki/Public_Suffix_List
+        $rules = $this->manager->getRules();
+        // The lib does not accept Public Suffix domain so We add a sub. prefix in case the domain is a Public Suffix
+        // For instance notaires.fr is a public suffix while is it valid to use @notaires.fr
         // https://github.com/jeremykendall/php-domain-parser/blob/develop/src/Domain.php#L166
         // A CouldNotResolvePublicSuffix would be raised
-        $domainName = 'sub.' . explode('@', $value)[1];
-        $domain = $rules->resolve($domainName);
+        $domainName = explode('@', $value)[1];
+        $domain = $rules->resolve('sub.' . $domainName);
 
         if (!$domain->isKnown()) {
-            $this->buildTldError($value, $constraint);
+            $this->context->buildViolation($constraint->tldMessage)
+                ->setParameter('{{ domain }}', $this->formatValue($domainName))
+                ->setParameter('{{ value }}', $this->formatValue($value))
+                ->setCode(Email::INVALID_TLD_ERROR)
+                ->addViolation();
             return;
         }
 
+        // 3. DNS check
         $validator = new \Egulias\EmailValidator\EmailValidator();
         if (!$validator->isValid($value, new DNSCheckValidation())) {
-            $this->buildTldError($value, $constraint);
+            $this->context->buildViolation($constraint->dnsMessage)
+                ->setParameter('{{ domain }}', $this->formatValue($domainName))
+                ->setParameter('{{ value }}', $this->formatValue($value))
+                ->setCode(Email::INVALID_DNS_ERROR)
+                ->addViolation();
             return;
         }
 
         parent::validate($value, $constraint);
-    }
-
-    private function buildTldError($value, Constraint $constraint)
-    {
-        $this->context->buildViolation($constraint->TLDMessage)
-            ->setParameter('{{ value }}', $this->formatValue($value))
-            ->setCode(Email::INVALID_TLD_ERROR)
-            ->addViolation();
     }
 }
