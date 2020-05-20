@@ -6,7 +6,7 @@
                 <source>{{ domain }} is not a valid domain name.</source>
                 <target>Le nom de domaine {{ domain }} est invalide.</target>
             </trans-unit>
-            <trans-unit id="1">
+            <trans-unit id="2">
                 <source>{{ domain }} is not setup to received emails.</source>
                 <target>Le domain {{ domain }} n'est pas configuré pour recevoir des emails.</target>
             </trans-unit>
