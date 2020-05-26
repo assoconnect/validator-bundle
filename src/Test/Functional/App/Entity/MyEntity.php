@@ -11,7 +11,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class MyEntity
 {
-
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")

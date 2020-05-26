@@ -2,7 +2,7 @@
 
 namespace AssoConnect\ValidatorBundle\Tests\Validator\Constraints;
 
-use AssoConnect\ValidatorBundle\Test\ConstraintValidatorWithKernelTestCase;
+use AssoConnect\ValidatorBundle\Test\ConstraintValidatorTestCase;
 use AssoConnect\ValidatorBundle\Validator\Constraints\Percent;
 use AssoConnect\ValidatorBundle\Validator\Constraints\PercentValidator;
 use Symfony\Component\Validator\Constraint;
@@ -11,20 +11,8 @@ use Symfony\Component\Validator\Constraints\LessThanOrEqual;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
 
-class PercentValidatorTest extends ConstraintValidatorWithKernelTestCase
+class PercentValidatorTest extends ConstraintValidatorTestCase
 {
-    /**
-     * @var ConstraintValidatorInterface
-     */
-    private $percentValidator;
-
-    public function setUp()
-    {
-        self::bootKernel();
-
-        $this->validator = self::$kernel->getContainer()->get('validator');
-        $this->percentValidator = $this->createValidator();
-    }
     public function getConstraint($options = []): Constraint
     {
         return new Percent($options);
@@ -37,12 +25,12 @@ class PercentValidatorTest extends ConstraintValidatorWithKernelTestCase
 
     public function testIsEmptyStringAccepted()
     {
-        $this->assertFalse($this->percentValidator->isEmptyStringAccepted());
+        $this->assertFalse($this->validator->isEmptyStringAccepted());
     }
 
     public function testGetSupportedConstraint()
     {
-        $this->assertSame(Percent::class, $this->percentValidator->getSupportedConstraint());
+        $this->assertSame(Percent::class, $this->validator->getSupportedConstraint());
     }
 
     /**
@@ -54,7 +42,7 @@ class PercentValidatorTest extends ConstraintValidatorWithKernelTestCase
     {
         $this->assertArrayContainsSameObjects(
             $constraints,
-            $this->percentValidator->getConstraints($value, $this->getConstraint(['min' => 0, 'max' => 90]))
+            $this->validator->getConstraints($value, $this->getConstraint(['min' => 0, 'max' => 90]))
         );
     }
 

@@ -7,10 +7,14 @@ use AssoConnect\DoctrineTypesBundle\Doctrine\DBAL\Types\LongitudeType;
 use AssoConnect\DoctrineTypesBundle\Doctrine\DBAL\Types\MoneyType;
 use AssoConnect\DoctrineTypesBundle\Doctrine\DBAL\Types\PercentType;
 use AssoConnect\PHPDate\AbsoluteDate;
+use AssoConnect\ValidatorBundle\Exception\UnsupportedAssociationFieldException;
+use AssoConnect\ValidatorBundle\Exception\UnsupportedFieldException;
+use AssoConnect\ValidatorBundle\Exception\UnsupportedScalarFieldException;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Symfony\Component\PropertyAccess\Exception\UnexpectedTypeException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Bic;
@@ -37,16 +41,16 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class EntityValidator extends ConstraintValidator
 {
-    private $postalCountryPropertyPath = null;
-
-    /**
-     * @var EntityManagerInterface
-     */
+    /** @var EntityManagerInterface */
     private $em;
+
+    /** @var PropertyAccessorInterface */
+    private $propertyAccessor;
 
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->em = $entityManager;
+        $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
     }
 
     /**
@@ -56,78 +60,96 @@ class EntityValidator extends ConstraintValidator
     {
         $class = get_class($entity);
         $metadata = $this->em->getClassMetadata($class);
-        $fields = array_keys($metadata->getReflectionProperties());
-        $validator = $this->context->getValidator()->inContext($this->context);
-        $propertyAccessor = PropertyAccess::createPropertyAccessor();
+        $properties = array_keys($metadata->getReflectionProperties());
 
-        // We get the option from the constraint
-        $this->postalCountryPropertyPath = $constraint->postalCountryPropertyPath;
+        $validator = $this->context
+            ->getValidator()
+            ->inContext($this->context);
 
-        foreach ($fields as $field) {
-            $constraints = $this->getConstraints($class, $field);
+        foreach ($properties as $property) {
+            $constraints = $this->getConstraintsForField($metadata, $property);
 
             if ($constraints) {
-                // PropertyAccessor will throw an exception if a null value is found on a path
-                // (ex: path is date.start but date is NULL)
-                try {
-                    $value = $propertyAccessor->getValue($entity, $field);
-                } catch (UnexpectedTypeException $exception) {
-                    $value = null;
-                }
+                $value = $this->getValue($property);
 
-                $validator->atPath($field)->validate($value, $constraints);
+                // We test the property so we can set the constraints list at runtime.
+                // According to https://symfony.com/doc/current/components/validator/resources.html, the constraint
+                // list cannot be set at runtime when validating an object but should come from loaders.
+                // So another way would be to get rid of this EntityValidator, create a custom loader for Doctrine
+                // entity that will define constraints for each property and just call $validator->validate($entity).
+                $validator
+                    ->atPath($property)
+                    ->validate($value, $constraints);
             }
         }
     }
 
-    private function getConstraints(string $class, string $field): array
+    /**
+     * Returns an array of constraint for a given field
+     */
+    private function getConstraintsForField(ClassMetadata $metadata, string $field): array
     {
-        $metadata = $this->em->getClassMetadata($class);
-
-        $constraints = [];
-
+        // The field is a scalar one
         if (array_key_exists($field, $metadata->fieldMappings)) {
-            $fieldMapping = $metadata->fieldMappings[$field];
-
+            $constraints = $this->getConstraintsForType($metadata->fieldMappings[$field]);
             // Nullable field
-            if (!$fieldMapping['nullable']) {
-                $constraints[] = [new NotNull()];
+            if (false === $metadata->fieldMappings[$field]['nullable']) {
+                $constraints[] = new NotNull();
             }
 
-            $constraints[] = $this->getConstraintsForType($fieldMapping);
-
-            $constraints = call_user_func_array('array_merge', $constraints);
-        } elseif (array_key_exists($field, $metadata->embeddedClasses)) {
-            $constraints[] = new Valid();
-        } elseif (array_key_exists($field, $metadata->associationMappings)) {
-            $fieldMapping = $metadata->associationMappings[$field];
-
-            if ($fieldMapping['isOwningSide']) {
-                if ($fieldMapping['type'] & ClassMetadata::TO_ONE) {
-                    // ToOne
-                    $constraints[] = new Type($fieldMapping['targetEntity']);
-                    // Nullable field
-                    if (isset($fieldMapping['joinColumns'][0]['nullable']) && !$fieldMapping['joinColumns'][0]['nullable']) {
-                        $constraints[] = new NotNull();
-                    }
-                } elseif ($fieldMapping['type'] & ClassMetadata::TO_MANY) {
-                    // ToMany
-                    $constraints[] = new All(
-                        [
-                        'constraints' => [
-                            new Type($fieldMapping['targetEntity']),
-                        ],
-                        ]
-                    );
-                } else {
-                    // Unknown
-                    throw new \DomainException('Unknown type: ' . $fieldMapping['type']);
-                }
-            }
-        } else {
-            throw new \LogicException('Unknown field: ' . $class  . '::$' . $field);
+            return $constraints;
         }
-        return $constraints;
+
+        // The field is an embedded class
+        if (array_key_exists($field, $metadata->embeddedClasses)) {
+            return [new Valid()];
+        }
+
+        // The field is an association
+        if (array_key_exists($field, $metadata->associationMappings)) {
+            return $this->getConstraintsForAssociation($metadata, $field);
+        }
+
+        throw new UnsupportedFieldException($metadata->name, $field);
+    }
+
+    /**
+     * Returns the constraints list for an association field
+     */
+    private function getConstraintsForAssociation(ClassMetadata $metadata, string $field): array
+    {
+        $fieldMapping = $metadata->associationMappings[$field];
+
+        // Only the owning side is validated
+
+        if (false === $fieldMapping['isOwningSide']) {
+            return [];
+        }
+
+        if ($fieldMapping['type'] & ClassMetadata::TO_ONE) {
+            // ToOne
+            $constraints = [
+                new Type($fieldMapping['targetEntity'])
+            ];
+            // Nullable field
+            if (isset($fieldMapping['joinColumns'][0]['nullable']) && !$fieldMapping['joinColumns'][0]['nullable']) {
+                $constraints[] = new NotNull();
+            }
+            return $constraints;
+        }
+
+        if ($fieldMapping['type'] & ClassMetadata::TO_MANY) {
+            // ToMany
+            return [new All(
+                [
+                    'constraints' => [
+                        new Type($fieldMapping['targetEntity']),
+                    ],
+                ]
+            )];
+        }
+        // Unknown
+        throw new UnsupportedAssociationFieldException($metadata->name, $field, $fieldMapping['type']);
     }
 
     private function getConstraintsForType(array $fieldMapping): array
@@ -136,7 +158,10 @@ class EntityValidator extends ConstraintValidator
 
         switch ($fieldMapping['type']) {
             case 'bic':
-                $constraints[] = new Bic();
+                $constraints[] = new Bic([
+                    'iban' => $this->getValue('iban'),
+                ]);
+                // Required while we use the Symfony original validator which is too loose
                 $constraints[] = new Regex('/^[0-9A-Z]+$/');
                 break;
             case 'bigint':
@@ -183,6 +208,7 @@ class EntityValidator extends ConstraintValidator
                 break;
             case 'iban':
                 $constraints[] = new Iban();
+                // Required while we use the Symfony original validator which is too loose
                 $constraints[] = new Regex('/^[0-9A-Z]+$/');
                 break;
             case 'integer':
@@ -224,11 +250,9 @@ class EntityValidator extends ConstraintValidator
                 $constraints[] = new PhoneMobile();
                 break;
             case 'postal':
-                if ($this->postalCountryPropertyPath) {
-                    $constraints[] = new Postal([
-                        'countryPropertyPath' => $this->postalCountryPropertyPath
-                    ]);
-                }
+                $constraints[] = new Postal([
+                    'country' => $this->getValue('country'),
+                ]);
                 break;
             case 'smallint':
                 $constraints[] = new Type('integer');
@@ -256,9 +280,20 @@ class EntityValidator extends ConstraintValidator
                 $constraints[] = new Uuid();
                 break;
             default:
-                throw new \DomainException('Unsupported field type: ' . $fieldMapping['type']);
+                throw new UnsupportedScalarFieldException($fieldMapping['type']);
         }
 
         return $constraints;
+    }
+
+    private function getValue(string $property)
+    {
+        // PropertyAccessor will throw an exception if a null value is found on a path
+        // (ex: path is date.start but date is NULL)
+        try {
+            return $this->propertyAccessor->getValue($this->context->getObject(), $property);
+        } catch (UnexpectedTypeException $exception) {
+            return null;
+        }
     }
 }

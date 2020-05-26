@@ -2,8 +2,10 @@
 
 namespace AssoConnect\ValidatorBundle\Tests\Validator\Constraints;
 
+use AssoConnect\ValidatorBundle\Exception\UnsupportedAssociationFieldException;
+use AssoConnect\ValidatorBundle\Exception\UnsupportedFieldException;
+use AssoConnect\ValidatorBundle\Exception\UnsupportedScalarFieldException;
 use AssoConnect\ValidatorBundle\Test\ConstraintValidatorTestCase;
-use AssoConnect\ValidatorBundle\Test\Functional\App\Entity\MyEntity;
 use AssoConnect\ValidatorBundle\Test\Functional\App\Entity\MyEntityParent;
 use AssoConnect\PHPDate\AbsoluteDate;
 use AssoConnect\ValidatorBundle\Tests\Entity\EntityTest;
@@ -41,57 +43,33 @@ use Symfony\Component\Validator\Constraints\Uuid;
 use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\Constraints\Currency as CurrencyConstraint;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
+use Symfony\Component\Validator\Validation;
 
 class EntityValidatorTest extends ConstraintValidatorTestCase
 {
-    /**
-     * @var EntityManagerInterface
-     */
+    /** @var EntityManagerInterface */
     protected $entityManager;
 
-    /**
-     * @var ClassMetadata
-     */
-    protected $metadata;
-
+    /** @var ClassMetadata */
+    protected $emMetadata;
 
     protected function setUp(): void
     {
-        $this->entityManager = $this->createMock(EntityManagerInterface::class);
-        $this->entityManager->method('getClassMetadata')->willReturn($this->getMockClassMetadata());
+        $this->entityManager = $this->createConfiguredMock(EntityManagerInterface::class, [
+            'getClassMetadata' => $this->emMetadata = $this->getMockClassMetadata(),
+        ]);
 
         parent::setUp();
     }
 
     public function getConstraint($options = []): Constraint
     {
-        $entityConstraint = new EntityConstraint($options);
-        $entityConstraint->postalCountryPropertyPath = "FR";
-        return $entityConstraint;
+        return new EntityConstraint($options);
     }
 
     public function createValidator(): ConstraintValidatorInterface
     {
         return new EntityValidator($this->entityManager);
-    }
-
-    public function testValidateDoctrineEntity()
-    {
-        $entity = new EntityTest();
-
-        $entity->postal = "59270";
-        $entity->country = "FR";
-
-        $exception = null;
-
-        /*try {
-            $this->validator->validate($entity, $this->getConstraint([
-                'postalCountryPropertyPath' => 'country'
-            ]));
-        } catch (\Exception $exception) {
-        }*/
-
-        $this->assertNull($exception, 'Validation fail');
     }
 
     public function testGetConstraintsForTypeUnknown()
@@ -100,24 +78,13 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
             'type' => 'fail'
         ];
 
-        $this->expectException(\DomainException::class);
+        $this->expectException(UnsupportedScalarFieldException::class);
         $this->getConstraintsForType($fieldMapping);
     }
 
-    /**
-     * @dataProvider getConstraintsForTypeProvider
-     */
+    /** @dataProvider getConstraintsForTypeProvider */
     public function testGetConstraintsForType($fieldMapping, $constraints)
     {
-        if ($fieldMapping['type'] === 'postal') {
-            $postalCountryPropertyPath = new \ReflectionProperty(EntityValidator::class, 'postalCountryPropertyPath');
-            $postalCountryPropertyPath->setAccessible(true);
-            $postalCountryPropertyPath->setValue(
-                $this->validator,
-                'FR'
-            );
-        }
-
         $this->assertArrayContainsSameObjects(
             $this->getConstraintsForType($fieldMapping),
             $constraints
@@ -126,157 +93,289 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
 
     public function getConstraintsForTypeProvider()
     {
-        return [
+        yield [
+            ['type' => 'bic'],
             [
-                ['type' => 'bic'], [new Bic(), new Regex('/^[0-9A-Z]+$/')],
+                new Bic(['ibanPropertyPath' => 'iban']),
+                new Regex('/^[0-9A-Z]+$'),
             ],
-            [
-                ['type' => 'bigint', 'options' => [ 'unsigned' => true]],
-                [new Type('integer'), new GreaterThanOrEqual(0), new LessThanOrEqual(pow(2, 64) - 1)],
+        ];
+
+        yield [
+            ['type' => 'bigint', 'options' => [ 'unsigned' => true]],
+            [   new Type('integer'),
+                new GreaterThanOrEqual(0),
+                new LessThanOrEqual(pow(2, 64) - 1),
             ],
+        ];
+
+        yield [
+            ['type' => 'bigint', 'options' => [ 'unsigned' => false]],
             [
-                ['type' => 'bigint', 'options' => [ 'unsigned' => false]],
-                [new Type('integer'), new GreaterThanOrEqual(- pow(2, 63)), new LessThanOrEqual(pow(2, 63) - 1)],
+                new Type('integer'),
+                new GreaterThanOrEqual(- pow(2, 63)),
+                new LessThanOrEqual(pow(2, 63) - 1),
             ],
+        ];
+
+        yield [
+            ['type' => 'bigint'],
             [
-                ['type' => 'bigint'],
-                [new Type('integer'), new GreaterThanOrEqual(- pow(2, 63)), new LessThanOrEqual(pow(2, 63) - 1)],
+                new Type('integer'),
+                new GreaterThanOrEqual(- pow(2, 63)),
+                new LessThanOrEqual(pow(2, 63) - 1),
             ],
+        ];
+
+        yield [
+            ['type' => 'boolean'],
+            [new Type('bool')],
+        ];
+
+        yield [
+            ['type' => 'country'],
+            [new Country()],
+        ];
+
+        yield [
+            ['type' => 'currency'],
+            [new CurrencyConstraint()],
+        ];
+
+        yield [
+            ['type' => 'date'],
+            [new Type(\DateTime::class)],
+        ];
+
+        yield [
+            ['type' => 'datetime'],
+            [new Type(\DateTime::class)],
+        ];
+
+        yield [
+            ['type' => 'datetimetz'],
+            [new Type(\DateTime::class)],
+        ];
+
+        yield [
+            ['type' => 'datetimeutc'],
+            [new Type(\DateTime::class)],
+        ];
+
+        yield [
+            ['type' => 'date_absolute'],
+            [new Type(AbsoluteDate::class)],
+        ];
+
+        yield [
+            ['type' => 'decimal', 'precision' => 4, 'scale' => 2],
             [
-                ['type' => 'boolean'], [new Type('bool')],
+                new Type('float'),
+                new GreaterThan(- pow(10, 4 - 2)),
+                new LessThan(pow(10, 4 - 2)),
+                new FloatScale(2)
             ],
+        ];
+
+        yield [
+            ['type' => 'email', 'length' => 10],
             [
-                ['type' => 'country'], [new Country()],
+                new Email(),
+                new Length(['max' => 10]),
             ],
+        ];
+
+        yield [
+            ['type' => 'email'],
             [
-                ['type' => 'currency'], [new CurrencyConstraint()],
+                new Email(),
+                new Length(['max' => 255]),
             ],
+        ];
+
+        yield [
+            ['type' => 'float'],
+            [new Type('float')],
+        ];
+
+        yield [
+            ['type' => 'iban'],
             [
-                ['type' => 'date'], [new Type(\DateTime::class)],
+                new Iban(),
+                new Regex('/^[0-9A-Z]+$'),
             ],
+        ];
+
+        yield [
+            ['type' => 'integer'],
+            [new Type('integer')],
+        ];
+
+        yield [
+            ['type' => 'ip'],
+            [new Ip(['version' => 'all'])],
+        ];
+
+        yield [
+            ['type' => 'json'], [],
+        ];
+
+        yield [
+            ['type' => 'latitude', 'scale' => 4],
             [
-                ['type' => 'datetime'], [new Type(\DateTime::class)],
+                new Latitude(),
+                new FloatScale(4),
             ],
+        ];
+
+        yield [
+            ['type' => 'latitude', 'scale' => null],
             [
-                ['type' => 'datetimetz'], [new Type(\DateTime::class)],
+                new Latitude(),
+                new FloatScale(6),
             ],
+        ];
+
+        yield [
+            ['type' => 'locale'],
+            [new Locale(['canonicalize' => true])],
+        ];
+
+        yield [
+            ['type' => 'longitude', 'scale' => 4],
             [
-                ['type' => 'datetimeutc'], [new Type(\DateTime::class)],
+                new Longitude(),
+                new FloatScale(4),
             ],
+        ];
+
+        yield [
+            ['type' => 'longitude', 'scale' => null],
             [
-                ['type' => 'date_absolute'], [ new Type(AbsoluteDate::class)],
+                new Longitude(),
+                new FloatScale(6),
             ],
+        ];
+
+        yield [
+            ['type' => 'money', 'scale' => null],
             [
-                ['type' => 'decimal', 'precision' => 4, 'scale' => 2],
-                [
-                    new Type('float'),
-                    new GreaterThan(- pow(10, 4 - 2)),
-                    new LessThan(pow(10, 4 - 2)),
-                    new FloatScale(2)
-                ],
+                new Money(),
+                new FloatScale(2),
             ],
+        ];
+
+        yield [
+            ['type' => 'money', 'scale' => 4],
             [
-                ['type' => 'email', 'length' => 10], [new Email(), new Length(['max' => 10])],
+                new Money(),
+                new FloatScale(4),
             ],
+        ];
+
+        yield [
+            ['type' => 'percent', 'scale' => null],
             [
-                ['type' => 'email'], [new Email(), new Length(['max' => 255])],
+                new Percent(),
+                new FloatScale(2),
             ],
+        ];
+
+        yield [
+            ['type' => 'percent', 'scale' => 4],
             [
-                ['type' => 'float'], [new Type('float')],
+                new Percent(),
+                new FloatScale(4),
             ],
+        ];
+
+        yield [
+            ['type' => 'phone'],
+            [new Phone()],
+        ];
+
+        yield [
+            ['type' => 'phonelandline'],
+            [new PhoneLandline()],
+        ];
+
+        yield [
+            ['type' => 'phonemobile'],
+            [new PhoneMobile()],
+        ];
+
+        yield [
+            ['type' => 'postal'],
+            [new Postal(['countryPropertyPath' => 'country'])],
+        ];
+
+        yield [
+            ['type' => 'smallint', 'options' => [ 'unsigned' => true]],
             [
-                ['type' => 'iban'], [new Iban(), new Regex('/^[0-9A-Z]+$')],
+                new Type('integer'),
+                new GreaterThan(0),
+                new LessThanOrEqual(pow(2, 16) - 1),
             ],
+        ];
+
+        yield [
+            ['type' => 'smallint', 'options' => [ 'unsigned' => false]],
             [
-                ['type' => 'integer'], [new Type('integer')],
+                new Type('integer'),
+                new GreaterThanOrEqual(- pow(2, 15)),
+                new LessThanOrEqual(pow(2, 15) - 1),
             ],
+        ];
+
+        yield [
+            ['type' => 'smallint'],
             [
-                ['type' => 'ip'], [new Ip(['version' => 'all'])],
+                new Type('integer'),
+                new GreaterThanOrEqual(- pow(2, 15)),
+                new LessThanOrEqual(pow(2, 15) - 1),
             ],
-            [
-                ['type' => 'json'], [],
-            ],
-            [
-                ['type' => 'latitude', 'scale' => 4], [new Latitude(), new FloatScale(4)],
-            ],
-            [
-                ['type' => 'latitude', 'scale' => null], [new Latitude(), new FloatScale(6)],
-            ],
-            [
-                ['type' => 'locale'], [new Locale(['canonicalize' => true])],
-            ],
-            [
-                ['type' => 'longitude', 'scale' => 4], [new Longitude(), new FloatScale(4)],
-            ],
-            [
-                ['type' => 'longitude', 'scale' => null], [new Longitude(), new FloatScale(6)],
-            ],
-            [
-                ['type' => 'money', 'scale' => null], [new Money(), new FloatScale(2)],
-            ],
-            [
-                ['type' => 'money', 'scale' => 4], [new Money(), new FloatScale(4)],
-            ],
-            [
-                ['type' => 'percent', 'scale' => null], [new Percent(), new FloatScale(2)],
-            ],
-            [
-                ['type' => 'percent', 'scale' => 4], [new Percent(), new FloatScale(4)],
-            ],
-            [
-                ['type' => 'phone'], [ new Phone()],
-            ],
-            [
-                ['type' => 'phonelandline'], [ new PhoneLandline()],
-            ],
-            [
-                ['type' => 'phonemobile'], [ new PhoneMobile()],
-            ],
-            [
-                ['type' => 'postal'], [ new Postal([
-                    'countryPropertyPath' => 'country'
-                ]) ],
-            ],
-            [
-                ['type' => 'smallint', 'options' => [ 'unsigned' => true]],
-                [new Type('integer'), new GreaterThan(0), new LessThanOrEqual(pow(2, 16) - 1)],
-            ],
-            [
-                ['type' => 'smallint', 'options' => [ 'unsigned' => false]],
-                [new Type('integer'), new GreaterThanOrEqual(- pow(2, 15)), new LessThanOrEqual(pow(2, 15) - 1)],
-            ],
-            [
-                ['type' => 'smallint'],
-                [new Type('integer'), new GreaterThanOrEqual(- pow(2, 15)), new LessThanOrEqual(pow(2, 15) - 1)],
-            ],
-            [
-                ['type' => 'string'], [ new Length(['max' => 255])],
-            ],
-            [
-                ['type' => 'string', 'length' => 10], [new Length(['max' => 10])]
-            ],
-            [
-                ['type' => 'text'], [new Length(['max' => 65535, 'charset' => '8bit'])],
-            ],
-            [
-                ['type' => 'text', 'length' => 1000], [new Length(['max' => 1000, 'charset' => '8bit'])],
-            ],
-            [
-                ['type' => 'timezone'], [new Timezone()]
-            ],
-            [
-                ['type' => 'uuid'], [new Uuid()],
-            ],
-            [
-                ['type' => 'uuid_binary_ordered_time'], [new Uuid()]
-            ]
+        ];
+
+        yield [
+            ['type' => 'string'],
+            [new Length(['max' => 255])],
+        ];
+
+        yield [
+            ['type' => 'string', 'length' => 10],
+            [new Length(['max' => 10])]
+        ];
+
+        yield [
+            ['type' => 'text'],
+            [new Length(['max' => 65535, 'charset' => '8bit'])],
+        ];
+
+        yield [
+            ['type' => 'text', 'length' => 1000],
+            [new Length(['max' => 1000, 'charset' => '8bit'])],
+        ];
+
+        yield [
+            ['type' => 'timezone'],
+            [new Timezone()]
+        ];
+
+        yield [
+            ['type' => 'uuid'],
+            [new Uuid()],
+        ];
+
+        yield [
+            ['type' => 'uuid_binary_ordered_time'],
+            [new Uuid()]
         ];
     }
 
     public function testGetConstraintsForNullableField()
     {
         $this->assertArrayContainsSameObjects(
-            $this->getConstraints('class', 'nullable'),
+            $this->getConstraintsForField('nullable'),
             [new Country()]
         );
     }
@@ -284,7 +383,7 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
     public function testGetConstraintsForNotNullableField()
     {
         $this->assertArrayContainsSameObjects(
-            $this->getConstraints('class', 'notnullable'),
+            $this->getConstraintsForField('notnullable'),
             [new NotNull(), new Country()]
         );
     }
@@ -292,20 +391,20 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
     public function testGetConstraintsForEmbeddable()
     {
         $this->assertArrayContainsSameObjects(
-            $this->getConstraints('class', 'embedded'),
+            $this->getConstraintsForField('embedded'),
             [new Valid()]
         );
     }
 
     public function testGetConstraintsForRelationNotOWningSide()
     {
-        $this->assertEmpty($this->getConstraints('class', 'notowning'));
+        $this->assertEmpty($this->getConstraintsForField('notowning'));
     }
 
     public function testGetConstraintsForRelationToOne()
     {
         $this->assertArrayContainsSameObjects(
-            $this->getConstraints('class', 'owningToOne'),
+            $this->getConstraintsForField('owningToOne'),
             [new Type(MyEntityParent::class)]
         );
     }
@@ -313,14 +412,14 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
     public function testGetConstraintsForRelationToOneNotNullable()
     {
         $this->assertArrayContainsSameObjects(
-            $this->getConstraints('class', 'owningToOneNotNull'),
+            $this->getConstraintsForField('owningToOneNotNull'),
             [new Type(MyEntityParent::class), new NotNull()]
         );
     }
 
     public function testGetConstraintsForRelationToMany()
     {
-        $constraints = $this->getConstraints('class', 'owningToMany');
+        $constraints = $this->getConstraintsForField('owningToMany');
         $this->assertArrayContainsSameObjects(
             $constraints,
             [new All(['constraints' => [new Type(MyEntityParent::class)]])]
@@ -333,16 +432,16 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
 
     public function testGetConstraintsForRelationUnknown()
     {
-        $this->expectException(\DomainException::class);
+        $this->expectException(UnsupportedAssociationFieldException::class);
 
-        $this->getConstraints('class', 'owningUnknown');
+        $this->getConstraintsForField('owningUnknown');
     }
 
     public function testGetConstraintsForUnknownField()
     {
-        $this->expectException(\LogicException::class);
+        $this->expectException(UnsupportedFieldException::class);
 
-        $this->getConstraints('class', 'unknown');
+        $this->getConstraintsForField('unknown');
     }
 
     public function providerInvalidValue(): array
@@ -357,74 +456,69 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
 
     private function getMockClassMetadata()
     {
-        $metadata = new class {
-            public $fieldMappings = [
-                'nullable' => [
-                    'type' => 'country',
-                    'nullable' => true,
-                ],
-                'notnullable' => [
-                    'type' => 'country',
-                    'nullable' => false,
-                ],
-                'postal' => [
-                    'type' => 'postal',
-                    'nullable' => false,
-                ],
-                'country' => [
-                    'type' => 'country',
-                    'nullable' => false,
-                ]
-            ];
+        $metadata = new ClassMetadata('someClass');
+        $metadata->fieldMappings = [
+            'nullable' => [
+                'type' => 'country',
+                'nullable' => true,
+            ],
+            'notnullable' => [
+                'type' => 'country',
+                'nullable' => false,
+            ],
+            'postal' => [
+                'type' => 'postal',
+                'nullable' => false,
+            ],
+            'country' => [
+                'type' => 'country',
+                'nullable' => false,
+            ]
+        ];
 
-            public $embeddedClasses = [
-                'embedded' => [
-                    'type' => 'bic'
-                ],
-            ];
+        $metadata->embeddedClasses = [
+            'embedded' => [
+                'type' => 'bic'
+            ],
+        ];
 
-            public $associationMappings = [
-                'notowning' => [
-                    'isOwningSide' => false,
-                    'targetEntity' => MyEntityParent::class,
-                    'type' => ClassMetadata::TO_ONE,
-                ],
-                'owningToOne' => [
-                    'isOwningSide' => true,
-                    'type' => ClassMetadata::TO_ONE,
-                    'targetEntity' => MyEntityParent::class,
-                ],
-                'owningToOneNotNull' => [
-                    'isOwningSide' => true,
-                    'type' => ClassMetadata::TO_ONE,
-                    'targetEntity' => MyEntityParent::class,
-                    'joinColumns' => [['nullable' => false]],
-                ],
-                'owningToMany' => [
-                    'isOwningSide' => true,
-                    'type' => ClassMetadata::TO_MANY,
-                    'targetEntity' => MyEntityParent::class,
-                ],
-                'owningUnknown' => [
-                    'isOwningSide' => true,
-                    'type' => 0,
-                ],
-            ];
-
-            public function getReflectionProperties()
-            {
-                return get_object_vars(new EntityTest());
-            }
-        };
+        $metadata->associationMappings = [
+            'notowning' => [
+                'isOwningSide' => false,
+                'targetEntity' => MyEntityParent::class,
+                'type' => ClassMetadata::TO_ONE,
+            ],
+            'owningToOne' => [
+                'isOwningSide' => true,
+                'type' => ClassMetadata::TO_ONE,
+                'targetEntity' => MyEntityParent::class,
+            ],
+            'owningToOneNotNull' => [
+                'isOwningSide' => true,
+                'type' => ClassMetadata::TO_ONE,
+                'targetEntity' => MyEntityParent::class,
+                'joinColumns' => [['nullable' => false]],
+            ],
+            'owningToMany' => [
+                'isOwningSide' => true,
+                'type' => ClassMetadata::TO_MANY,
+                'targetEntity' => MyEntityParent::class,
+            ],
+            'owningUnknown' => [
+                'isOwningSide' => true,
+                'type' => 0,
+            ],
+        ];
+        $metadata->reflFields = get_object_vars(new EntityTest());
 
         return $metadata;
     }
 
-    private function getConstraints(string $class, string $field)
+    private function getConstraintsForField(string $field)
     {
-        $method = new \ReflectionMethod(EntityValidator::class, 'getConstraints');
+        $method = new \ReflectionMethod(EntityValidator::class, 'getConstraintsForField');
         $method->setAccessible(true);
-        return $method->invoke($this->validator, $class, $field);
+        return $method->invoke($this->validator, $this->emMetadata, $field);
     }
 
     private function getConstraintsForType(array $fieldMapping)
