@@ -35,6 +35,7 @@ use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\Constraints\Uuid;
 use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Mapping\Factory\MetadataFactoryInterface;
 
 /**
  * @Annotation
@@ -67,10 +68,10 @@ class EntityValidator extends ConstraintValidator
             ->inContext($this->context);
 
         foreach ($properties as $property) {
-            $constraints = $this->getConstraintsForField($metadata, $property);
+            $constraints = $this->getConstraintsForField($metadata, $property, $entity);
 
             if ($constraints) {
-                $value = $this->getValue($property);
+                $value = $this->getValue($property, $entity);
 
                 // We test the property so we can set the constraints list at runtime.
                 // According to https://symfony.com/doc/current/components/validator/resources.html, the constraint
@@ -86,12 +87,16 @@ class EntityValidator extends ConstraintValidator
 
     /**
      * Returns an array of constraint for a given field
+     * @param ClassMetadata $metadata
+     * @param string $field
+     * @param null $entity
+     * @return array
      */
-    private function getConstraintsForField(ClassMetadata $metadata, string $field): array
+    private function getConstraintsForField(ClassMetadata $metadata, string $field, $entity = null): array
     {
         // The field is a scalar one
         if (array_key_exists($field, $metadata->fieldMappings)) {
-            $constraints = $this->getConstraintsForType($metadata->fieldMappings[$field]);
+            $constraints = $this->getConstraintsForType($metadata->fieldMappings[$field], $entity);
             // Nullable field
             if (false === $metadata->fieldMappings[$field]['nullable']) {
                 $constraints[] = new NotNull();
@@ -115,6 +120,9 @@ class EntityValidator extends ConstraintValidator
 
     /**
      * Returns the constraints list for an association field
+     * @param ClassMetadata $metadata
+     * @param string $field
+     * @return array
      */
     private function getConstraintsForAssociation(ClassMetadata $metadata, string $field): array
     {
@@ -152,14 +160,14 @@ class EntityValidator extends ConstraintValidator
         throw new UnsupportedAssociationFieldException($metadata->name, $field, $fieldMapping['type']);
     }
 
-    private function getConstraintsForType(array $fieldMapping): array
+    private function getConstraintsForType(array $fieldMapping, $entity = null): array
     {
         $constraints = [];
 
         switch ($fieldMapping['type']) {
             case 'bic':
                 $constraints[] = new Bic([
-                    'iban' => $this->getValue('iban'),
+                    'iban' => $this->getValue('iban', $entity),
                 ]);
                 // Required while we use the Symfony original validator which is too loose
                 $constraints[] = new Regex('/^[0-9A-Z]+$/');
@@ -251,7 +259,7 @@ class EntityValidator extends ConstraintValidator
                 break;
             case 'postal':
                 $constraints[] = new Postal([
-                    'country' => $this->getValue('country'),
+                    'country' => $this->getValue('country', $entity),
                 ]);
                 break;
             case 'smallint':
@@ -286,12 +294,12 @@ class EntityValidator extends ConstraintValidator
         return $constraints;
     }
 
-    private function getValue(string $property)
+    private function getValue(string $property, $entity = null)
     {
         // PropertyAccessor will throw an exception if a null value is found on a path
         // (ex: path is date.start but date is NULL)
         try {
-            return $this->propertyAccessor->getValue($this->context->getObject(), $property);
+            return $entity?$this->propertyAccessor->getValue($entity, $property):null;
         } catch (UnexpectedTypeException $exception) {
             return null;
         }

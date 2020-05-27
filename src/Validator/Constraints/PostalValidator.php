@@ -328,7 +328,7 @@ class PostalValidator extends ConstraintValidator
         }
     }
 
-    private function getCountry(Constraint $constraint): string
+    private function getCountry(Constraint $constraint): ?string
     {
         $country = $constraint->country;
         $path = $constraint->countryPropertyPath;

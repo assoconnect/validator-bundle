@@ -34,7 +34,7 @@ class Postal extends Constraint
             throw new ConstraintDefinitionException('The "country" and "countryPropertyPath" options of the Postal constraint cannot be used at the same time.');
         }
 
-        if (isset($options['ibanPropertyPath']) && !class_exists(PropertyAccess::class)) {
+        if (isset($options['countryPropertyPath']) && !class_exists(PropertyAccess::class)) {
             throw new LogicException(sprintf('The "symfony/property-access" component is required to use the "%s" constraint with the "ibanPropertyPath" option.', self::class));
         }
 

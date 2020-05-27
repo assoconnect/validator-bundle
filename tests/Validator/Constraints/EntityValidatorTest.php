@@ -6,6 +6,7 @@ use AssoConnect\ValidatorBundle\Exception\UnsupportedAssociationFieldException;
 use AssoConnect\ValidatorBundle\Exception\UnsupportedFieldException;
 use AssoConnect\ValidatorBundle\Exception\UnsupportedScalarFieldException;
 use AssoConnect\ValidatorBundle\Test\ConstraintValidatorTestCase;
+use AssoConnect\ValidatorBundle\Test\Functional\App\Entity\MyEntity;
 use AssoConnect\ValidatorBundle\Test\Functional\App\Entity\MyEntityParent;
 use AssoConnect\PHPDate\AbsoluteDate;
 use AssoConnect\ValidatorBundle\Tests\Entity\EntityTest;
@@ -509,7 +510,6 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
                 'type' => 0,
             ],
         ];
-        $metadata->reflFields = get_object_vars(new EntityTest());
 
         return $metadata;
     }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AssoConnect\ValidatorBundle\Tests\Validator\Constraints;
 
 use AssoConnect\ValidatorBundle\Test\Functional\App\Entity\MyEntity;
+use AssoConnect\ValidatorBundle\Test\Functional\App\Entity\MyEntityFactory;
 use AssoConnect\ValidatorBundle\Tests\Entity\EntityTest;
 use AssoConnect\ValidatorBundle\Validator\Constraints\Entity;
 use AssoConnect\ValidatorBundle\Validator\Constraints\Postal;
@@ -25,22 +26,23 @@ class EntityValidatorFunctionalTest extends KernelTestCase
 
     public function testNoViolationRaisedWithValidDoctrineEntity()
     {
-        $entity = new MyEntity();
+        $entity = MyEntityFactory::createForTest();
         $entity->postal = "59270";
         $entity->country = "FR";
 
         $violations = $this->validator->validate($entity, new Entity());
+
         $this->assertCount(0, $violations);
     }
 
     public function testViolationRaisedWithInvalidDoctrineEntity()
     {
-        $entity = new MyEntity();
+        $entity = MyEntityFactory::createForTest();
         $entity->postal = "abcdef";
         $entity->country = "FR";
 
         $violations = $this->validator->validate($entity, new Entity());
 
-        dump($violations);
+        $this->assertCount(1, $violations);
     }
 }
