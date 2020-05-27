@@ -288,26 +288,7 @@ class PostalValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, Postal::class);
         }
 
-        $path = $constraint->countryPropertyPath;
-
-        if (null === $object = $this->context->getObject()) {
-            throw new ConstraintDefinitionException('Missing object from context');
-        }
-
-        try {
-            $country = $this->getPropertyAccessor()->getValue($object, $path);
-        } catch (NoSuchPropertyException $e) {
-            throw new ConstraintDefinitionException(
-                sprintf(
-                    'Invalid property path "%s" provided to "%s" constraint: %s',
-                    $path,
-                    Postal::class,
-                    $e->getMessage()
-                ),
-                0,
-                $e
-            );
-        }
+        $country = $this->getCountry($constraint);
 
         if (!array_key_exists($country, self::POSTALS)) {
             $this->context->buildViolation(Postal::getErrorName(Postal::UNEXPECTED_COUNTRY_ERROR))
@@ -345,6 +326,31 @@ class PostalValidator extends ConstraintValidator
                 ->setCode(Postal::INVALID_FORMAT_ERROR)
                 ->addViolation();
         }
+    }
+
+    private function getCountry(Constraint $constraint): string
+    {
+        $country = $constraint->country;
+        $path = $constraint->countryPropertyPath;
+
+        if ($path && null !== $object = $this->context->getObject()) {
+            try {
+                $country = $this->getPropertyAccessor()->getValue($object, $path);
+            } catch (NoSuchPropertyException $e) {
+                throw new ConstraintDefinitionException(
+                    sprintf(
+                        'Invalid property path "%s" provided to "%s" constraint: %s',
+                        $path,
+                        Postal::class,
+                        $e->getMessage()
+                    ),
+                    0,
+                    $e
+                );
+            }
+        }
+
+        return $country;
     }
 
     private function getPropertyAccessor(): PropertyAccessor
