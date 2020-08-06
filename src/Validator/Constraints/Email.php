@@ -20,7 +20,7 @@ class Email extends _Email
 
     public $mode = 'strict';
 
-    public $checkDNS = true;
+    public $checkDNS = false;
 
     public function __construct($options = null)
     {
