@@ -157,4 +157,31 @@ class EmailValidatorTest extends ConstraintValidatorTestCase
             ['valid@notaires.fr'],
         ];
     }
+
+    public function testCheckDNS() {
+        $this->validator->validate('john.doe@xn--gmail-9fa.com', new Email([
+            'message' => 'myMessage',
+            'tldMessage' => 'myTldMessage',
+            'dnsMessage' => 'myDnsMessage',
+        ]));
+
+        $this->buildViolation('myDnsMessage')
+            ->setCode(Email::INVALID_DNS_ERROR)
+            ->setParameters([
+                '{{ value }}' => '"john.doe@xn--gmail-9fa.com"',
+                '{{ domain }}' => '"xn--gmail-9fa.com"',
+            ])
+            ->assertRaised();
+    }
+
+    public function testDisabledCheckDns() {
+        $this->validator->validate('john.doe@xn--gmail-9fa.com', new Email([
+            'message' => 'myMessage',
+            'tldMessage' => 'myTldMessage',
+            'dnsMessage' => 'myDnsMessage',
+            'checkDNS'  =>  false
+        ]));
+
+        $this->assertNoViolation();
+    }
 }
