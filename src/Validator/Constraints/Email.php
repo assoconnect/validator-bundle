@@ -20,6 +20,8 @@ class Email extends _Email
 
     public $mode = 'strict';
 
+    public $checkDNS = true;
+
     public function __construct($options = null)
     {
         // Parent constructor

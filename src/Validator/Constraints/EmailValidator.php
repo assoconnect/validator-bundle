@@ -66,7 +66,7 @@ class EmailValidator extends _EmailValidator
 
         // 3. DNS check
         $validator = new \Egulias\EmailValidator\EmailValidator();
-        if (!$validator->isValid($value, new DNSCheckValidation())) {
+        if ($constraint->checkDNS && !$validator->isValid($value, new DNSCheckValidation())) {
             $this->context->buildViolation($constraint->dnsMessage)
                 ->setParameter('{{ domain }}', $this->formatValue($domainName))
                 ->setParameter('{{ value }}', $this->formatValue($value))
