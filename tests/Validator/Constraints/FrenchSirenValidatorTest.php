@@ -49,7 +49,7 @@ class FrenchSirenValidatorTest extends ConstraintValidatorTestCase
         $value = 42;
         $this->validator->validate($value, $this->getConstraint());
 
-        $this->buildViolation('This value {{ value }} is not valid.')
+        $this->buildViolation('The value {{ value }} is not a valid SIREN number.')
             ->setParameter('{{ value }}', $value)
             ->setCode(FrenchSiren::INVALID_FORMAT_ERROR)
             ->assertRaised();
@@ -62,7 +62,7 @@ class FrenchSirenValidatorTest extends ConstraintValidatorTestCase
     {
         $this->validator->validate($value, $this->getConstraint());
 
-        $this->buildViolation('This value {{ value }} is not valid.')
+        $this->buildViolation('The value {{ value }} is not a valid SIREN number.')
             ->setParameter('{{ value }}', '"' . $value . '"')
             ->setCode($error)
             ->assertRaised();

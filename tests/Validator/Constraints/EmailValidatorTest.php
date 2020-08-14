@@ -159,7 +159,8 @@ class EmailValidatorTest extends ConstraintValidatorTestCase
         ];
     }
 
-    public function testDisabledCheckDns() {
+    public function testDisabledCheckDns()
+    {
         $this->validator->validate('john.doe@xn--gmail-9fa.com', new Email([
             'message' => 'myMessage',
             'tldMessage' => 'myTldMessage',
