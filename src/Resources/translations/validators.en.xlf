@@ -46,6 +46,10 @@
                 <source>This value is not a valid timezone.</source>
                 <target>This value is not a valid timezone.</target>
             </trans-unit>
+            <trans-unit id="12">
+                <source>The value {{ value }} is not a valid SIREN number.</source>
+                <target>The value {{ value }} is not a valid SIREN number.</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
