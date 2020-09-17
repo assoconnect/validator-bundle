@@ -9,6 +9,8 @@ use AssoConnect\DoctrineTypesBundle\Doctrine\DBAL\Types\PercentType;
 use AssoConnect\PHPDate\AbsoluteDate;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Money\Currency as CurrencyObject;
+use Money\Money;
 use Symfony\Component\PropertyAccess\Exception\UnexpectedTypeException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Validator\Constraint;
@@ -80,6 +82,9 @@ class EntityValidator extends ConstraintValidator
         $constraints = [];
 
         switch ($fieldMapping['type']) {
+            case 'amount':
+                $constraints[] = new Type(Money::class);
+                break;
             case 'bic':
                 $constraints[] = new Bic();
                 $constraints[] = new Regex('/^[0-9A-Z]+$/');
@@ -102,6 +107,7 @@ class EntityValidator extends ConstraintValidator
                 break;
             case 'currency':
                 $constraints[] = new Currency();
+                $constraints[] = new Type(CurrencyObject::class);
                 break;
             case 'date':
             case 'datetime':
