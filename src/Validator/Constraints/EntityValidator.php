@@ -10,7 +10,7 @@ use AssoConnect\PHPDate\AbsoluteDate;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Money\Currency as CurrencyObject;
-use Money\Money;
+use Money\Money as MoneyObject;
 use Symfony\Component\PropertyAccess\Exception\UnexpectedTypeException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Validator\Constraint;
@@ -83,7 +83,7 @@ class EntityValidator extends ConstraintValidator
 
         switch ($fieldMapping['type']) {
             case 'amount':
-                $constraints[] = new Type(Money::class);
+                $constraints[] = new Type(MoneyObject::class);
                 break;
             case 'bic':
                 $constraints[] = new Bic();
