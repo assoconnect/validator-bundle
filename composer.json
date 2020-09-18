@@ -35,7 +35,7 @@
     "assoconnect/php-date": "^2.0",
     "doctrine/orm": "^2.7",
     "symfony/intl": "^4.3|^5.0",
-    "assoconnect/doctrine-types-bundle": "dev-feature_tristan_add_amount_type"
+    "assoconnect/doctrine-types-bundle": "^2.2"
   },
   "require-dev": {
     "doctrine/cache": "~1.0",
