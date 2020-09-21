@@ -35,8 +35,7 @@ class PercentValidator extends ComposeValidator
 
     public function validate($value, Constraint $constraint)
     {
-        if ($value instanceof \AssoConnect\PHPPercent\Percent)
-        {
+        if ($value instanceof \AssoConnect\PHPPercent\Percent) {
             $value = $value->toInteger();
         }
         return parent::validate($value, $constraint);
