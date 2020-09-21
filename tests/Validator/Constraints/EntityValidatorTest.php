@@ -13,13 +13,15 @@ use AssoConnect\ValidatorBundle\Validator\Constraints\FrenchRna;
 use AssoConnect\ValidatorBundle\Validator\Constraints\FrenchSiren;
 use AssoConnect\ValidatorBundle\Validator\Constraints\Latitude;
 use AssoConnect\ValidatorBundle\Validator\Constraints\Longitude;
-use AssoConnect\ValidatorBundle\Validator\Constraints\Money;
+use AssoConnect\ValidatorBundle\Validator\Constraints\Money as MoneyConstraint;
 use AssoConnect\ValidatorBundle\Validator\Constraints\Percent;
 use AssoConnect\ValidatorBundle\Validator\Constraints\Phone;
 use AssoConnect\ValidatorBundle\Validator\Constraints\PhoneLandline;
 use AssoConnect\ValidatorBundle\Validator\Constraints\PhoneMobile;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Money\Currency;
+use Money\Money;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Bic;
@@ -96,6 +98,9 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
     {
         return [
             [
+                ['type' => 'amount'], [new Type(Money::class)]
+            ],
+            [
                 ['type' => 'bic'], [new Bic(), new Regex('/^[0-9A-Z]+$/')],
             ],
             [
@@ -117,7 +122,7 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
                 ['type' => 'country'], [new Country()],
             ],
             [
-                ['type' => 'currency'], [new CurrencyConstraint()],
+                ['type' => 'currency'], [new CurrencyConstraint(), new Type(Currency::class)],
             ],
             [
                 ['type' => 'date'], [new Type(\DateTime::class)],
@@ -180,10 +185,10 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
                 ['type' => 'longitude', 'scale' => null], [new Longitude(), new FloatScale(6)],
             ],
             [
-                ['type' => 'money', 'scale' => null], [new Money(), new FloatScale(2)],
+                ['type' => 'money', 'scale' => null], [new MoneyConstraint(), new FloatScale(2)],
             ],
             [
-                ['type' => 'money', 'scale' => 4], [new Money(), new FloatScale(4)],
+                ['type' => 'money', 'scale' => 4], [new MoneyConstraint(), new FloatScale(4)],
             ],
             [
                 ['type' => 'percent', 'scale' => null], [new Percent(), new FloatScale(2)],
