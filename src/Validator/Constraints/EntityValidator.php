@@ -159,8 +159,8 @@ class EntityValidator extends ConstraintValidator
                 $constraints[] = new FloatScale($fieldMapping['scale'] ? : MoneyType::DEFAULT_SCALE);
                 break;
             case 'percent':
+                $constraints[] = new Type(\AssoConnect\PHPPercent\Percent::class);
                 $constraints[] = new Percent();
-                $constraints[] = new FloatScale($fieldMapping['scale'] ? : PercentType::DEFAULT_SCALE);
                 break;
             case 'phone':
                 $constraints[] = new Phone();

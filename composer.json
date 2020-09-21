@@ -25,7 +25,7 @@
   "require": {
     "doctrine/doctrine-bundle": "^1.9|^2.0",
     "giggsey/libphonenumber-for-php": "^8.9",
-    "php": "^7.2",
+    "php": "^7.4",
     "symfony/http-kernel": "^4.3|^5.0",
     "symfony/validator": "^4.3|^5.0",
     "egulias/email-validator": "^2.1",
@@ -35,7 +35,8 @@
     "assoconnect/php-date": "^2.0",
     "doctrine/orm": "^2.7",
     "symfony/intl": "^4.3|^5.0",
-    "assoconnect/doctrine-types-bundle": "^2.2"
+    "assoconnect/doctrine-types-bundle": "^2.3",
+    "assoconnect/php-percent":"1.0"
   },
   "require-dev": {
     "doctrine/cache": "~1.0",

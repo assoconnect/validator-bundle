@@ -32,4 +32,12 @@ class PercentValidator extends ComposeValidator
     {
         return false;
     }
+
+    public function validate($value, Constraint $constraint)
+    {
+        if ($value instanceof \AssoConnect\PHPPercent\Percent) {
+            $value = $value->toInteger();
+        }
+        return parent::validate($value, $constraint);
+    }
 }
