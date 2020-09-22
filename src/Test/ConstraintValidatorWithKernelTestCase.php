@@ -16,7 +16,7 @@ abstract class ConstraintValidatorWithKernelTestCase extends KernelTestCase
      */
     protected $validator;
 
-    public function setUp()
+    public function setUp(): void
     {
         self::bootKernel();
 
@@ -26,7 +26,7 @@ abstract class ConstraintValidatorWithKernelTestCase extends KernelTestCase
     /**
      * {@inheritdoc}
      */
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         $fs = new Filesystem();
         $fs->remove(sys_get_temp_dir() . '/AssoConnectValidatorBundle/');
