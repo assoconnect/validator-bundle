@@ -191,6 +191,9 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
                 ['type' => 'money', 'scale' => 4], [new MoneyConstraint(), new FloatScale(4)],
             ],
             [
+                ['type' => 'percent', 'scale' => null], [new Type(Percent::class), new Percent()],
+            ],
+            [
                 ['type' => 'phone'], [ new Phone()],
             ],
             [
