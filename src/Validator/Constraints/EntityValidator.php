@@ -245,7 +245,10 @@ class EntityValidator extends ConstraintValidator
                     // ToOne
                     $constraints[] = new Type($fieldMapping['targetEntity']);
                     // Nullable field
-                    if (isset($fieldMapping['joinColumns'][0]['nullable']) && !$fieldMapping['joinColumns'][0]['nullable']) {
+                    if (
+                        isset($fieldMapping['joinColumns'][0]['nullable'])
+                        && !$fieldMapping['joinColumns'][0]['nullable']
+                    ) {
                         $constraints[] = new NotNull();
                     }
                 } elseif ($fieldMapping['type'] & ClassMetadata::TO_MANY) {

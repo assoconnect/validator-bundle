@@ -38,6 +38,7 @@ use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Constraints\Timezone;
 use Symfony\Component\Validator\Constraints\Type;
+use Symfony\Component\Validator\Constraints\Ulid;
 use Symfony\Component\Validator\Constraints\Uuid;
 use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\Constraints\Currency as CurrencyConstraint;
@@ -96,154 +97,238 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
 
     public function getConstraintsForTypeProvider()
     {
-        return [
+        yield [
+            ['type' => 'amount'],
+            [new Type(Money::class)]
+        ];
+
+        yield [
+            ['type' => 'bic'],
+            [new Bic(), new Regex('/^[0-9A-Z]+$/')],
+        ];
+
+        yield [
+            ['type' => 'bigint', 'options' => [ 'unsigned' => true]],
+            [new Type('integer'), new GreaterThanOrEqual(0), new LessThanOrEqual(pow(2, 64) - 1)],
+        ];
+
+        yield [
+            ['type' => 'bigint', 'options' => [ 'unsigned' => false]],
+            [new Type('integer'), new GreaterThanOrEqual(- pow(2, 63)), new LessThanOrEqual(pow(2, 63) - 1)],
+        ];
+
+        yield [
+            ['type' => 'bigint'],
+            [new Type('integer'), new GreaterThanOrEqual(- pow(2, 63)), new LessThanOrEqual(pow(2, 63) - 1)],
+        ];
+
+        yield [
+            ['type' => 'boolean'],
+            [new Type('bool')],
+        ];
+
+        yield [
+            ['type' => 'country'],
+            [new Country()],
+        ];
+
+        yield [
+            ['type' => 'currency'],
+            [new CurrencyConstraint(), new Type(Currency::class)],
+        ];
+
+        yield [
+            ['type' => 'date'],
+            [new Type(\DateTime::class)],
+        ];
+
+        yield [
+            ['type' => 'datetime'],
+            [new Type(\DateTime::class)],
+        ];
+
+        yield [
+            ['type' => 'datetimetz'],
+            [new Type(\DateTime::class)],
+        ];
+
+        yield [
+            ['type' => 'datetimeutc'],
+            [new Type(\DateTime::class)],
+        ];
+
+        yield [
+            ['type' => 'date_absolute'],
+            [ new Type(AbsoluteDate::class)],
+        ];
+
+        yield [
+            ['type' => 'decimal', 'precision' => 4, 'scale' => 2],
             [
-                ['type' => 'amount'], [new Type(Money::class)]
-            ],
-            [
-                ['type' => 'bic'], [new Bic(), new Regex('/^[0-9A-Z]+$/')],
-            ],
-            [
-                ['type' => 'bigint', 'options' => [ 'unsigned' => true]],
-                [new Type('integer'), new GreaterThanOrEqual(0), new LessThanOrEqual(pow(2, 64) - 1)],
-            ],
-            [
-                ['type' => 'bigint', 'options' => [ 'unsigned' => false]],
-                [new Type('integer'), new GreaterThanOrEqual(- pow(2, 63)), new LessThanOrEqual(pow(2, 63) - 1)],
-            ],
-            [
-                ['type' => 'bigint'],
-                [new Type('integer'), new GreaterThanOrEqual(- pow(2, 63)), new LessThanOrEqual(pow(2, 63) - 1)],
-            ],
-            [
-                ['type' => 'boolean'], [new Type('bool')],
-            ],
-            [
-                ['type' => 'country'], [new Country()],
-            ],
-            [
-                ['type' => 'currency'], [new CurrencyConstraint(), new Type(Currency::class)],
-            ],
-            [
-                ['type' => 'date'], [new Type(\DateTime::class)],
-            ],
-            [
-                ['type' => 'datetime'], [new Type(\DateTime::class)],
-            ],
-            [
-                ['type' => 'datetimetz'], [new Type(\DateTime::class)],
-            ],
-            [
-                ['type' => 'datetimeutc'], [new Type(\DateTime::class)],
-            ],
-            [
-                ['type' => 'date_absolute'], [ new Type(AbsoluteDate::class)],
-            ],
-            [
-                ['type' => 'decimal', 'precision' => 4, 'scale' => 2],
-                [
-                    new Type('float'),
-                    new GreaterThan(- pow(10, 4 - 2)),
-                    new LessThan(pow(10, 4 - 2)),
-                    new FloatScale(2)
-                ],
-            ],
-            [
-                ['type' => 'email', 'length' => 10], [new Email(), new Length(['max' => 10])],
-            ],
-            [
-                ['type' => 'email'], [new Email(), new Length(['max' => 255])],
-            ],
-            [
-                ['type' => 'float'], [new Type('float')],
-            ],
-            [
-                ['type' => 'iban'], [new Iban(), new Regex('/^[0-9A-Z]+$')],
-            ],
-            [
-                ['type' => 'integer'], [new Type('integer')],
-            ],
-            [
-                ['type' => 'ip'], [new Ip(['version' => 'all'])],
-            ],
-            [
-                ['type' => 'json'], [],
-            ],
-            [
-                ['type' => 'latitude', 'scale' => 4], [new Latitude(), new FloatScale(4)],
-            ],
-            [
-                ['type' => 'latitude', 'scale' => null], [new Latitude(), new FloatScale(6)],
-            ],
-            [
-                ['type' => 'locale'], [new Locale(['canonicalize' => true])],
-            ],
-            [
-                ['type' => 'longitude', 'scale' => 4], [new Longitude(), new FloatScale(4)],
-            ],
-            [
-                ['type' => 'longitude', 'scale' => null], [new Longitude(), new FloatScale(6)],
-            ],
-            [
-                ['type' => 'money', 'scale' => null], [new MoneyConstraint(), new FloatScale(2)],
-            ],
-            [
-                ['type' => 'money', 'scale' => 4], [new MoneyConstraint(), new FloatScale(4)],
-            ],
-            [
-                ['type' => 'percent', 'scale' => null], [new Type(Percent::class), new Percent()],
-            ],
-            [
-                ['type' => 'phone'], [ new Phone()],
-            ],
-            [
-                ['type' => 'phonelandline'], [ new PhoneLandline()],
-            ],
-            [
-                ['type' => 'phonemobile'], [ new PhoneMobile()],
-            ],
-            [
-                ['type' => 'postal'], [],
-            ],
-            [
-                ['type' => 'smallint', 'options' => [ 'unsigned' => true]],
-                [new Type('integer'), new GreaterThan(0), new LessThanOrEqual(pow(2, 16) - 1)],
-            ],
-            [
-                ['type' => 'smallint', 'options' => [ 'unsigned' => false]],
-                [new Type('integer'), new GreaterThanOrEqual(- pow(2, 15)), new LessThanOrEqual(pow(2, 15) - 1)],
-            ],
-            [
-                ['type' => 'smallint'],
-                [new Type('integer'), new GreaterThanOrEqual(- pow(2, 15)), new LessThanOrEqual(pow(2, 15) - 1)],
-            ],
-            [
-                ['type' => 'string'], [ new Length(['max' => 255])],
-            ],
-            [
-                ['type' => 'string', 'length' => 10], [new Length(['max' => 10])]
-            ],
-            [
-                ['type' => 'text'], [new Length(['max' => 65535, 'charset' => '8bit'])],
-            ],
-            [
-                ['type' => 'text', 'length' => 1000], [new Length(['max' => 1000, 'charset' => '8bit'])],
-            ],
-            [
-                ['type' => 'timezone'], [new Timezone()]
-            ],
-            [
-                ['type' => 'uuid'], [new Uuid()],
-            ],
-            [
-                ['type' => 'uuid_binary_ordered_time'], [new Uuid()]
-            ],
-            [
-                ['type' => 'frenchRna'], [new FrenchRna()]
-            ],
-            [
-                ['type' => 'frenchSiren'], [new FrenchSiren()]
+                new Type('float'),
+                new GreaterThan(- pow(10, 4 - 2)),
+                new LessThan(pow(10, 4 - 2)),
+                new FloatScale(2)
             ]
+        ];
+
+        yield [
+            ['type' => 'email', 'length' => 10],
+            [new Email(), new Length(['max' => 10])],
+        ];
+
+        yield [
+            ['type' => 'email'],
+            [new Email(), new Length(['max' => 255])],
+        ];
+
+        yield [
+            ['type' => 'float'],
+            [new Type('float')],
+        ];
+
+        yield [
+            ['type' => 'iban'],
+            [new Iban(), new Regex('/^[0-9A-Z]+$')],
+        ];
+
+        yield [
+            ['type' => 'integer'],
+            [new Type('integer')],
+        ];
+
+        yield [
+            ['type' => 'ip'],
+            [new Ip(['version' => 'all'])],
+        ];
+
+        yield [
+            ['type' => 'json'],
+            [],
+        ];
+
+        yield [
+            ['type' => 'latitude', 'scale' => 4],
+            [new Latitude(), new FloatScale(4)],
+        ];
+
+        yield [
+            ['type' => 'latitude', 'scale' => null],
+            [new Latitude(), new FloatScale(6)],
+        ];
+
+        yield [
+            ['type' => 'locale'],
+            [new Locale(['canonicalize' => true])],
+        ];
+
+        yield [
+            ['type' => 'longitude', 'scale' => 4],
+            [new Longitude(), new FloatScale(4)],
+        ];
+
+        yield [
+            ['type' => 'longitude', 'scale' => null],
+            [new Longitude(), new FloatScale(6)],
+        ];
+
+        yield [
+            ['type' => 'money', 'scale' => null],
+            [new MoneyConstraint(), new FloatScale(2)],
+        ];
+
+        yield [
+            ['type' => 'money', 'scale' => 4],
+            [new MoneyConstraint(), new FloatScale(4)],
+        ];
+
+        yield [
+            ['type' => 'percent', 'scale' => null],
+            [new Type(Percent::class), new Percent()],
+        ];
+
+        yield [
+            ['type' => 'phone'],
+            [new Phone()],
+        ];
+
+        yield [
+            ['type' => 'phonelandline'],
+            [new PhoneLandline()],
+        ];
+
+        yield [
+            ['type' => 'phonemobile'],
+            [new PhoneMobile()],
+        ];
+
+        yield [
+            ['type' => 'postal'], [],
+        ];
+
+        yield [
+            ['type' => 'smallint', 'options' => [ 'unsigned' => true]],
+            [new Type('integer'), new GreaterThan(0), new LessThanOrEqual(pow(2, 16) - 1)],
+        ];
+
+        yield [
+            ['type' => 'smallint', 'options' => [ 'unsigned' => false]],
+            [new Type('integer'), new GreaterThanOrEqual(- pow(2, 15)), new LessThanOrEqual(pow(2, 15) - 1)],
+        ];
+
+        yield [
+            ['type' => 'smallint'],
+            [new Type('integer'), new GreaterThanOrEqual(- pow(2, 15)), new LessThanOrEqual(pow(2, 15) - 1)],
+        ];
+
+        yield [
+            ['type' => 'string'],
+            [new Length(['max' => 255])],
+        ];
+
+        yield [
+            ['type' => 'string', 'length' => 10],
+            [new Length(['max' => 10])]
+        ];
+
+        yield [
+            ['type' => 'text'],
+            [new Length(['max' => 65535, 'charset' => '8bit'])],
+        ];
+
+        yield [
+            ['type' => 'text', 'length' => 1000],
+            [new Length(['max' => 1000, 'charset' => '8bit'])],
+        ];
+
+        yield [
+            ['type' => 'timezone'],
+            [new Timezone()]
+        ];
+
+        yield [
+            ['type' => 'ulid'],
+            [new Ulid()],
+        ];
+
+        yield [
+            ['type' => 'uuid'],
+            [new Uuid()],
+        ];
+
+        yield [
+            ['type' => 'uuid_binary_ordered_time'],
+            [new Uuid()]
+        ];
+
+        yield [
+            ['type' => 'frenchRna'],
+            [new FrenchRna()]
+        ];
+
+        yield [
+            ['type' => 'frenchSiren'],
+            [new FrenchSiren()]
         ];
     }
 

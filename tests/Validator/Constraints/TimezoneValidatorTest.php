@@ -35,11 +35,9 @@ class TimezoneValidatorTest extends ConstraintValidatorTestCase
         $this->assertNoViolation();
     }
 
-    /**
-     * @expectedException Symfony\Component\Validator\Exception\UnexpectedTypeException
-     */
     public function testExpectsStringCompatibleType()
     {
+        $this->expectException(UnexpectedTypeException::class);
         $this->validator->validate(new \stdClass(), new Timezone());
     }
 

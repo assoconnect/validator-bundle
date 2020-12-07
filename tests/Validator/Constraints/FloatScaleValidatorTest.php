@@ -8,6 +8,7 @@ use AssoConnect\ValidatorBundle\Validator\Constraints\FloatScale;
 use AssoConnect\ValidatorBundle\Validator\Constraints\FloatScaleValidator;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class FloatScaleValidatorTest extends ConstraintValidatorTestCase
 {
@@ -38,11 +39,9 @@ class FloatScaleValidatorTest extends ConstraintValidatorTestCase
             ->assertRaised();
     }
 
-    /**
-     * @expectedException \Symfony\Component\Validator\Exception\UnexpectedTypeException
-     */
     public function testValidateUnknownConstraint()
     {
+        $this->expectException(UnexpectedTypeException::class);
         $this->validator->validate(0, new Email());
     }
 
