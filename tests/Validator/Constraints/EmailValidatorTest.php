@@ -12,6 +12,7 @@ use Pdp\Manager;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class EmailValidatorTest extends ConstraintValidatorTestCase
 {
@@ -40,11 +41,9 @@ class EmailValidatorTest extends ConstraintValidatorTestCase
         ]);
     }
 
-    /**
-     * @expectedException \Symfony\Component\Validator\Exception\UnexpectedTypeException
-     */
     public function testValidateUnknownConstraint()
     {
+        $this->expectException(UnexpectedTypeException::class);
         $this->validator->validate('email', new NotNull());
     }
 

@@ -15,11 +15,12 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
  */
 class PostalValidator extends ConstraintValidator
 {
-    const THREE_DIGIT_FORMAT = '^[0-9]{3}$';
-    const FOUR_DIGIT_FORMAT = '^[0-9]{4}$';
-    const FIVE_DIGIT_FORMAT = '^[0-9]{5}$';
-    const SIX_DIGIT_FORMAT = '^[0-9]{6}$';
-    const FIVE_FIVE_FOUR_DIGIT_FORMAT = '^([0-9]{5}|[0-9]{5}-[0-9]{4})$';
+    private const THREE_DIGIT_FORMAT = '^[0-9]{3}$';
+    private const FOUR_DIGIT_FORMAT = '^[0-9]{4}$';
+    private const FIVE_DIGIT_FORMAT = '^[0-9]{5}$';
+    private const SIX_DIGIT_FORMAT = '^[0-9]{6}$';
+    private const FIVE_FIVE_FOUR_DIGIT_FORMAT = '^([0-9]{5}|[0-9]{5}-[0-9]{4})$';
+
     /**
      * @link https://en.wikipedia.org/wiki/List_of_postal_codes
      */

@@ -10,6 +10,7 @@ use AssoConnect\ValidatorBundle\Validator\Constraints\PhoneValidator;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class PhoneValidatorTest extends ConstraintValidatorTestCase
 {
@@ -23,11 +24,9 @@ class PhoneValidatorTest extends ConstraintValidatorTestCase
         return new PhoneValidator();
     }
 
-    /**
-     * @expectedException \Symfony\Component\Validator\Exception\UnexpectedTypeException
-     */
     public function testValidateUnknownConstraint()
     {
+        $this->expectException(UnexpectedTypeException::class);
         $this->validator->validate('phone', new NotNull());
     }
 

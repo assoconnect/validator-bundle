@@ -30,6 +30,7 @@ use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Constraints\Timezone;
 use Symfony\Component\Validator\Constraints\Type;
+use Symfony\Component\Validator\Constraints\Ulid;
 use Symfony\Component\Validator\Constraints\Uuid;
 use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -192,6 +193,9 @@ class EntityValidator extends ConstraintValidator
             case 'timezone':
                 $constraints[] = new Timezone();
                 break;
+            case 'ulid':
+                $constraints[] = new Ulid();
+                break;
             case 'uuid':
             case 'uuid_binary_ordered_time':
                 $constraints[] = new Uuid();
@@ -241,7 +245,10 @@ class EntityValidator extends ConstraintValidator
                     // ToOne
                     $constraints[] = new Type($fieldMapping['targetEntity']);
                     // Nullable field
-                    if (isset($fieldMapping['joinColumns'][0]['nullable']) && !$fieldMapping['joinColumns'][0]['nullable']) {
+                    if (
+                        isset($fieldMapping['joinColumns'][0]['nullable'])
+                        && !$fieldMapping['joinColumns'][0]['nullable']
+                    ) {
                         $constraints[] = new NotNull();
                     }
                 } elseif ($fieldMapping['type'] & ClassMetadata::TO_MANY) {

@@ -8,6 +8,9 @@ use AssoConnect\ValidatorBundle\Validator\Constraints\Postal;
 use AssoConnect\ValidatorBundle\Validator\Constraints\PostalValidator;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
+use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
+use Symfony\Component\Validator\Exception\MissingOptionsException;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class PostalValidatorTest extends ConstraintValidatorTestCase
 {
@@ -21,37 +24,26 @@ class PostalValidatorTest extends ConstraintValidatorTestCase
         return new PostalValidator();
     }
 
-    /**
-     * @expectedException \Symfony\Component\Validator\Exception\UnexpectedTypeException
-     */
     public function testIncorrectConstraint()
     {
+        $this->expectException(UnexpectedTypeException::class);
         $this->validator->validate(null, new Email());
     }
 
-    /**
-     * @expectedException \Symfony\Component\Validator\Exception\MissingOptionsException
-     */
     public function testMissingPropertyPath()
     {
-        $constraint = $this->getConstraint(null);
-
-        $this->validator->validate(null, $constraint);
+        $this->expectException(MissingOptionsException::class);
+        $this->getConstraint(null);
     }
 
-    /**
-     * @expectedException \Symfony\Component\Validator\Exception\ConstraintDefinitionException
-     */
     public function testMissingObject()
     {
         $this->setObject(null);
 
+        $this->expectException(ConstraintDefinitionException::class);
         $this->validator->validate(null, $this->getConstraint('propertyPath'));
     }
 
-    /**
-     * @expectedException \Symfony\Component\Validator\Exception\ConstraintDefinitionException
-     */
     public function testInvalidPropertyPath()
     {
         $object = new \stdClass();
@@ -59,6 +51,7 @@ class PostalValidatorTest extends ConstraintValidatorTestCase
 
         $this->setObject($object);
 
+        $this->expectException(ConstraintDefinitionException::class);
         $this->validator->validate(null, $this->getConstraint('invalid'));
     }
 
