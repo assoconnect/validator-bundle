@@ -2,10 +2,10 @@
 
 namespace AssoConnect\ValidatorBundle\Validator\Constraints;
 
+use AssoConnect\AbsolutePercentValueBundle\Object\AbsolutePercentValue;
 use AssoConnect\DoctrineTypesBundle\Doctrine\DBAL\Types\LatitudeType;
 use AssoConnect\DoctrineTypesBundle\Doctrine\DBAL\Types\LongitudeType;
 use AssoConnect\DoctrineTypesBundle\Doctrine\DBAL\Types\MoneyType;
-use AssoConnect\DoctrineTypesBundle\Doctrine\DBAL\Types\PercentType;
 use AssoConnect\PHPDate\AbsoluteDate;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -83,6 +83,9 @@ class EntityValidator extends ConstraintValidator
         $constraints = [];
 
         switch ($fieldMapping['type']) {
+            case 'absolute_percent_value':
+                $constraints[] = new Type(AbsolutePercentValue::class);
+                break;
             case 'amount':
                 $constraints[] = new Type(MoneyObject::class);
                 break;
