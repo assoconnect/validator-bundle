@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/assoconnect/validator-bundle.svg?branch=master)](https://travis-ci.org/assoconnect/validator-bundle)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=assoconnect_validator-bundle&metric=coverage)](https://sonarcloud.io/dashboard?id=assoconnect_validator-bundle)
 
-This Symfony4 bundle provides validators for common scalar values:
+This Symfony bundle provides validators for common scalar values:
 
 - [Email address](/src/Validator/Constraints/EmailValidator.php)
 - [Phone Number](/src/Validator/Constraints/PhoneValidator.php)
