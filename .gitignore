@@ -5,4 +5,3 @@ vendor
 composer.lock
 phpunit.xml
 .php_cs.cache
-.phpunit.result.cache
