@@ -175,6 +175,9 @@ class EntityValidator extends ConstraintValidator
             case 'phonemobile':
                 $constraints[] = new PhoneMobile();
                 break;
+            case 'simple_array':
+                $constraints[] = new Type('array');
+                break;
             case 'smallint':
                 $constraints[] = new Type('integer');
                 if (isset($fieldMapping['options']['unsigned']) && true === $fieldMapping['options']['unsigned']) {
