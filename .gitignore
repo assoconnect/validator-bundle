@@ -1,8 +1,4 @@
-.idea
-coverage
-var
-vendor
-composer.lock
-phpunit.xml
-.php_cs.cache
+/vendor/*
 .phpunit.result.cache
+.idea
+.php_cs.cache
