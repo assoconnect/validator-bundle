@@ -1,28 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" bootstrap="tests/bootstrap.php" colors="true" convertErrorsToExceptions="true" convertNoticesToExceptions="true" convertWarningsToExceptions="true" stopOnFailure="true" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" bootstrap="./vendor/autoload.php" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
   <coverage processUncoveredFiles="true">
     <include>
-      <directory suffix=".php">./</directory>
+      <directory suffix=".php">./src</directory>
     </include>
-    <exclude>
-      <directory>./src/Cache</directory>
-      <directory>./src/DependencyInjection</directory>
-      <directory>./src/Resources</directory>
-      <directory>./src/Test</directory>
-      <directory>./tests</directory>
-      <directory>var</directory>
-      <directory>./vendor</directory>
-    </exclude>
   </coverage>
-  <php>
-    <ini name="error_reporting" value="-1"/>
-    <env name="KERNEL_CLASS" value="AssoConnect\ValidatorBundle\Test\TestKernel"/>
-    <env name="APP_ENV" value="test"/>
-    <env name="APP_DEBUG" value="1"/>
-  </php>
   <testsuites>
-    <testsuite name="AssoConnectValidatorBundle Test Suite">
-      <directory>./tests</directory>
+    <testsuite name="main">
+      <directory>./tests/</directory>
     </testsuite>
   </testsuites>
 </phpunit>
