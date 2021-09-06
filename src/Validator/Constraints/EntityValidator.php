@@ -119,6 +119,12 @@ class EntityValidator extends ConstraintValidator
             case 'datetimeutc':
                 $constraints[] = new Type(\DateTime::class);
                 break;
+            case 'datetimezone':
+                $constraints[] = new Type(\DateTimeZone::class);
+                break;
+            case 'date_absolute':
+                $constraints[] = new Type(AbsoluteDate::class);
+                break;
             case 'decimal':
                 $constraints[] = new Type('float');
                 $constraints[] = new GreaterThan(- pow(10, $fieldMapping['precision'] - $fieldMapping['scale']));
@@ -132,6 +138,12 @@ class EntityValidator extends ConstraintValidator
                 break;
             case 'float':
                 $constraints[] = new Type('float');
+                break;
+            case 'frenchSiren':
+                $constraints[] = new FrenchSiren();
+                break;
+            case 'frenchRna':
+                $constraints[] = new FrenchRna();
                 break;
             case 'iban':
                 $constraints[] = new Iban();
@@ -175,6 +187,8 @@ class EntityValidator extends ConstraintValidator
             case 'phonemobile':
                 $constraints[] = new PhoneMobile();
                 break;
+            case 'postal':
+                break;
             case 'simple_array':
                 $constraints[] = new Type('array');
                 break;
@@ -205,17 +219,6 @@ class EntityValidator extends ConstraintValidator
             case 'uuid':
             case 'uuid_binary_ordered_time':
                 $constraints[] = new Uuid();
-                break;
-            case 'postal':
-                break;
-            case 'date_absolute':
-                $constraints[] = new Type(AbsoluteDate::class);
-                break;
-            case 'frenchSiren':
-                $constraints[] = new FrenchSiren();
-                break;
-            case 'frenchRna':
-                $constraints[] = new FrenchRna();
                 break;
             default:
                 throw new \DomainException('Unsupported field type: ' . $fieldMapping['type']);
