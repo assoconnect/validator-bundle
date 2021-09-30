@@ -158,6 +158,11 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
         ];
 
         yield [
+            ['type' => 'datetimezone'],
+            [ new Type(\DateTimeZone::class)],
+        ];
+
+        yield [
             ['type' => 'date_absolute'],
             [ new Type(AbsoluteDate::class)],
         ];
@@ -185,6 +190,16 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
         yield [
             ['type' => 'float'],
             [new Type('float')],
+        ];
+
+        yield [
+            ['type' => 'frenchRna'],
+            [new FrenchRna()]
+        ];
+
+        yield [
+            ['type' => 'frenchSiren'],
+            [new FrenchSiren()]
         ];
 
         yield [
@@ -319,16 +334,6 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
         yield [
             ['type' => 'uuid_binary_ordered_time'],
             [new Uuid()]
-        ];
-
-        yield [
-            ['type' => 'frenchRna'],
-            [new FrenchRna()]
-        ];
-
-        yield [
-            ['type' => 'frenchSiren'],
-            [new FrenchSiren()]
         ];
     }
 
