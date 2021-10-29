@@ -117,7 +117,7 @@ class EntityValidator extends ConstraintValidator
             case 'datetime':
             case 'datetimetz':
             case 'datetimeutc':
-                $constraints[] = new Type(\DateTime::class);
+                $constraints[] = new Type([\DateTime::class, \DateTimeImmutable::class]);
                 break;
             case 'datetimezone':
                 $constraints[] = new Type(\DateTimeZone::class);
