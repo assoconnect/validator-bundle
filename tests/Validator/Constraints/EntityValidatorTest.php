@@ -34,6 +34,7 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\LessThan;
 use Symfony\Component\Validator\Constraints\LessThanOrEqual;
 use Symfony\Component\Validator\Constraints\Locale;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Constraints\Timezone;
@@ -304,6 +305,11 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
         yield [
             ['type' => 'string', 'length' => 10],
             [new Length(['max' => 10])]
+        ];
+
+        yield [
+            ['type' => 'string', 'nullable' => true],
+            [new Length(['max' => 255]), new NotBlank(['allowNull' => true])]
         ];
 
         yield [

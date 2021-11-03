@@ -26,6 +26,7 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\LessThan;
 use Symfony\Component\Validator\Constraints\LessThanOrEqual;
 use Symfony\Component\Validator\Constraints\Locale;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Constraints\Timezone;
@@ -211,6 +212,9 @@ class EntityValidator extends ConstraintValidator
             case 'string':
                 $length = $fieldMapping['length'] ?? 255;
                 $constraints[] = new Length(['max' => $length]);
+                if (isset($fieldMapping['nullable']) && true === $fieldMapping['nullable']) {
+                    $constraints[] = new NotBlank(['allowNull' => true]);
+                }
                 break;
             case 'text':
                 $length = $fieldMapping['length'] ?? 65535;
