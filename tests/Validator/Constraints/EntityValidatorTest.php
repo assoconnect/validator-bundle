@@ -104,6 +104,11 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
         ];
 
         yield [
+            ['type' => 'array'],
+            [],
+        ];
+
+        yield [
             ['type' => 'bic'],
             [new Bic(), new Regex('/^[0-9A-Z]+$/')],
         ];

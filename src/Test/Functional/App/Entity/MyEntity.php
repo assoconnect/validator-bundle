@@ -20,6 +20,11 @@ class MyEntity
     public $id;
 
     /**
+     * @ORM\Column(type="array")
+     */
+    public $array;
+
+    /**
      * @ORM\Column(type="bic")
      */
     public $bic;
