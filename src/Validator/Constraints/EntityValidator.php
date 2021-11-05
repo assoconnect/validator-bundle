@@ -91,6 +91,7 @@ class EntityValidator extends ConstraintValidator
                 $constraints[] = new Type(MoneyObject::class);
                 break;
             case 'array':
+                $constraints[] = new Type('array');
                 break;
             case 'bic':
                 $constraints[] = new Bic();

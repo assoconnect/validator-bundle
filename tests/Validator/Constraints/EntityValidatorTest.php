@@ -105,7 +105,7 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
 
         yield [
             ['type' => 'array'],
-            [],
+            [new Type('array')],
         ];
 
         yield [
