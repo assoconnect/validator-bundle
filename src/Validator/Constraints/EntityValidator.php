@@ -90,6 +90,9 @@ class EntityValidator extends ConstraintValidator
             case 'amount':
                 $constraints[] = new Type(MoneyObject::class);
                 break;
+            case 'array':
+                $constraints[] = new Type('array');
+                break;
             case 'bic':
                 $constraints[] = new Bic();
                 $constraints[] = new Regex('/^[0-9A-Z]+$/');
