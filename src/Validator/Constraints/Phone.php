@@ -33,6 +33,10 @@ class Phone extends Constraint
         PhoneNumberType::MOBILE,
         PhoneNumberType::SHARED_COST,
         PhoneNumberType::VOIP,
+        PhoneNumberType::TOLL_FREE,
+        PhoneNumberType::STANDARD_RATE,
+        PhoneNumberType::PERSONAL_NUMBER,
+        PhoneNumberType::PAGER,
     ];
 
     public $invalidTypes = [];
