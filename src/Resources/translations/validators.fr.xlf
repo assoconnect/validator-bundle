@@ -3,52 +3,60 @@
     <file source-language="en" datatype="plaintext" original="file.ext">
         <body>
             <trans-unit id="1">
-                <source>{{ domain }} is not a valid domain name.</source>
+                <source>The value {{ domain }} is not a valid domain name.</source>
                 <target>Le nom de domaine {{ domain }} est invalide.</target>
             </trans-unit>
             <trans-unit id="2">
-                <source>{{ domain }} is not setup to received emails.</source>
+                <source>The domain {{ domain }} is not setup to received emails.</source>
                 <target>Le domain {{ domain }} n'est pas configuré pour recevoir des emails.</target>
             </trans-unit>
             <trans-unit id="3">
-                <source>This value is not a valid phone number.</source>
-                <target>Cette valeur n'est pas un numéro de téléphone valide.</target>
+                <source>The value {{ value }} is not a valid phone number.</source>
+                <target>La valeur {{ value }} n'est pas un numéro de téléphone valide.</target>
             </trans-unit>
             <trans-unit id="4">
-                <source>This phone number is too short.</source>
-                <target>Ce numéro de téléphone est trop court.</target>
+                <source>The value {{ value }} is not formatted as an international phone number.</source>
+                <target>La valeur {{ value }} n'est pas au format international.</target>
             </trans-unit>
             <trans-unit id="5">
-                <source>This phone number is too long.</source>
-                <target>Ce numéro de téléphone est trop long.</target>
+                <source>The phone number {{ value }} is too short.</source>
+                <target>Le numéro de téléphone {{ value }} est trop court.</target>
             </trans-unit>
             <trans-unit id="6">
-                <source>This phone number does not exist.</source>
-                <target>Ce numéro de téléphone n'existe pas.</target>
+                <source>The phone number {{ value }} is too long.</source>
+                <target>Le numéro de téléphone {{ value }} est trop long.</target>
             </trans-unit>
             <trans-unit id="7">
-                <source>This type of phone number is not accepted.</source>
-                <target>Ce type de numéro de téléphone n'est pas accepté.</target>
+                <source>The phone number {{ value }} does not exist.</source>
+                <target>Le numéro de téléphone {{ value }} n'existe pas.</target>
             </trans-unit>
             <trans-unit id="8">
-                <source>This value is not a valid landline phone number.</source>
-                <target>Cette valeur n'est pas un numéro de téléphone fixe valide.</target>
+                <source>The value {{ value }} is not an accepted phone number type.</source>
+                <target>La valeur {{ value }} n'est pas un numéro de téléphone accepté.</target>
             </trans-unit>
             <trans-unit id="9">
-                <source>This value is not a valid mobile phone number.</source>
-                <target>Cette valeur n'est pas un numéro de téléphone portable valide.</target>
+                <source>The value {{ value }} is not a valid landline phone number.</source>
+                <target>La valeur {{ value }} n'est pas un numéro de téléphone fixe valide.</target>
             </trans-unit>
             <trans-unit id="10">
+                <source>The value {{ value }} is not a valid mobile phone number.</source>
+                <target>La valeur {{ value }} n'est pas un numéro de téléphone portable valide.</target>
+            </trans-unit>
+            <trans-unit id="11">
                 <source>The float precision is limited to {{ precision }} numbers.</source>
                 <target>La précision est limitée à {{ precision }} chiffres après la virgule.</target>
             </trans-unit>
-            <trans-unit id="11">
-                <source>This value is not a valid timezone.</source>
-                <target>Cette valeur n'est pas un fuseau horaire valide.</target>
-            </trans-unit>
             <trans-unit id="12">
+                <source>The value {{ value }} is not a valid timezone.</source>
+                <target>La valeur {{ value }} n'est pas un fuseau horaire valide.</target>
+            </trans-unit>
+            <trans-unit id="13">
                 <source>The value {{ value }} is not a valid SIREN number.</source>
                 <target>La valeur {{ value }} n'est pas un numéro SIREN valide.</target>
+            </trans-unit>
+            <trans-unit id="14">
+                <source>The value {{ value }} is not a valid RNA identifier.</source>
+                <target>La valeur {{ value }} n'est pas un identifiant RNA valide.</target>
             </trans-unit>
         </body>
     </file>

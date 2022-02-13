@@ -5,17 +5,19 @@ namespace AssoConnect\ValidatorBundle\Tests\Validator\Constraints;
 use AssoConnect\ValidatorBundle\Test\ConstraintValidatorTestCase;
 use AssoConnect\ValidatorBundle\Validator\Constraints\Money;
 use AssoConnect\ValidatorBundle\Validator\Constraints\MoneyValidator;
+use Ramsey\Collection\Map\TypedMap;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Validator\Constraints\LessThan;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
 
 class MoneyValidatorTest extends ConstraintValidatorTestCase
 {
-    public function getConstraint($options = []): Constraint
+    public function getConstraint(): Constraint
     {
-        return new Money($options);
+        return new Money(['min' => 0.0, 'max' => 90.0]);
     }
 
     public function createValidator(): ConstraintValidatorInterface
@@ -23,35 +25,50 @@ class MoneyValidatorTest extends ConstraintValidatorTestCase
         return new MoneyValidator();
     }
 
-    public function testIsEmptyStringAccepted()
+    public function providerValidValues(): iterable
     {
-        $this->assertFalse($this->validator->isEmptyStringAccepted());
+        yield [18];
+        yield [18.1];
     }
 
-    public function testGetSupportedConstraint()
+    public function providerInvalidValues(): iterable
     {
-        $this->assertSame(Money::class, $this->validator->getSupportedConstraint());
-    }
+        yield 'wrong type' => [
+            '18',
+            Type::INVALID_TYPE_ERROR,
+            'This value should be of type {{ type }}.',
+            [
+                '{{ type }}' => 'float',
+                '{{ value }}' => '"18"'
+            ]
+        ];
 
-    /**
-     * @dataProvider getConstraintsProvider
-     * @param $value
-     * @param $constraints
-     */
-    public function testGetConstraints($value, $constraints)
-    {
-        $this->assertArrayContainsSameObjects(
-            $constraints,
-            $this->validator->getConstraints($value, $this->getConstraint(['min' => 0, 'max' => 90]))
-        );
-    }
+        yield [
+            '',
+            NotBlank::IS_BLANK_ERROR,
+            'This value should not be blank.'
+        ];
 
-    public function getConstraintsProvider(): array
-    {
-        return [
-            [18.1, [new GreaterThanOrEqual(0), new LessThan(90)]],
-            [18, [new GreaterThanOrEqual(0), new LessThan(90)]],
-            ['18', [new Type('float')]]
+        yield [
+            -10,
+            GreaterThanOrEqual::TOO_LOW_ERROR,
+            'This value should be greater than or equal to {{ compared_value }}.',
+            [
+                '{{ value }}' => '-10',
+                '{{ compared_value_type }}' => 'float',
+                '{{ compared_value }}' => 0,
+            ]
+        ];
+
+        yield [
+            100,
+            LessThan::TOO_HIGH_ERROR,
+            'This value should be less than or equal to {{ compared_value }}.',
+            [
+                '{{ value }}' => '100',
+                '{{ compared_value_type }}' => 'float',
+                '{{ compared_value }}' => '90',
+            ]
         ];
     }
 }

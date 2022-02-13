@@ -14,6 +14,6 @@ class Money extends Constraint
 {
     public const MAX = 100000000.0;
 
-    public $min = 0.0;
-    public $max = self::MAX;
+    public float $min = 0.0;
+    public float $max = self::MAX;
 }

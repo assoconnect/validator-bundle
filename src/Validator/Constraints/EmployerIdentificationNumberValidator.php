@@ -11,9 +11,8 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 class EmployerIdentificationNumberValidator extends ConstraintValidator
 {
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
-
         if (!$constraint instanceof EmployerIdentificationNumber) {
             throw new UnexpectedTypeException($constraint, __NAMESPACE__ . '\EmployerIdentificationNumber');
         }
@@ -26,16 +25,11 @@ class EmployerIdentificationNumberValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, 'string');
         }
 
-        if (!preg_match('/^[1-9]\d?-\d{7}$/', $value, $matches)) {
+        if (1 !== preg_match('/^[1-9]\d?-\d{7}$/', $value)) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ value }}', $this->formatValue($value))
                 ->setCode(EmployerIdentificationNumber::WRONG_FORMAT_ERROR)
                 ->addViolation();
         }
-    }
-
-    public function getSupportedConstraint(): string
-    {
-        return EmployerIdentificationNumber::class;
     }
 }

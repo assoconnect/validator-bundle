@@ -12,6 +12,6 @@ use Symfony\Component\Validator\Constraint;
  */
 class Percent extends Constraint
 {
-    public $min = 0;
-    public $max = 10000;
+    public int $min = 0;
+    public int $max = 10000;
 }

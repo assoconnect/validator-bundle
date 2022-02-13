@@ -12,9 +12,9 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class FloatScaleValidatorTest extends ConstraintValidatorTestCase
 {
-    public function getConstraint($options = []): Constraint
+    public function getConstraint(): Constraint
     {
-        return new FloatScale($options);
+        return new FloatScale(['scale' => 2]);
     }
 
     public function createValidator(): ConstraintValidatorInterface
@@ -22,33 +22,22 @@ class FloatScaleValidatorTest extends ConstraintValidatorTestCase
         return new FloatScaleValidator();
     }
 
-    public function testValidateValue()
+    public function providerValidValues(): iterable
     {
-        $this->validator->validate(2.1, $this->getConstraint(['scale' => 2]));
-        $this->assertNoViolation();
+        yield [2.1];
+        yield 'not a float value' => ['2.01'];
     }
 
-    public function testValidateTooPrecise()
+    public function providerInvalidValues(): iterable
     {
-        $this->validator->validate(0.0001, $this->getConstraint(['scale' => 2]));
-
-        $this->buildViolation('The float precision is limited to {{ scale }} numbers.')
-            ->setParameter('{{ scale }}', '2')
-            ->setParameter('{{ value }}', '0.0001')
-            ->setCode(FloatScale::TOO_PRECISE_ERROR)
-            ->assertRaised();
-    }
-
-    public function testValidateUnknownConstraint()
-    {
-        $this->expectException(UnexpectedTypeException::class);
-        $this->validator->validate(0, new Email());
-    }
-
-    public function testValidateNotFloatValue()
-    {
-        $this->validator->validate('2.01', $this->getConstraint(['scale' => 2]));
-
-        $this->assertNoViolation();
+        yield 'too precise' => [
+            0.0001,
+            FloatScale::TOO_PRECISE_ERROR,
+            'The float precision is limited to {{ scale }} numbers.',
+            [
+                '{{ scale }}' => '2',
+                '{{ value }}' => '0.0001',
+            ]
+        ];
     }
 }

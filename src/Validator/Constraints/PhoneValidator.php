@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class PhoneValidator extends ConstraintValidator
 {
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof Phone) {
             throw new UnexpectedTypeException($constraint, __NAMESPACE__ . '\Phone');
@@ -21,7 +21,7 @@ class PhoneValidator extends ConstraintValidator
         }
 
         if (substr($value, 0, 1) !== '+') {
-            $this->buildViolation($value, $constraint->message, Phone::INVALID_FORMAT_ERROR);
+            $this->buildViolation($value, $constraint->notIntlFormatMessage, Phone::NOT_INTL_FORMAT_ERROR);
             return;
         }
 
@@ -30,20 +30,16 @@ class PhoneValidator extends ConstraintValidator
 
         try {
             $phoneObject = $phoneUtil->parse($phone);
-            // Phone number is possible
             if ($phoneUtil->isPossibleNumber($phoneObject)) {
-                // Valid phone number
                 $phoneNumberType = $phoneUtil->getNumberType($phoneObject);
-                if (in_array($phoneNumberType, $constraint->validTypes)) {
+                if (in_array($phoneNumberType, $constraint->getValidTypes(), true)) {
                     return;
-                } elseif (in_array($phoneNumberType, $constraint->invalidTypes)) {
-                    $this->buildViolation($value, $constraint->invalidTypeMessage, Phone::INVALID_TYPE_ERROR);
-                } else {
-                    $this->buildViolation($value, $constraint->message, Phone::INVALID_FORMAT_ERROR);
                 }
-            } else {
-                $this->buildViolation($value, $constraint->inexistantMessage, Phone::PHONE_NUMBER_NOT_EXIST);
+                $this->buildViolation($value, $constraint->wrongTypeMessage, Phone::INVALID_TYPE_ERROR);
+                return;
             }
+
+            $this->buildViolation($value, $constraint->inexistantMessage, Phone::PHONE_NUMBER_NOT_EXIST);
         } catch (NumberParseException $exception) {
             switch ($exception->getErrorType()) {
                 case NumberParseException::NOT_A_NUMBER:
@@ -62,10 +58,11 @@ class PhoneValidator extends ConstraintValidator
         }
     }
 
-    private function buildViolation($value, $message, $code)
+    private function buildViolation(string $value, string $message, string $code): void
     {
         $this->context->buildViolation($message)
-            ->setParameter('{{ value }}', $this->formatValue($value))->setCode($code)
+            ->setParameter('{{ value }}', $this->formatValue($value))
+            ->setCode($code)
             ->addViolation();
     }
 }

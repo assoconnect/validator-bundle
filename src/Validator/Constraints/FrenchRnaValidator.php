@@ -6,14 +6,19 @@ namespace AssoConnect\ValidatorBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class FrenchRnaValidator extends ConstraintValidator
 {
     /**
      * @inheritDoc
      */
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
+        if (!$constraint instanceof FrenchRna) {
+            throw new UnexpectedTypeException($constraint, FrenchRna::class);
+        }
+
         if (null === $value || '' === $value) {
             return;
         }
@@ -29,10 +34,5 @@ class FrenchRnaValidator extends ConstraintValidator
                 ->setCode(FrenchRna::INVALID_FORMAT_ERROR)
                 ->addViolation();
         }
-    }
-
-    public function getSupportedConstraint(): string
-    {
-        return FrenchRna::class;
     }
 }

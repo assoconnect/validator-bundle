@@ -9,13 +9,12 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class MyEmbeddable
 {
-
     /**
      * @ORM\Column(type="boolean")
      */
-    public $bool;
+    public bool $bool;
 
-    public function __construct($bool)
+    public function __construct(bool $bool)
     {
         $this->bool = $bool;
     }

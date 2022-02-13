@@ -9,15 +9,16 @@ use AssoConnect\ValidatorBundle\Validator\Constraints\LongitudeValidator;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Validator\Constraints\LessThanOrEqual;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
 
 class LongitudeValidatorTest extends ConstraintValidatorTestCase
 {
-    public function getConstraint($options = []): Constraint
+    public function getConstraint(): Constraint
     {
-        return new Longitude($options);
+        return new Longitude();
     }
 
     public function createValidator(): ConstraintValidatorInterface
@@ -25,37 +26,55 @@ class LongitudeValidatorTest extends ConstraintValidatorTestCase
         return new LongitudeValidator();
     }
 
-    public function testIsEmptyStringAccepted()
+    public function providerValidValues(): iterable
     {
-        $this->assertFalse($this->validator->isEmptyStringAccepted());
+        yield ['18'];
     }
 
-    public function testGetSupportedConstraint()
+    public function providerInvalidValues(): iterable
     {
-        $this->assertSame(Longitude::class, $this->validator->getSupportedConstraint());
-    }
+        yield [
+            'hello',
+            Regex::REGEX_FAILED_ERROR,
+            'This value is not valid.'
+        ];
 
-    /**
-     * @dataProvider getConstraintsProvider
-     * @param $value
-     * @param $constraints
-     */
-    public function testGetConstraints($value, $constraints)
-    {
-        $this->assertArrayContainsSameObjects(
-            $constraints,
-            $this->validator->getConstraints($value, $this->getConstraint())
-        );
-    }
+        yield [
+            '',
+            NotBlank::IS_BLANK_ERROR,
+            'This value should not be blank.'
+        ];
 
-    public function getConstraintsProvider(): array
-    {
-        return [
-            ['18', [new GreaterThanOrEqual(-90), new LessThanOrEqual(90)]],
-            ['18.1', [new GreaterThanOrEqual(-90), new LessThanOrEqual(90)]],
-            ['hello', [new Regex(LatitudeValidator::REGEX)]],
-            [18, [new Type('string')]],
-            [18.1, [new Type('string')]],
+        yield [
+            42,
+            Type::INVALID_TYPE_ERROR,
+            'This value should be of type {{ type }}.',
+            [
+                '{{ value }}' => '42',
+                '{{ type }}' => 'string'
+            ]
+        ];
+
+        yield [
+            '-181',
+            GreaterThanOrEqual::TOO_LOW_ERROR,
+            'This value should be greater than or equal to {{ compared_value }}.',
+            [
+                '{{ value }}' => '"-181"',
+                '{{ compared_value }}' => '-180',
+                '{{ compared_value_type }}' => 'int'
+            ]
+        ];
+
+        yield [
+            '181',
+            LessThanOrEqual::TOO_HIGH_ERROR,
+            'This value should be less than or equal to {{ compared_value }}.',
+            [
+                '{{ value }}' => '"181"',
+                '{{ compared_value }}' => '180',
+                '{{ compared_value_type }}' => 'int'
+            ]
         ];
     }
 }

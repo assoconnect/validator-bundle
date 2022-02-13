@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class FloatScaleValidator extends ConstraintValidator
 {
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof FloatScale) {
             throw new UnexpectedTypeException($constraint, __NAMESPACE__ . '\FloatScale');
@@ -21,7 +21,7 @@ class FloatScaleValidator extends ConstraintValidator
         if ($value !== round($value, $constraint->scale)) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ value }}', $this->formatValue($value))
-                ->setParameter('{{ scale }}', $constraint->scale)
+                ->setParameter('{{ scale }}', (string)$constraint->scale)
                 ->setCode(FloatScale::TOO_PRECISE_ERROR)
                 ->addViolation();
         }

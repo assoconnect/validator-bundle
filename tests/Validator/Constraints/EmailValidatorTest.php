@@ -16,7 +16,6 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class EmailValidatorTest extends ConstraintValidatorTestCase
 {
-
     public function setUp(): void
     {
         BypassFinals::enable();
@@ -31,7 +30,7 @@ class EmailValidatorTest extends ConstraintValidatorTestCase
         return new EmailValidator($manager);
     }
 
-    public function getConstraint($options = []): Constraint
+    public function getConstraint(): Constraint
     {
         return new Email([
             'message' => 'myMessage',
@@ -41,37 +40,24 @@ class EmailValidatorTest extends ConstraintValidatorTestCase
         ]);
     }
 
-    public function testValidateUnknownConstraint()
+    public function testValidateUnknownConstraint(): void
     {
         $this->expectException(UnexpectedTypeException::class);
         $this->validator->validate('email', new NotNull());
     }
 
-    public function testNullIsValid()
+    public function testNullIsValid(): void
     {
         $this->validator->validate(null, new Email());
-        $this->assertNoViolation();
+        self::assertNoViolation();
     }
 
-    public function testEmptyStringIsValid()
+    public function testEmptyStringIsValid(): void
     {
         $this->validator->validate('', new Email());
-        $this->assertNoViolation();
+        self::assertNoViolation();
     }
-
-    /**
-     * @dataProvider providerInvalidValue
-     */
-    public function testInvalidValues(string $value, string $code, string $message, array $parameters): void
-    {
-        $this->validator->validate($value, $this->getConstraint());
-
-        $this->buildViolation($message)
-            ->setCode($code)
-            ->setParameters($parameters)
-            ->assertRaised();
-    }
-    public function providerInvalidValue(): \Iterator
+    public function providerInvalidValues(): iterable
     {
         yield [
             'format',
@@ -136,29 +122,16 @@ class EmailValidatorTest extends ConstraintValidatorTestCase
         ];
     }
 
-    /**
-     * @dataProvider providerValidValue
-     * @param string $value
-     */
-    public function testValidValues($value)
+    public function providerValidValues(): iterable
     {
-        $this->validator->validate($value, $this->getConstraint());
-
-        $this->assertNoViolation();
+        yield ['valid@mail.com'];
+        yield ['valid.valid@mail.com'];
+        yield ['valid+valid@mail.com'];
+        yield ['valid+valid@gmail.com'];
+        yield ['valid@notaires.fr'];
     }
 
-    public function providerValidValue(): array
-    {
-        return [
-            ['valid@mail.com'],
-            ['valid.valid@mail.com'],
-            ['valid+valid@mail.com'],
-            ['valid+valid@gmail.com'],
-            ['valid@notaires.fr'],
-        ];
-    }
-
-    public function testDisabledCheckDns()
+    public function testDisabledCheckDns(): void
     {
         $this->validator->validate('john.doe@xn--gmail-9fa.com', new Email([
             'message' => 'myMessage',
@@ -167,6 +140,6 @@ class EmailValidatorTest extends ConstraintValidatorTestCase
             'checkDNS'  =>  false
         ]));
 
-        $this->assertNoViolation();
+        self::assertNoViolation();
     }
 }

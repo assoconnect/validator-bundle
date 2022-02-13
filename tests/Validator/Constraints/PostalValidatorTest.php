@@ -2,21 +2,21 @@
 
 namespace AssoConnect\ValidatorBundle\Tests\Validator\Constraints;
 
-use AssoConnect\ValidatorBundle\Test\ConstraintValidatorTestCase;
-use AssoConnect\ValidatorBundle\Validator\Constraints\Email;
 use AssoConnect\ValidatorBundle\Validator\Constraints\Postal;
 use AssoConnect\ValidatorBundle\Validator\Constraints\PostalValidator;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
 use Symfony\Component\Validator\Exception\MissingOptionsException;
-use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 class PostalValidatorTest extends ConstraintValidatorTestCase
 {
-    public function getConstraint($options = []): Constraint
+    public function getConstraint(): Constraint
     {
-        return new Postal($options);
+        return new Postal([
+            'countryPropertyPath' => 'country',
+        ]);
     }
 
     public function createValidator(): ConstraintValidatorInterface
@@ -24,136 +24,131 @@ class PostalValidatorTest extends ConstraintValidatorTestCase
         return new PostalValidator();
     }
 
-    public function testIncorrectConstraint()
-    {
-        $this->expectException(UnexpectedTypeException::class);
-        $this->validator->validate(null, new Email());
-    }
-
-    public function testMissingPropertyPath()
+    public function testMissingPropertyPath(): void
     {
         $this->expectException(MissingOptionsException::class);
-        $this->getConstraint(null);
+        new Postal();
     }
 
-    public function testMissingObject()
+    public function testMissingObject(): void
     {
         $this->setObject(null);
 
         $this->expectException(ConstraintDefinitionException::class);
-        $this->validator->validate(null, $this->getConstraint('propertyPath'));
+        $this->validator->validate(null, $this->getConstraint());
     }
 
-    public function testInvalidPropertyPath()
+    public function testInvalidPropertyPath(): void
     {
         $object = new \stdClass();
-        $object->country = 'KK';
+        $object->country2 = 'KK';
 
         $this->setObject($object);
 
         $this->expectException(ConstraintDefinitionException::class);
-        $this->validator->validate(null, $this->getConstraint('invalid'));
+        $this->validator->validate(null, $this->getConstraint());
     }
 
-    public function testUnexpectedCountry()
+    public function testUnexpectedCountry(): void
     {
         $object = new \stdClass();
         $object->country = 'KK';
 
         $this->setObject($object);
 
-        $this->validator->validate(null, $this->getConstraint('country'));
+        $this->validator->validate(null, $this->getConstraint());
 
         $this
-            ->buildViolation(Postal::getErrorName(Postal::UNEXPECTED_COUNTRY_ERROR))
-            ->setParameter('{{ value }}', '"KK"')
-            ->setCode(Postal::UNEXPECTED_COUNTRY_ERROR)
+            ->buildViolation('The country {{ country }} is unknown.')
+            ->setParameter('{{ country }}', '"KK"')
+            ->setCode(Postal::UNKNOWN_COUNTRY_ERROR)
             ->assertRaised()
         ;
     }
 
-    public function testMissingPostalError()
+    public function testMissingPostalError(): void
     {
         $object = new \stdClass();
         $object->country = 'FR';
 
         $this->setObject($object);
 
-        $this->validator->validate(null, $this->getConstraint('country'));
+        $this->validator->validate(null, $this->getConstraint());
 
         $this
-            ->buildViolation(Postal::getErrorName(Postal::MISSING_ERROR))
+            ->buildViolation('The postal code must be provided.')
             ->setCode(Postal::MISSING_ERROR)
             ->assertRaised()
         ;
     }
 
-    public function testPostalNotRequiredError()
+    public function testNoPostalCodeSystem(): void
     {
         $object = new \stdClass();
         $object->country = 'AE';
 
         $this->setObject($object);
 
-        $this->validator->validate('postal', $this->getConstraint('country'));
+        $this->validator->validate('postal', $this->getConstraint());
 
         $this
-            ->buildViolation(Postal::getErrorName(Postal::NOT_REQUIRED_ERROR))
-            ->setCode(Postal::NOT_REQUIRED_ERROR)
+            ->buildViolation('There is no postal code system in the country {{ country }}.')
+            ->setCode(Postal::NO_POSTAL_CODE_SYSTEM)
+            ->setParameter('{{ country }}', '"AE"')
             ->assertRaised()
         ;
     }
 
-    public function testInvalidPostalFormatError()
+    public function testInvalidPostalFormatError(): void
     {
         $object = new \stdClass();
         $object->country = 'FR';
 
         $this->setObject($object);
 
-        $this->validator->validate('foo', $this->getConstraint('country'));
+        $this->validator->validate('foo', $this->getConstraint());
 
         $this
-            ->buildViolation(Postal::getErrorName(Postal::INVALID_FORMAT_ERROR))
+            ->buildViolation('The value {{ value }} is not a valid postal code.')
             ->setParameter('{{ value }}', '"foo"')
             ->setCode(Postal::INVALID_FORMAT_ERROR)
             ->assertRaised()
         ;
     }
 
-    public function testPostalRequiredNoViolation()
+    public function testPostalRequiredNoViolation(): void
     {
         $object = new \stdClass();
         $object->country = 'FR';
 
         $this->setObject($object);
 
-        $this->validator->validate('75002', $this->getConstraint('country'));
+        $this->validator->validate('75002', $this->getConstraint());
 
-        $this->assertNoViolation();
+        self::assertNoViolation();
     }
 
-    public function testPostalNotRequiredNoViolation()
+    public function testPostalNotRequiredNoViolation(): void
     {
         $object = new \stdClass();
         $object->country = 'AE';
 
         $this->setObject($object);
 
-        $this->validator->validate('', $this->getConstraint('country'));
+        $this->validator->validate('', $this->getConstraint());
 
-        $this->assertNoViolation();
+        self::assertNoViolation();
     }
 
-    public function testCountryNullWithPostalNull()
+    public function testCountryNullWithPostalNull(): void
     {
-        $object = new \StdClass();
+        $object = new \stdClass();
         $object->country = null;
 
         $this->setObject($object);
 
-        $this->validator->validate(null, $this->getConstraint('country'));
+        $this->validator->validate(null, $this->getConstraint());
 
-        $this->assertNoViolation();
+        self::assertNoViolation();
     }
 }

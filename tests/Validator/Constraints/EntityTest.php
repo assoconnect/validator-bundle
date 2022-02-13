@@ -7,9 +7,9 @@ use PHPUnit\Framework\TestCase;
 
 class EntityTest extends TestCase
 {
-    public function testGetTargets()
+    public function testGetTargets(): void
     {
         $entity = new Entity();
-        $this->assertSame('class', $entity->getTargets());
+        self::assertSame('class', $entity->getTargets());
     }
 }

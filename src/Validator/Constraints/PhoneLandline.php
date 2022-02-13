@@ -12,16 +12,14 @@ use libphonenumber\PhoneNumberType;
  */
 class PhoneLandline extends Phone
 {
-    public $validTypes = [
-        PhoneNumberType::FIXED_LINE_OR_MOBILE,
-        PhoneNumberType::FIXED_LINE,
-        PhoneNumberType::VOIP,
-    ];
+    public function getValidTypes(): array
+    {
+        return [
+            PhoneNumberType::FIXED_LINE_OR_MOBILE,
+            PhoneNumberType::FIXED_LINE,
+            PhoneNumberType::VOIP,
+        ];
+    }
 
-    public $invalidTypes = [
-        PhoneNumberType::MOBILE,
-        PhoneNumberType::SHARED_COST,
-    ];
-
-    public $invalidTypeMessage = 'This value is not a valid landline phone number.';
+    public string $wrongTypeMessage = 'The value {{ value }} is not a valid landline phone number.';
 }

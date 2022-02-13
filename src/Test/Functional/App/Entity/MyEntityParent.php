@@ -11,16 +11,15 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class MyEntityParent
 {
-
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="NONE")
      */
-    public $id;
+    public int $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="MyEntity")
      */
-    public $mainChild;
+    public MyEntity $mainChild;
 }

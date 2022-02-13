@@ -14,9 +14,9 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 class TimezoneValidator extends ConstraintValidator
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof Timezone) {
             throw new UnexpectedTypeException($constraint, __NAMESPACE__ . '\Timezone');
@@ -30,7 +30,7 @@ class TimezoneValidator extends ConstraintValidator
             throw new UnexpectedTypeException($value, 'string');
         }
 
-        if (!in_array($value, \DateTimeZone::listIdentifiers())) {
+        if (!in_array($value, \DateTimeZone::listIdentifiers(), true)) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ value }}', $this->formatValue($value))
                 ->setCode(Timezone::NO_SUCH_TIMEZONE_ERROR)

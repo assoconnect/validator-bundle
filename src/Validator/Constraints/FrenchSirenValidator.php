@@ -6,14 +6,19 @@ namespace AssoConnect\ValidatorBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\LuhnValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class FrenchSirenValidator extends LuhnValidator
 {
     /**
      * @inheritDoc
      */
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
+        if (!$constraint instanceof FrenchSiren) {
+            throw new UnexpectedTypeException($constraint, FrenchSiren::class);
+        }
+
         if (null === $value || '' === $value) {
             return;
         }
@@ -28,10 +33,5 @@ class FrenchSirenValidator extends LuhnValidator
         }
 
         parent::validate($value, $constraint);
-    }
-
-    public function getSupportedConstraint(): string
-    {
-        return FrenchSiren::class;
     }
 }

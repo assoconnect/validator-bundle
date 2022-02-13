@@ -7,15 +7,21 @@ use PHPUnit\Framework\Constraint\Constraint;
 class ArrayContainSameObjectsConstraint extends Constraint
 {
     /**
-     * @var array
+     * @var array<mixed>
      */
-    private $expected;
+    private array $expected;
 
+    /**
+     * @param array<mixed> $expected
+     */
     public function __construct(array $expected)
     {
         $this->expected = $expected;
     }
 
+    /**
+     * @param mixed $other
+     */
     public function matches($other): bool
     {
         if (count($other) != count($this->expected)) {

@@ -2,8 +2,10 @@
 
 namespace AssoConnect\ValidatorBundle\Test\Functional\App\Entity;
 
+use AssoConnect\PHPDate\AbsoluteDate;
 use AssoConnect\ValidatorBundle\Validator\Constraints as AssoConnectAssert;
 use Doctrine\ORM\Mapping as ORM;
+use Money\Currency;
 
 /**
  * @AssoConnectAssert\Entity()
@@ -11,173 +13,173 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class MyEntity
 {
-
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="NONE")
      */
-    public $id;
+    public int $id;
 
     /**
      * @ORM\Column(type="array")
+     * @var array<mixed>
      */
-    public $array;
+    public array $array;
 
     /**
      * @ORM\Column(type="bic")
      */
-    public $bic;
+    public string $bic;
 
     /**
      * @ORM\Column(type="bigint")
      */
-    public $bigint;
+    public int $bigint;
 
     /**
      * @ORM\Column(type="bigint", options={"unsigned"=true})
      */
-    public $bigintUnsigned;
+    public int $bigintUnsigned;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    public $boolean;
+    public bool $boolean;
 
     /**
      * @ORM\Column(type="country")
      */
-    public $country;
+    public string $country;
 
     /**
      * @ORM\Column(type="currency")
      */
-    public $currency;
+    public Currency $currency;
 
     /**
      * @ORM\Column(type="date")
      */
-    public $date;
+    public \DateTime $date;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    public $datetime;
+    public \DateTime $datetime;
 
     /**
      * @ORM\Column(type="decimal", precision=5, scale=3)
      */
-    public $decimal;
+    public float $decimal;
 
     /**
      * @ORM\Column(type="email")
      */
-    public $email;
+    public string $email;
 
     /**
      * @ORM\Column(type="float")
      */
-    public $float;
+    public float $float;
 
     /**
      * @ORM\Column(type="iban")
      */
-    public $iban;
+    public string $iban;
 
     /**
      * @ORM\Column(type="integer")
      */
-    public $integer;
+    public int $integer;
 
     /**
      * @ORM\Column(type="ip")
      */
-    public $ip;
+    public string $ip;
 
     /**
      * @ORM\Column(type="json")
      */
-    public $json;
+    public string $json;
 
     /**
      * @ORM\Column(type="latitude")
      */
-    public $latitude;
+    public string $latitude;
 
     /**
      * @ORM\Column(type="locale")
      */
-    public $locale;
+    public string $locale;
 
     /**
      * @ORM\Column(type="longitude")
      */
-    public $longitude;
+    public string $longitude;
 
     /**
      * @ORM\Column(type="money")
      */
-    public $money;
+    public float $money;
 
     /**
      * @ORM\Column(type="string", nullable=false)
      */
-    public $notNullable;
+    public string $notNullable;
 
     /**
      * @ORM\Column(type="percent")
      */
-    public $percent;
+    public float $percent;
 
     /**
      * @ORM\Column(type="phone")
      */
-    public $phone;
+    public string $phone;
 
     /**
      * @ORM\Column(type="phonelandline")
      */
-    public $phonelandline;
+    public string $phonelandline;
 
     /**
      * @ORM\Column(type="phonemobile")
      */
-    public $phonemobile;
+    public string $phonemobile;
 
     /**
      * @ORM\Column(type="smallint")
      */
-    public $smallint;
+    public int $smallint;
 
     /**
      * @ORM\Column(type="smallint", options={"unsigned"=true})
      */
-    public $smallintUnsigned;
+    public int $smallintUnsigned;
 
     /**
      * @ORM\Column(type="string", length=10)
      */
-    public $string;
+    public string $string;
 
     /**
      * @ORM\Column(type="text", length=10)
      */
-    public $text;
+    public string $text;
 
     /**
      * @ORM\Column(type="timezone")
      */
-    public $timezone;
+    public string $timezone;
 
     /**
      * @ORM\Column(type="uuid")
      */
-    public $uuid;
+    public string $uuid;
 
     /**
      * @ORM\Column(type="uuid_binary_ordered_time")
      */
-    public $uuid_binary_ordered_time;
+    public string $uuid_binary_ordered_time;
 
     /**
      * ASSOCIATIONS
@@ -186,23 +188,24 @@ class MyEntity
     /**
      * @ORM\ManyToOne(targetEntity="MyEntityParent")
      */
-    public $parentNullable;
+    public ?MyEntityParent $parentNullable;
 
     /**
      * @ORM\ManyToOne(targetEntity="MyEntityParent")
      * @ORM\JoinColumn(nullable=false)
      */
-    public $parentNotNullable;
+    public MyEntityParent $parentNotNullable;
 
     /**
      * @ORM\OneToMany(targetEntity="MyEntityParent", mappedBy="mainChild")
      */
-    public $mainParent;
+    public MyEntityParent $mainParent;
 
     /**
      * @ORM\ManyToMany(targetEntity="MyEntityParent")
+     * @var array<MyEntityParent>
      */
-    public $parents;
+    public array $parents;
 
     /**
      * EMBEDDABLES
@@ -211,22 +214,20 @@ class MyEntity
     /**
      * @ORM\Embedded(class="MyEmbeddable")
      */
-    public $embeddable;
+    public MyEmbeddable $embeddable;
 
     /**
-     * @var \AssoConnect\PHPDate\AbsoluteDate
-     *
      * @ORM\Column(type="date_absolute")
      */
-    public $absoluteDate;
+    public AbsoluteDate $absoluteDate;
 
     /**
      * @ORM\Column(type="frenchRna")
      */
-    public $frenchRNA;
+    public string $frenchRNA;
 
     /**
      * @ORM\Column(type="frenchSiren")
      */
-    public $frenchSIREN;
+    public string $frenchSIREN;
 }
