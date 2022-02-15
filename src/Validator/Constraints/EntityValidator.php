@@ -9,6 +9,7 @@ use AssoConnect\DoctrineTypesBundle\Doctrine\DBAL\Types\MoneyType;
 use AssoConnect\PHPDate\AbsoluteDate;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Money\Currency as CurrencyObject;
 use Money\Money as MoneyObject;
 use Symfony\Component\PropertyAccess\Exception\UnexpectedTypeException;
@@ -35,6 +36,7 @@ use Symfony\Component\Validator\Constraints\Ulid;
 use Symfony\Component\Validator\Constraints\Uuid;
 use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\ConstraintValidator;
+use Webmozart\Assert\Assert;
 
 /**
  * @Annotation
@@ -52,10 +54,18 @@ class EntityValidator extends ConstraintValidator
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    public function validate($entity, Constraint $constraint)
+    public function validate($entity, Constraint $constraint): void
     {
+        if (!$constraint instanceof Entity) {
+            throw new \Symfony\Component\Validator\Exception\UnexpectedTypeException(
+                $constraint,
+                __NAMESPACE__ . '\EmployerIdentificationNumber'
+            );
+        }
+
+        Assert::object($entity);
         $class = get_class($entity);
         $metadata = $this->em->getClassMetadata($class);
         $fields = array_keys($metadata->getReflectionProperties());
@@ -65,7 +75,7 @@ class EntityValidator extends ConstraintValidator
         foreach ($fields as $field) {
             $constraints = $this->getConstraints($class, $field);
 
-            if ($constraints) {
+            if ([] !== $constraints) {
                 // PropertyAccessor will throw an exception if a null value is found on a path
                 // (ex: path is date.start but date is NULL)
                 try {
@@ -79,6 +89,10 @@ class EntityValidator extends ConstraintValidator
         }
     }
 
+    /**
+     * @param array<mixed> $fieldMapping
+     * @return array<Constraint>
+     */
     public function getConstraintsForType(array $fieldMapping): array
     {
         $constraints = [];
@@ -137,6 +151,8 @@ class EntityValidator extends ConstraintValidator
                 break;
             case 'decimal':
                 $constraints[] = new Type('float');
+                Assert::keyExists($fieldMapping, 'precision');
+                Assert::keyExists($fieldMapping, 'scale');
                 $constraints[] = new GreaterThan(- pow(10, $fieldMapping['precision'] - $fieldMapping['scale']));
                 $constraints[] = new LessThan(pow(10, $fieldMapping['precision'] - $fieldMapping['scale']));
                 $constraints[] = new FloatScale($fieldMapping['scale']);
@@ -170,19 +186,18 @@ class EntityValidator extends ConstraintValidator
                 break;
             case 'latitude':
                 $constraints[] = new Latitude();
-                $constraints[] = new FloatScale($fieldMapping['scale'] ? : LatitudeType::DEFAULT_SCALE);
+                $constraints[] = new FloatScale($fieldMapping['scale'] ?? LatitudeType::DEFAULT_SCALE);
                 break;
             case 'locale':
-                $options['canonicalize'] = true;
-                $constraints[] = new Locale($options);
+                $constraints[] = new Locale(['canonicalize' => true]);
                 break;
             case 'longitude':
                 $constraints[] = new Longitude();
-                $constraints[] = new FloatScale($fieldMapping['scale'] ? : LongitudeType::DEFAULT_SCALE);
+                $constraints[] = new FloatScale($fieldMapping['scale'] ?? LongitudeType::DEFAULT_SCALE);
                 break;
             case 'money':
                 $constraints[] = new Money();
-                $constraints[] = new FloatScale($fieldMapping['scale'] ? : MoneyType::DEFAULT_SCALE);
+                $constraints[] = new FloatScale($fieldMapping['scale'] ?? MoneyType::DEFAULT_SCALE);
                 break;
             case 'percent':
                 $constraints[] = new Type(\AssoConnect\PHPPercent\Percent::class);
@@ -240,6 +255,9 @@ class EntityValidator extends ConstraintValidator
         return $constraints;
     }
 
+    /**
+     * @return array<Constraint>
+     */
     public function getConstraints(string $class, string $field): array
     {
         $metadata = $this->em->getClassMetadata($class);
@@ -250,7 +268,8 @@ class EntityValidator extends ConstraintValidator
             $fieldMapping = $metadata->fieldMappings[$field];
 
             // Nullable field
-            if (!$fieldMapping['nullable']) {
+            Assert::keyExists($fieldMapping, 'nullable');
+            if (true !== $fieldMapping['nullable']) {
                 $constraints[] = [new NotNull()];
             }
 
@@ -262,18 +281,18 @@ class EntityValidator extends ConstraintValidator
         } elseif (array_key_exists($field, $metadata->associationMappings)) {
             $fieldMapping = $metadata->associationMappings[$field];
 
-            if ($fieldMapping['isOwningSide']) {
-                if ($fieldMapping['type'] & ClassMetadata::TO_ONE) {
+            if (true === $fieldMapping['isOwningSide']) {
+                if (($fieldMapping['type'] & ClassMetadata::TO_ONE) !== 0) {
                     // ToOne
                     $constraints[] = new Type($fieldMapping['targetEntity']);
                     // Nullable field
                     if (
                         isset($fieldMapping['joinColumns'][0]['nullable'])
-                        && !$fieldMapping['joinColumns'][0]['nullable']
+                        && true !== $fieldMapping['joinColumns'][0]['nullable']
                     ) {
                         $constraints[] = new NotNull();
                     }
-                } elseif ($fieldMapping['type'] & ClassMetadata::TO_MANY) {
+                } elseif (($fieldMapping['type'] & ClassMetadata::TO_MANY) !== 0) {
                     // ToMany
                     $constraints[] = new All(
                         [

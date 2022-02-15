@@ -20,6 +20,7 @@ use AssoConnect\ValidatorBundle\Validator\Constraints\PhoneLandline;
 use AssoConnect\ValidatorBundle\Validator\Constraints\PhoneMobile;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Money\Currency;
 use Money\Money;
 use Symfony\Component\Validator\Constraint;
@@ -45,58 +46,60 @@ use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\Constraints\Currency as CurrencyConstraint;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
 
+/**
+ * @psalm-import-type FieldMapping from ClassMetadataInfo
+ */
 class EntityValidatorTest extends ConstraintValidatorTestCase
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
-
-    /**
-     * @var ClassMetadata
-     */
-    protected $metadata;
+    protected EntityManagerInterface $em;
 
     protected function setUp(): void
     {
-        $this->entityManager = $this->createMock(EntityManagerInterface::class);
-        $this->entityManager->method('getClassMetadata')->willReturn($this->getMockClassMetadata());
+        $this->em = $this->createMock(EntityManagerInterface::class);
+        $this->em->method('getClassMetadata')->willReturn($this->getMockClassMetadata());
 
         parent::setUp();
     }
 
-    public function getConstraint($options = []): Constraint
+    public function getConstraint(): Constraint
     {
-        return new Entity($options);
+        return new Entity();
     }
 
-    public function createValidator(): ConstraintValidatorInterface
+    public function createValidator(): EntityValidator
     {
-        return new EntityValidator($this->entityManager);
+        return new EntityValidator($this->em);
     }
 
-    public function testGetConstraintsForTypeUnknown()
+    public function testGetConstraintsForTypeUnknown(): void
     {
         $fieldMapping = [
             'type' => 'fail'
         ];
 
         $this->expectException(\DomainException::class);
+        self::assertInstanceOf(EntityValidator::class, $this->validator);
         $this->validator->getConstraintsForType($fieldMapping);
     }
 
     /**
+     * @param FieldMapping $fieldMapping
+     * @param array<Constraint> $constraints
      * @dataProvider getConstraintsForTypeProvider
      */
-    public function testGetConstraintsForType($fieldMapping, $constraints)
+    public function testGetConstraintsForType(array $fieldMapping, array $constraints): void
     {
-        $this->assertArrayContainsSameObjects(
+        self::assertInstanceOf(EntityValidator::class, $this->validator);
+        self::assertArrayContainsSameObjects(
             $this->validator->getConstraintsForType($fieldMapping),
             $constraints
         );
     }
 
-    public function getConstraintsForTypeProvider()
+    /**
+     * @return iterable<mixed>
+     */
+    public function getConstraintsForTypeProvider(): iterable
     {
         yield [
             ['type' => 'amount'],
@@ -348,89 +351,99 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
         ];
     }
 
-    public function testGetConstraintsForNullableField()
+    public function testGetConstraintsForNullableField(): void
     {
-        $this->assertArrayContainsSameObjects(
+        self::assertInstanceOf(EntityValidator::class, $this->validator);
+        self::assertArrayContainsSameObjects(
             $this->validator->getConstraints('class', 'nullable'),
             [new Country()]
         );
     }
 
-    public function testGetConstraintsForNotNullableField()
+    public function testGetConstraintsForNotNullableField(): void
     {
-        $this->assertArrayContainsSameObjects(
+        self::assertInstanceOf(EntityValidator::class, $this->validator);
+        self::assertArrayContainsSameObjects(
             $this->validator->getConstraints('class', 'notnullable'),
             [new NotNull(), new Country()]
         );
     }
 
-    public function testGetConstraintsForEmbeddable()
+    public function testGetConstraintsForEmbeddable(): void
     {
-        $this->assertArrayContainsSameObjects(
+        self::assertInstanceOf(EntityValidator::class, $this->validator);
+        self::assertArrayContainsSameObjects(
             $this->validator->getConstraints('class', 'embedded'),
             [new Valid()]
         );
     }
 
-    public function testGetConstraintsForRelationNotOWningSide()
+    public function testGetConstraintsForRelationNotOWningSide(): void
     {
-        $this->assertEmpty($this->validator->getConstraints('class', 'notowning'));
+        self::assertInstanceOf(EntityValidator::class, $this->validator);
+        self::assertEmpty($this->validator->getConstraints('class', 'notowning'));
     }
 
-    public function testGetConstraintsForRelationToOne()
+    public function testGetConstraintsForRelationToOne(): void
     {
-        $this->assertArrayContainsSameObjects(
+        self::assertInstanceOf(EntityValidator::class, $this->validator);
+        self::assertArrayContainsSameObjects(
             $this->validator->getConstraints('class', 'owningToOne'),
             [new Type(MyEntityParent::class)]
         );
     }
 
-    public function testGetConstraintsForRelationToOneNotNullable()
+    public function testGetConstraintsForRelationToOneNotNullable(): void
     {
-        $this->assertArrayContainsSameObjects(
+        self::assertInstanceOf(EntityValidator::class, $this->validator);
+        self::assertArrayContainsSameObjects(
             $this->validator->getConstraints('class', 'owningToOneNotNull'),
             [new Type(MyEntityParent::class), new NotNull()]
         );
     }
 
-    public function testGetConstraintsForRelationToMany()
+    public function testGetConstraintsForRelationToMany(): void
     {
+        self::assertInstanceOf(EntityValidator::class, $this->validator);
         $constraints = $this->validator->getConstraints('class', 'owningToMany');
-        $this->assertArrayContainsSameObjects(
+        self::assertArrayContainsSameObjects(
             $constraints,
             [new All(['constraints' => [new Type(MyEntityParent::class)]])]
         );
-        $this->assertArrayContainsSameObjects(
+        self::assertInstanceOf(All::class, $constraints[0]);
+        self::assertArrayContainsSameObjects(
             $constraints[0]->constraints,
             [new Type(MyEntityParent::class)]
         );
     }
 
-    public function testGetConstraintsForRelationUnknown()
+    public function testGetConstraintsForRelationUnknown(): void
     {
         $this->expectException(\DomainException::class);
 
+        self::assertInstanceOf(EntityValidator::class, $this->validator);
         $this->validator->getConstraints('class', 'owningUnknown');
     }
 
-    public function testGetConstraintsForUnknownField()
+    public function testGetConstraintsForUnknownField(): void
     {
         $this->expectException(\LogicException::class);
 
+        self::assertInstanceOf(EntityValidator::class, $this->validator);
         $this->validator->getConstraints('class', 'unknown');
     }
 
-    public function providerInvalidValue(): array
+    public function providerInvalidValues(): iterable
     {
         return [];
     }
 
-    public function providerValidValue(): array
+    public function providerValidValues(): iterable
     {
         return [];
     }
 
-    private function getMockClassMetadata()
+    private function getMockClassMetadata(): \stdClass
     {
         $metadata = new \stdClass();
         $metadata->fieldMappings = [

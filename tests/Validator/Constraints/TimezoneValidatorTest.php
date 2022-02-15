@@ -11,9 +11,9 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class TimezoneValidatorTest extends ConstraintValidatorTestCase
 {
-    public function getConstraint($options = []): Constraint
+    public function getConstraint(): Constraint
     {
-        return new Timezone($options);
+        return new Timezone();
     }
 
     public function createValidator(): ConstraintValidatorInterface
@@ -21,64 +21,26 @@ class TimezoneValidatorTest extends ConstraintValidatorTestCase
         return new TimezoneValidator();
     }
 
-    public function testNullIsValid()
-    {
-        $this->validator->validate(null, new Timezone());
-
-        $this->assertNoViolation();
-    }
-
-    public function testEmptyStringIsValid()
-    {
-        $this->validator->validate('', new Timezone());
-
-        $this->assertNoViolation();
-    }
-
-    public function testExpectsStringCompatibleType()
+    public function testExpectsStringCompatibleType(): void
     {
         $this->expectException(UnexpectedTypeException::class);
         $this->validator->validate(new \stdClass(), new Timezone());
     }
 
-    /**
-     * @dataProvider getValidTimezones
-     * @param $timezone
-     */
-    public function testValidTimezones($timezone)
+    public function providerValidValues(): iterable
     {
-        $this->validator->validate($timezone, new Timezone());
-
-        $this->assertNoViolation();
+        yield [null];
+        yield [''];
+        yield ['Europe/Paris'];
+        yield ['Europe/Berlin'];
     }
 
-    public function getValidTimezones()
+    public function providerInvalidValues(): iterable
     {
-        return array(
-            array('Europe/Paris'),
-            array('Europe/Berlin'),
-        );
-    }
-
-    /**
-     * @dataProvider getInvalidTimezones
-     * @param $timezone
-     */
-    public function testInvalidTimezones($timezone)
-    {
-        $this->validator->validate($timezone, $this->getConstraint(['message' => 'myMessage']));
-
-        $this->buildViolation('myMessage')
-            ->setParameter('{{ value }}', '"' . $timezone . '"')
-            ->setCode(Timezone::NO_SUCH_TIMEZONE_ERROR)
-            ->assertRaised();
-    }
-
-    public function getInvalidTimezones()
-    {
-        return [
-            ['EN'],
-            ['foobar'],
+        yield [
+            'EN',
+            Timezone::NO_SUCH_TIMEZONE_ERROR,
+            'The value {{ value }} is not a valid timezone.'
         ];
     }
 }

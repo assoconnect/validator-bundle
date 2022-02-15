@@ -2,32 +2,24 @@
 
 namespace AssoConnect\ValidatorBundle\Tests\Validator\Constraints;
 
-use AssoConnect\ValidatorBundle\Test\ConstraintValidatorWithKernelTestCase;
+use AssoConnect\ValidatorBundle\Test\ConstraintValidatorTestCase;
 use AssoConnect\ValidatorBundle\Validator\Constraints\Percent;
 use AssoConnect\ValidatorBundle\Validator\Constraints\PercentValidator;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Validator\Constraints\LessThanOrEqual;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
 
-class PercentValidatorTest extends ConstraintValidatorWithKernelTestCase
+class PercentValidatorTest extends ConstraintValidatorTestCase
 {
-    /**
-     * @var ConstraintValidatorInterface
-     */
-    private $percentValidator;
-
-    public function setUp(): void
+    public function getConstraint(): Constraint
     {
-        self::bootKernel();
-
-        $this->validator = self::$kernel->getContainer()->get('validator');
-        $this->percentValidator = $this->createValidator();
-    }
-    public function getConstraint($options = []): Constraint
-    {
-        return new Percent($options);
+        return new Percent([
+            'min' => 10,
+            'max' => 50,
+        ]);
     }
 
     public function createValidator(): ConstraintValidatorInterface
@@ -35,61 +27,54 @@ class PercentValidatorTest extends ConstraintValidatorWithKernelTestCase
         return new PercentValidator();
     }
 
-    public function testIsEmptyStringAccepted()
+    public function providerValidValues(): iterable
     {
-        $this->assertFalse($this->percentValidator->isEmptyStringAccepted());
+        yield [null];
+        yield [10.0];
+        yield [10];
+        yield [25.0];
+        yield [50.0];
+        yield [50];
     }
 
-    public function testGetSupportedConstraint()
+    public function providerInvalidValues(): iterable
     {
-        $this->assertSame(Percent::class, $this->percentValidator->getSupportedConstraint());
-    }
-
-    /**
-     * @dataProvider getConstraintsProvider
-     * @param $value
-     * @param $constraints
-     */
-    public function testGetConstraints($value, $constraints)
-    {
-        $this->assertArrayContainsSameObjects(
-            $constraints,
-            $this->percentValidator->getConstraints($value, $this->getConstraint(['min' => 0, 'max' => 90]))
-        );
-    }
-
-    public function getConstraintsProvider(): array
-    {
-        return [
-            [18.1, [new GreaterThanOrEqual(0), new LessThanOrEqual(90)]],
-            [18, [new GreaterThanOrEqual(0), new LessThanOrEqual(90)]],
-            ['18', [new Type('float')]]
+        yield [
+            'a',
+            Type::INVALID_TYPE_ERROR,
+            'This value should be of type {{ type }}.',
+            [
+                '{{ type }}' => 'float',
+                '{{ value }}' => '"a"',
+            ]
         ];
-    }
 
-    public function providerValidValue(): array
-    {
-        return [
-            [null],
-            [0.0],
-            [0],
-            [25.0],
-            [100.0],
-            [100],
+        yield [
+            '',
+            NotBlank::IS_BLANK_ERROR,
+            'This value should not be blank.'
         ];
-    }
 
-    public function providerInvalidValue(): array
-    {
-        return [
-            // Value type
-            ['', array(), [Type::INVALID_TYPE_ERROR]],
-            // Default range
-            [-1, array(), [GreaterThanOrEqual::TOO_LOW_ERROR]],
-            [10001, array(), [LessThanOrEqual::TOO_HIGH_ERROR]],
-            // Custom range
-            [0, array('min' => 10), [GreaterThanOrEqual::TOO_LOW_ERROR]],
-            [11, array('max' => 10), [LessThanOrEqual::TOO_HIGH_ERROR]],
+        yield [
+            5,
+            GreaterThanOrEqual::TOO_LOW_ERROR,
+            'This value should be greater than or equal to {{ compared_value }}.',
+            [
+                '{{ value }}' => '5',
+                '{{ compared_value_type }}' => 'int',
+                '{{ compared_value }}' => '10',
+            ]
+        ];
+
+        yield [
+            60,
+            LessThanOrEqual::TOO_HIGH_ERROR,
+            'This value should be less than or equal to {{ compared_value }}.',
+            [
+                '{{ value }}' => '60',
+                '{{ compared_value_type }}' => 'int',
+                '{{ compared_value }}' => '50',
+            ]
         ];
     }
 }

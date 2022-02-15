@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class EmailValidator extends _EmailValidator
 {
-    private $manager;
+    private Manager $manager;
 
     public function __construct(Manager $manager, string $defaultMode = Email::VALIDATION_MODE_LOOSE)
     {
@@ -25,7 +25,7 @@ class EmailValidator extends _EmailValidator
         $this->manager = $manager;
     }
 
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof Email) {
             throw new UnexpectedTypeException($constraint, __NAMESPACE__ . '\Email');
@@ -36,7 +36,7 @@ class EmailValidator extends _EmailValidator
 
         // 1. PHP filter_var() function
         // First one because it is a quick one
-        if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
+        if (false === filter_var($value, FILTER_VALIDATE_EMAIL)) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ value }}', $this->formatValue($value))
                 ->setCode(Email::INVALID_FORMAT_ERROR)

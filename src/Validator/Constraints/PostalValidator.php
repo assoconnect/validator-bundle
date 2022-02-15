@@ -278,12 +278,12 @@ class PostalValidator extends ConstraintValidator
         'ZW' => null, // Zimbabwe
     ];
 
-    private $propertyAccessor;
+    private ?PropertyAccessor $propertyAccessor = null;
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof Postal) {
             throw new UnexpectedTypeException($constraint, Postal::class);
@@ -311,9 +311,9 @@ class PostalValidator extends ConstraintValidator
         }
 
         if (!array_key_exists($country, self::POSTALS)) {
-            $this->context->buildViolation(Postal::getErrorName(Postal::UNEXPECTED_COUNTRY_ERROR))
-                ->setParameter('{{ value }}', $this->formatValue($country))
-                ->setCode(Postal::UNEXPECTED_COUNTRY_ERROR)
+            $this->context->buildViolation($constraint->unknownCountryMessage)
+                ->setParameter('{{ country }}', $this->formatValue($country))
+                ->setCode(Postal::UNKNOWN_COUNTRY_ERROR)
                 ->addViolation();
 
             return;
@@ -323,7 +323,7 @@ class PostalValidator extends ConstraintValidator
             // There is no postal value
             if (null !== self::POSTALS[$country]) {
                 // But the country requires one
-                $this->context->buildViolation(Postal::getErrorName(Postal::MISSING_ERROR))
+                $this->context->buildViolation($constraint->missingPostalCodeMessage)
                     ->setCode(Postal::MISSING_ERROR)
                     ->addViolation();
             }
@@ -332,16 +332,17 @@ class PostalValidator extends ConstraintValidator
         // There is a postal value
         if (null === self::POSTALS[$country]) {
             // But the country does not require one
-            $this->context->buildViolation(Postal::getErrorName(Postal::NOT_REQUIRED_ERROR))
-                ->setCode(Postal::NOT_REQUIRED_ERROR)
+            $this->context->buildViolation($constraint->noPostalCodeMessage)
+                ->setCode(Postal::NO_POSTAL_CODE_SYSTEM)
+                ->setParameter('{{ country }}', $this->formatValue($country))
                 ->addViolation();
 
             return;
         }
 
-        if (!preg_match('/' . self::POSTALS[$country] . '/', $value)) {
+        if (1 !== preg_match('/' . self::POSTALS[$country] . '/', $value)) {
             // And the country requires one but the postal format does not match the country's requirement
-            $this->context->buildViolation(Postal::getErrorName(Postal::INVALID_FORMAT_ERROR))
+            $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ value }}', $this->formatValue($value))
                 ->setCode(Postal::INVALID_FORMAT_ERROR)
                 ->addViolation();

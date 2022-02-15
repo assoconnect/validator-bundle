@@ -15,10 +15,9 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class EmployerIdentificationNumberValidatorTest extends ConstraintValidatorTestCase
 {
-
-    public function getConstraint($options = []): Constraint
+    public function getConstraint(): Constraint
     {
-        return new EmployerIdentificationNumber($options);
+        return new EmployerIdentificationNumber();
     }
 
     public function createValidator(): ConstraintValidatorInterface
@@ -26,49 +25,26 @@ class EmployerIdentificationNumberValidatorTest extends ConstraintValidatorTestC
         return new EmployerIdentificationNumberValidator();
     }
 
-    public function testGetSupportedConstraint()
-    {
-        $this->assertSame(EmployerIdentificationNumber::class, $this->validator->getSupportedConstraint());
-    }
-
-    /**
-     * @dataProvider validateValueDataProvider
-     */
-    public function testValidateValue(?string $value)
-    {
-        $this->validator->validate($value, $this->getConstraint());
-        $this->assertNoViolation();
-    }
-
-    public function validateValueDataProvider()
+    public function providerValidValues(): iterable
     {
         yield 'empty value' => [''];
         yield 'null value' => [null];
         yield 'valid EIN' => ['12-3456789'];
     }
 
-    public function testWrongTypeValue()
+    public function testWrongTypeValue(): void
     {
         $value = 42;
         $this->expectException(UnexpectedTypeException::class);
         $this->validator->validate($value, $this->getConstraint());
     }
 
-    /**
-     * @dataProvider invalidValueDataProvider
-     */
-    public function testInvalidValue(string $value, string $error)
+    public function providerInvalidValues(): iterable
     {
-        $this->validator->validate($value, $this->getConstraint());
-
-        $this->buildViolation('The value {{ value }} is not a valid employer identification number.')
-            ->setParameter('{{ value }}', '"' . $value . '"')
-            ->setCode($error)
-            ->assertRaised();
-    }
-
-    public function invalidValueDataProvider()
-    {
-        yield 'EIN in wrong format' => ['123456789', EmployerIdentificationNumber::WRONG_FORMAT_ERROR];
+        yield 'EIN in wrong format' => [
+            '123456789',
+            EmployerIdentificationNumber::WRONG_FORMAT_ERROR,
+            'The value {{ value }} is not a valid employer identification number.'
+        ];
     }
 }

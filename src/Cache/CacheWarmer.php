@@ -13,21 +13,23 @@ use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmerInterface;
  */
 class CacheWarmer implements CacheWarmerInterface
 {
-    private $cacheFolder;
+    private string $cacheFolder;
 
     public function __construct(string $cacheFolder)
     {
         $this->cacheFolder = $cacheFolder;
     }
 
-    public function warmUp($cacheDir)
+    public function warmUp(string $cacheDir): array
     {
         $filesystem = new Filesystem();
 
-        $filesystem->mkdir($cacheDir . DIRECTORY_SEPARATOR . $this->cacheFolder);
+        $filesystem->mkdir($dir = $cacheDir . DIRECTORY_SEPARATOR . $this->cacheFolder);
+
+        return [$dir];
     }
 
-    public function isOptional()
+    public function isOptional(): bool
     {
         return false;
     }

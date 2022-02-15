@@ -15,21 +15,11 @@ class Email extends _Email
     public const INVALID_TLD_ERROR = 'd125a480-3efd-45dd-9a59-6058fccc4fe4';
     public const INVALID_DNS_ERROR = '5fca88ed-2534-4f78-b02d-397c111274ed';
 
-    public $tldMessage = '{{ domain }} is not a valid domain name.';
-    public $dnsMessage = '{{ domain }} is not setup to received emails.';
+    public string $tldMessage = 'The value {{ domain }} is not a valid domain name.';
+    public string $dnsMessage = 'The domain {{ domain }} is not setup to received emails.';
 
+    /** @var mixed */
     public $mode = 'strict';
 
-    public $checkDNS = false;
-
-    public function __construct($options = null)
-    {
-        // Parent constructor
-        parent::__construct($options);
-        // Add constant in $errorName
-        self::$errorNames += [
-            self::INVALID_TLD_ERROR => 'INVALID_TLD_ERROR',
-            self::INVALID_DNS_ERROR => 'INVALID_DNS_ERROR',
-        ];
-    }
+    public bool $checkDNS = false;
 }
