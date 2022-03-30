@@ -26,6 +26,10 @@ class TimezoneValidator extends ConstraintValidator
             return;
         }
 
+        if ($value instanceof \DateTimeZone) {
+            $value = $value->getName();
+        }
+
         if (!is_string($value)) {
             throw new UnexpectedTypeException($value, 'string');
         }

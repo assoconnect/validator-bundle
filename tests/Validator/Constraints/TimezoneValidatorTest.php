@@ -33,6 +33,7 @@ class TimezoneValidatorTest extends ConstraintValidatorTestCase
         yield [''];
         yield ['Europe/Paris'];
         yield ['Europe/Berlin'];
+        yield [new \DateTimeZone('Europe/Paris')];
     }
 
     public function providerInvalidValues(): iterable
