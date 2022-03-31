@@ -35,6 +35,7 @@ class PercentValidatorTest extends ConstraintValidatorTestCase
         yield [25.0];
         yield [50.0];
         yield [50];
+        yield [new \AssoConnect\PHPPercent\Percent(20)];
     }
 
     public function providerInvalidValues(): iterable

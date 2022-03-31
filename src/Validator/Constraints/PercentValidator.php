@@ -24,6 +24,14 @@ class PercentValidator extends ComposeValidator
         return false;
     }
 
+    protected function sanitizeValue($value)
+    {
+        if ($value instanceof \AssoConnect\PHPPercent\Percent) {
+            $value = $value->toInteger();
+        }
+        return $value;
+    }
+
     protected function getValidatorsAndConstraints($value, Constraint $constraint): array
     {
         if (!$constraint instanceof Percent) {
