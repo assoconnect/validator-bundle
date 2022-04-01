@@ -24,6 +24,12 @@ abstract class ComposeValidator extends ConstraintValidator
 
     abstract protected function isEmptyStringAccepted(): bool;
 
+    /** Used when value type is not accepted by the recursive constraints used in validate() method */
+    protected function sanitizeValue($value)
+    {
+        return $value;
+    }
+
     public function validate($value, Constraint $constraint): void
     {
         $supportedConstraint = $this->getSupportedConstraint();
@@ -44,6 +50,7 @@ abstract class ComposeValidator extends ConstraintValidator
             return;
         }
 
+        $value = $this->sanitizeValue($value);
         $validatorAndConstraints = $this->getValidatorsAndConstraints($value, $constraint);
 
         foreach ($validatorAndConstraints as $validatorAndConstraint) {
