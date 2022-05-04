@@ -33,6 +33,7 @@ class Phone extends Constraint
             PhoneNumberType::VOIP,
             PhoneNumberType::TOLL_FREE,
             PhoneNumberType::STANDARD_RATE,
+            PhoneNumberType::PREMIUM_RATE,
             PhoneNumberType::PERSONAL_NUMBER,
             PhoneNumberType::PAGER,
         ];
