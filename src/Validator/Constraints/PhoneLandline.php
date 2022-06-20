@@ -17,6 +17,7 @@ class PhoneLandline extends Phone
         return [
             PhoneNumberType::FIXED_LINE_OR_MOBILE,
             PhoneNumberType::FIXED_LINE,
+            PhoneNumberType::UAN,
             PhoneNumberType::VOIP,
         ];
     }
