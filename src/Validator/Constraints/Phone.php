@@ -31,6 +31,7 @@ class Phone extends Constraint
             PhoneNumberType::MOBILE,
             PhoneNumberType::SHARED_COST,
             PhoneNumberType::VOIP,
+            PhoneNumberType::UAN,
             PhoneNumberType::TOLL_FREE,
             PhoneNumberType::STANDARD_RATE,
             PhoneNumberType::PREMIUM_RATE,
