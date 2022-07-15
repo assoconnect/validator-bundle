@@ -1,0 +1,31 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Property AssoConnect\\\\ValidatorBundle\\\\Test\\\\Functional\\\\App\\\\Entity\\\\MyEntity\\:\\:\\$decimal cannot have float as its type \\- floats are not allowed\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Property AssoConnect\\\\ValidatorBundle\\\\Test\\\\Functional\\\\App\\\\Entity\\\\MyEntity\\:\\:\\$float cannot have float as its type \\- floats are not allowed\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Property AssoConnect\\\\ValidatorBundle\\\\Test\\\\Functional\\\\App\\\\Entity\\\\MyEntity\\:\\:\\$money cannot have float as its type \\- floats are not allowed\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Property AssoConnect\\\\ValidatorBundle\\\\Test\\\\Functional\\\\App\\\\Entity\\\\MyEntity\\:\\:\\$percent cannot have float as its type \\- floats are not allowed\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Property AssoConnect\\\\ValidatorBundle\\\\Validator\\\\Constraints\\\\Money\\:\\:\\$max cannot have float as its type \\- floats are not allowed\\.$#"
+			count: 1
+			path: src/Validator/Constraints/Money.php
+
+		-
+			message: "#^Property AssoConnect\\\\ValidatorBundle\\\\Validator\\\\Constraints\\\\Money\\:\\:\\$min cannot have float as its type \\- floats are not allowed\\.$#"
+			count: 1
+			path: src/Validator/Constraints/Money.php

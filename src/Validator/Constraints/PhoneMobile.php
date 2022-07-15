@@ -17,6 +17,8 @@ class PhoneMobile extends Phone
         return [
             PhoneNumberType::FIXED_LINE_OR_MOBILE,
             PhoneNumberType::MOBILE,
+            PhoneNumberType::PAGER,
+            PhoneNumberType::PERSONAL_NUMBER,
         ];
     }
 
