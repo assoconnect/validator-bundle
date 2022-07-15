@@ -24,6 +24,9 @@ class PercentValidator extends ComposeValidator
         return false;
     }
 
+    /**
+     * @inheritDoc
+     */
     protected function sanitizeValue($value)
     {
         if ($value instanceof \AssoConnect\PHPPercent\Percent) {

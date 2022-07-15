@@ -17,6 +17,11 @@ class PhoneLandline extends Phone
         return [
             PhoneNumberType::FIXED_LINE_OR_MOBILE,
             PhoneNumberType::FIXED_LINE,
+            PhoneNumberType::PERSONAL_NUMBER,
+            PhoneNumberType::PREMIUM_RATE,
+            PhoneNumberType::SHARED_COST,
+            PhoneNumberType::STANDARD_RATE,
+            PhoneNumberType::TOLL_FREE,
             PhoneNumberType::UAN,
             PhoneNumberType::VOIP,
         ];

@@ -9,3 +9,4 @@ includes:
     - vendor/phpstan/phpstan-strict-rules/rules.neon
     - vendor/phpstan/phpstan-webmozart-assert/extension.neon
     - vendor/roave/no-floaters/rules.neon
+    - ./phpstan-baseline.neon
