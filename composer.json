@@ -50,6 +50,7 @@
     "phpstan/phpstan": "^1.4",
     "phpstan/phpstan-phpunit": "^1.0",
     "phpstan/phpstan-strict-rules": "^1.1",
-    "phpstan/phpstan-webmozart-assert": "^1.0"
+    "phpstan/phpstan-webmozart-assert": "^1.0",
+    "roave/no-floaters": "^1.5"
   }
 }
