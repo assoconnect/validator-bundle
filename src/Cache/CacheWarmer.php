@@ -24,9 +24,9 @@ class CacheWarmer implements CacheWarmerInterface
     {
         $filesystem = new Filesystem();
 
-        $filesystem->mkdir($dir = $cacheDir . DIRECTORY_SEPARATOR . $this->cacheFolder);
+        $filesystem->mkdir($cacheDir . DIRECTORY_SEPARATOR . $this->cacheFolder);
 
-        return [$dir];
+        return [];
     }
 
     public function isOptional(): bool
