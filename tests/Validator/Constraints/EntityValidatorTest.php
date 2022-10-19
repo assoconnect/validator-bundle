@@ -107,6 +107,11 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
         ];
 
         yield [
+            ['type' => 'amountAsBigint'],
+            [new Type(Money::class)]
+        ];
+
+        yield [
             ['type' => 'array'],
             [new Type('array')],
         ];

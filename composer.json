@@ -35,7 +35,7 @@
     "assoconnect/php-date": "^2.0",
     "doctrine/orm": "^2.7",
     "symfony/intl": "^4.3|^5.0",
-    "assoconnect/doctrine-types-bundle": "^2.3",
+    "assoconnect/doctrine-types-bundle": "dev-feature_amount_as_bigint",
     "assoconnect/php-percent":"^1.1",
     "assoconnect/absolute-percent-value-bundle": "^1.1",
     "webmozart/assert": "^1.10"
