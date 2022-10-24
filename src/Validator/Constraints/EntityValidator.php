@@ -102,6 +102,7 @@ class EntityValidator extends ConstraintValidator
                 $constraints[] = new Type(AbsolutePercentValue::class);
                 break;
             case 'amount':
+            case 'amountAsBigint':
                 $constraints[] = new Type(MoneyObject::class);
                 break;
             case 'array':
