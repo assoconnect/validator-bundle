@@ -128,7 +128,7 @@ class PostalValidator extends ConstraintValidator
         'HT' => self::FOUR_DIGIT_FORMAT, // Haiti
         'HU' => self::FOUR_DIGIT_FORMAT, // Hungary
         'ID' => self::FIVE_DIGIT_FORMAT, // Indonesia
-        'IE' => '^[A-Z][0-9](W|[0-9]) [A-Z]([0-9][A-Z][0-9]|[A-Z][0-9]{2}|[0-9][A-Z]{2})$', // Ireland
+        'IE' => '^([AC-FHKNPRTV-Y][0-9]{2}|D6W)[ -]?[0-9AC-FHKNPRTV-Y]{4}$', // Ireland
         'IL' => '^([0-9]{5}|[0-9]{7})$', // Israel
         'IM' => '^IM[0-9]{1,2} [0-9]{1}[A-Z]{2}$', // Isle of Man
         'IN' => '^[0-9]{3} ?[0-9]{3}$', // India  //
