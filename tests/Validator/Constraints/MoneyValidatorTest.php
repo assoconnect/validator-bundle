@@ -5,7 +5,6 @@ namespace AssoConnect\ValidatorBundle\Tests\Validator\Constraints;
 use AssoConnect\ValidatorBundle\Test\ConstraintValidatorTestCase;
 use AssoConnect\ValidatorBundle\Validator\Constraints\Money;
 use AssoConnect\ValidatorBundle\Validator\Constraints\MoneyValidator;
-use Ramsey\Collection\Map\TypedMap;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Validator\Constraints\LessThan;
