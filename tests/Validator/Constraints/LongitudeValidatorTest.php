@@ -3,7 +3,6 @@
 namespace AssoConnect\ValidatorBundle\Tests\Validator\Constraints;
 
 use AssoConnect\ValidatorBundle\Test\ConstraintValidatorTestCase;
-use AssoConnect\ValidatorBundle\Validator\Constraints\LatitudeValidator;
 use AssoConnect\ValidatorBundle\Validator\Constraints\Longitude;
 use AssoConnect\ValidatorBundle\Validator\Constraints\LongitudeValidator;
 use Symfony\Component\Validator\Constraint;

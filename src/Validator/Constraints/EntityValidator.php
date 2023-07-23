@@ -9,7 +9,6 @@ use AssoConnect\DoctrineTypesBundle\Doctrine\DBAL\Types\MoneyType;
 use AssoConnect\PHPDate\AbsoluteDate;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
-use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Money\Currency as CurrencyObject;
 use Money\Money as MoneyObject;
 use Symfony\Component\PropertyAccess\Exception\UnexpectedTypeException;

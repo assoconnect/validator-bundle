@@ -4,13 +4,9 @@ namespace AssoConnect\ValidatorBundle\Tests\Validator\Constraints;
 
 use AssoConnect\ValidatorBundle\Test\ConstraintValidatorTestCase;
 use AssoConnect\ValidatorBundle\Validator\Constraints\Phone;
-use AssoConnect\ValidatorBundle\Validator\Constraints\PhoneLandline;
-use AssoConnect\ValidatorBundle\Validator\Constraints\PhoneMobile;
 use AssoConnect\ValidatorBundle\Validator\Constraints\PhoneValidator;
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
-use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class PhoneValidatorTest extends ConstraintValidatorTestCase
 {

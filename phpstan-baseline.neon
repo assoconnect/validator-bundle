@@ -1,6 +1,211 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Test\\\\Functional\\\\App\\\\Entity\\\\MyEntity has an uninitialized property \\$absoluteDate\\. Give it default value or assign it in the constructor\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Test\\\\Functional\\\\App\\\\Entity\\\\MyEntity has an uninitialized property \\$array\\. Give it default value or assign it in the constructor\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Test\\\\Functional\\\\App\\\\Entity\\\\MyEntity has an uninitialized property \\$bic\\. Give it default value or assign it in the constructor\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Test\\\\Functional\\\\App\\\\Entity\\\\MyEntity has an uninitialized property \\$bigint\\. Give it default value or assign it in the constructor\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Test\\\\Functional\\\\App\\\\Entity\\\\MyEntity has an uninitialized property \\$bigintUnsigned\\. Give it default value or assign it in the constructor\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Test\\\\Functional\\\\App\\\\Entity\\\\MyEntity has an uninitialized property \\$boolean\\. Give it default value or assign it in the constructor\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Test\\\\Functional\\\\App\\\\Entity\\\\MyEntity has an uninitialized property \\$country\\. Give it default value or assign it in the constructor\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Test\\\\Functional\\\\App\\\\Entity\\\\MyEntity has an uninitialized property \\$currency\\. Give it default value or assign it in the constructor\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Test\\\\Functional\\\\App\\\\Entity\\\\MyEntity has an uninitialized property \\$date\\. Give it default value or assign it in the constructor\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Test\\\\Functional\\\\App\\\\Entity\\\\MyEntity has an uninitialized property \\$datetime\\. Give it default value or assign it in the constructor\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Test\\\\Functional\\\\App\\\\Entity\\\\MyEntity has an uninitialized property \\$decimal\\. Give it default value or assign it in the constructor\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Test\\\\Functional\\\\App\\\\Entity\\\\MyEntity has an uninitialized property \\$email\\. Give it default value or assign it in the constructor\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Test\\\\Functional\\\\App\\\\Entity\\\\MyEntity has an uninitialized property \\$embeddable\\. Give it default value or assign it in the constructor\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Test\\\\Functional\\\\App\\\\Entity\\\\MyEntity has an uninitialized property \\$float\\. Give it default value or assign it in the constructor\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Test\\\\Functional\\\\App\\\\Entity\\\\MyEntity has an uninitialized property \\$frenchRNA\\. Give it default value or assign it in the constructor\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Test\\\\Functional\\\\App\\\\Entity\\\\MyEntity has an uninitialized property \\$frenchSIREN\\. Give it default value or assign it in the constructor\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Test\\\\Functional\\\\App\\\\Entity\\\\MyEntity has an uninitialized property \\$iban\\. Give it default value or assign it in the constructor\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Test\\\\Functional\\\\App\\\\Entity\\\\MyEntity has an uninitialized property \\$id\\. Give it default value or assign it in the constructor\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Test\\\\Functional\\\\App\\\\Entity\\\\MyEntity has an uninitialized property \\$integer\\. Give it default value or assign it in the constructor\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Test\\\\Functional\\\\App\\\\Entity\\\\MyEntity has an uninitialized property \\$ip\\. Give it default value or assign it in the constructor\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Test\\\\Functional\\\\App\\\\Entity\\\\MyEntity has an uninitialized property \\$json\\. Give it default value or assign it in the constructor\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Test\\\\Functional\\\\App\\\\Entity\\\\MyEntity has an uninitialized property \\$latitude\\. Give it default value or assign it in the constructor\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Test\\\\Functional\\\\App\\\\Entity\\\\MyEntity has an uninitialized property \\$locale\\. Give it default value or assign it in the constructor\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Test\\\\Functional\\\\App\\\\Entity\\\\MyEntity has an uninitialized property \\$longitude\\. Give it default value or assign it in the constructor\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Test\\\\Functional\\\\App\\\\Entity\\\\MyEntity has an uninitialized property \\$mainParent\\. Give it default value or assign it in the constructor\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Test\\\\Functional\\\\App\\\\Entity\\\\MyEntity has an uninitialized property \\$money\\. Give it default value or assign it in the constructor\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Test\\\\Functional\\\\App\\\\Entity\\\\MyEntity has an uninitialized property \\$notNullable\\. Give it default value or assign it in the constructor\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Test\\\\Functional\\\\App\\\\Entity\\\\MyEntity has an uninitialized property \\$parentNotNullable\\. Give it default value or assign it in the constructor\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Test\\\\Functional\\\\App\\\\Entity\\\\MyEntity has an uninitialized property \\$parentNullable\\. Give it default value or assign it in the constructor\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Test\\\\Functional\\\\App\\\\Entity\\\\MyEntity has an uninitialized property \\$parents\\. Give it default value or assign it in the constructor\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Test\\\\Functional\\\\App\\\\Entity\\\\MyEntity has an uninitialized property \\$percent\\. Give it default value or assign it in the constructor\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Test\\\\Functional\\\\App\\\\Entity\\\\MyEntity has an uninitialized property \\$phone\\. Give it default value or assign it in the constructor\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Test\\\\Functional\\\\App\\\\Entity\\\\MyEntity has an uninitialized property \\$phonelandline\\. Give it default value or assign it in the constructor\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Test\\\\Functional\\\\App\\\\Entity\\\\MyEntity has an uninitialized property \\$phonemobile\\. Give it default value or assign it in the constructor\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Test\\\\Functional\\\\App\\\\Entity\\\\MyEntity has an uninitialized property \\$smallint\\. Give it default value or assign it in the constructor\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Test\\\\Functional\\\\App\\\\Entity\\\\MyEntity has an uninitialized property \\$smallintUnsigned\\. Give it default value or assign it in the constructor\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Test\\\\Functional\\\\App\\\\Entity\\\\MyEntity has an uninitialized property \\$string\\. Give it default value or assign it in the constructor\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Test\\\\Functional\\\\App\\\\Entity\\\\MyEntity has an uninitialized property \\$text\\. Give it default value or assign it in the constructor\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Test\\\\Functional\\\\App\\\\Entity\\\\MyEntity has an uninitialized property \\$timezone\\. Give it default value or assign it in the constructor\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Test\\\\Functional\\\\App\\\\Entity\\\\MyEntity has an uninitialized property \\$uuid\\. Give it default value or assign it in the constructor\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Test\\\\Functional\\\\App\\\\Entity\\\\MyEntity has an uninitialized property \\$uuid_binary_ordered_time\\. Give it default value or assign it in the constructor\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
 			message: "#^Property AssoConnect\\\\ValidatorBundle\\\\Test\\\\Functional\\\\App\\\\Entity\\\\MyEntity\\:\\:\\$decimal cannot have float as its type \\- floats are not allowed\\.$#"
 			count: 1
 			path: src/Test/Functional/App/Entity/MyEntity.php
@@ -21,6 +226,21 @@ parameters:
 			path: src/Test/Functional/App/Entity/MyEntity.php
 
 		-
+			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Test\\\\Functional\\\\App\\\\Entity\\\\MyEntityParent has an uninitialized property \\$id\\. Give it default value or assign it in the constructor\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntityParent.php
+
+		-
+			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Test\\\\Functional\\\\App\\\\Entity\\\\MyEntityParent has an uninitialized property \\$mainChild\\. Give it default value or assign it in the constructor\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntityParent.php
+
+		-
+			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Validator\\\\Constraints\\\\FloatScale has an uninitialized property \\$scale\\. Give it default value or assign it in the constructor\\.$#"
+			count: 1
+			path: src/Validator/Constraints/FloatScale.php
+
+		-
 			message: "#^Property AssoConnect\\\\ValidatorBundle\\\\Validator\\\\Constraints\\\\Money\\:\\:\\$max cannot have float as its type \\- floats are not allowed\\.$#"
 			count: 1
 			path: src/Validator/Constraints/Money.php
@@ -29,3 +249,8 @@ parameters:
 			message: "#^Property AssoConnect\\\\ValidatorBundle\\\\Validator\\\\Constraints\\\\Money\\:\\:\\$min cannot have float as its type \\- floats are not allowed\\.$#"
 			count: 1
 			path: src/Validator/Constraints/Money.php
+
+		-
+			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Validator\\\\Constraints\\\\Postal has an uninitialized property \\$countryPropertyPath\\. Give it default value or assign it in the constructor\\.$#"
+			count: 1
+			path: src/Validator/Constraints/Postal.php

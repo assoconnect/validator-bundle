@@ -44,7 +44,6 @@ use Symfony\Component\Validator\Constraints\Ulid;
 use Symfony\Component\Validator\Constraints\Uuid;
 use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\Constraints\Currency as CurrencyConstraint;
-use Symfony\Component\Validator\ConstraintValidatorInterface;
 
 /**
  * @psalm-import-type FieldMapping from ClassMetadataInfo
