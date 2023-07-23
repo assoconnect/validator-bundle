@@ -6,9 +6,9 @@ use AssoConnect\ValidatorBundle\Test\ConstraintValidatorTestCase;
 use AssoConnect\ValidatorBundle\Validator\Constraints\Email;
 use AssoConnect\ValidatorBundle\Validator\Constraints\EmailValidator;
 use DG\BypassFinals;
-use Pdp\Cache;
-use Pdp\CurlHttpClient;
-use Pdp\Manager;
+use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\HttpFactory;
+use Pdp\Storage\PublicSuffixListPsr18Client;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
@@ -24,10 +24,11 @@ class EmailValidatorTest extends ConstraintValidatorTestCase
 
     public function createValidator(): ConstraintValidatorInterface
     {
-        $cache = new Cache();
-        $http = new CurlHttpClient();
-        $manager = new Manager($cache, $http);
-        return new EmailValidator($manager);
+        $publicSuffixListClient = new PublicSuffixListPsr18Client(
+            new Client(),
+            new HttpFactory()
+        );
+        return new EmailValidator($publicSuffixListClient);
     }
 
     public function getConstraint(): Constraint

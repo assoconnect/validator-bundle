@@ -1,38 +1,43 @@
-parameters:
-    cacheFolder: 'assoconnect/validator-bundle'
-
 services:
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
         public: false       # Allows optimizing the container by removing unused services; this also means
-                            # fetching services directly from the container via $container->get() won't work.
-                            # The best practice is to be explicit about your dependencies anyway.
-    Pdp\Cache:
-        class: Pdp\Cache
-        arguments:
-            - '%kernel.cache_dir%/%cacheFolder%'
+        # fetching services directly from the container via $container->get() won't work.
+        # The best practice is to be explicit about your dependencies anyway.
 
-    Pdp\CurlHttpClient:
-        class: Pdp\CurlHttpClient
+    Pdp\Storage\:
+        resource: '../../../../../jeremykendall/php-domain-parser/src/Storage/*'
 
-    Pdp\Manager:
-        class: Pdp\Manager
+    pdp.cache:
+        class: Symfony\Component\Cache\Psr16Cache
         arguments:
-            - '@Pdp\Cache'
-            - '@Pdp\CurlHttpClient'
+            $pool: '@pdp.cache.pool'
+
+    pdp.cache.pool:
+        class: Symfony\Component\Cache\Adapter\FilesystemAdapter
+        arguments:
+            $namespace: 'jeremykendall_php-domain-parser'
+            $directory: '%kernel.cache_dir%'
+
+    Pdp\Storage\PublicSuffixListClient: '@Pdp\Storage\RulesStorage'
+
+    Pdp\Storage\RulesStorage:
+        arguments:
+            $client: '@Pdp\Storage\PublicSuffixListPsr18Client'
+            $cache: '@Pdp\Storage\PublicSuffixListPsr16Cache'
+
+    Pdp\Storage\PublicSuffixListPsr16Cache:
+        arguments:
+            $cache: '@pdp.cache'
 
     AssoConnect\ValidatorBundle\Validator\Constraints\EmailValidator:
-        arguments:
-            $manager: '@Pdp\Manager'
         tags:
             - validator.constraint_validator
 
-    AssoConnect\ValidatorBundle\Cache\CacheWarmer:
-        arguments:
-            - "%cacheFolder%"
+    AssoConnect\ValidatorBundle\Cache\PublicSuffixListCacheWarmer:
         tags:
-            - { name: kernel.cache_warmer, priority: 0 }
+            - { name: kernel.cache_warmer }
 
     AssoConnect\ValidatorBundle\Validator\Constraints\EntityValidator:
         class: AssoConnect\ValidatorBundle\Validator\Constraints\EntityValidator

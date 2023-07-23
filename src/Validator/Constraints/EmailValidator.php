@@ -3,8 +3,10 @@
 namespace AssoConnect\ValidatorBundle\Validator\Constraints;
 
 use Egulias\EmailValidator\Validation\DNSCheckValidation;
-use Pdp\Manager;
+use Pdp\Domain;
+use Pdp\Storage\PublicSuffixListClient;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints\Email as _Email;
 use Symfony\Component\Validator\Constraints\EmailValidator as _EmailValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
@@ -17,12 +19,15 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class EmailValidator extends _EmailValidator
 {
-    private Manager $manager;
+    public const PUBLIC_SUFFIX_LIST_URI = 'https://publicsuffix.org/list/public_suffix_list.dat';
+    private PublicSuffixListClient $publicSuffixListClient;
 
-    public function __construct(Manager $manager, string $defaultMode = Email::VALIDATION_MODE_LOOSE)
-    {
+    public function __construct(
+        PublicSuffixListClient $publicSuffixListClient,
+        string $defaultMode = _Email::VALIDATION_MODE_LOOSE
+    ) {
         parent::__construct($defaultMode);
-        $this->manager = $manager;
+        $this->publicSuffixListClient = $publicSuffixListClient;
     }
 
     public function validate($value, Constraint $constraint): void
@@ -39,23 +44,19 @@ class EmailValidator extends _EmailValidator
         if (false === filter_var($value, FILTER_VALIDATE_EMAIL)) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ value }}', $this->formatValue($value))
-                ->setCode(Email::INVALID_FORMAT_ERROR)
+                ->setCode(_Email::INVALID_FORMAT_ERROR)
                 ->addViolation();
             return;
         }
 
-
         // 2. Does the domain use a valid public suffix?
         // See https://en.wikipedia.org/wiki/Public_Suffix_List
-        $rules = $this->manager->getRules();
-        // The lib does not accept Public Suffix domain so We add a sub. prefix in case the domain is a Public Suffix
-        // For instance notaires.fr is a public suffix while is it valid to use @notaires.fr
-        // https://github.com/jeremykendall/php-domain-parser/blob/develop/src/Domain.php#L166
-        // A CouldNotResolvePublicSuffix would be raised
+        $publicSuffixList = $this->publicSuffixListClient->get(self::PUBLIC_SUFFIX_LIST_URI);
         $domainName = explode('@', $value)[1];
-        $domain = $rules->resolve('sub.' . $domainName);
-
-        if (!$domain->isKnown()) {
+        // If the domain is actually a public suffix (like @notaires.fr) then there is no suffix
+        // So we add the "sub." prefix to ensure the method ->suffix() will always return a non-empty dto
+        $result = $publicSuffixList->resolve(Domain::fromIDNA2008('sub.' . $domainName));
+        if (!$result->suffix()->isKnown()) {
             $this->context->buildViolation($constraint->tldMessage)
                 ->setParameter('{{ domain }}', $this->formatValue($domainName))
                 ->setParameter('{{ value }}', $this->formatValue($value))
