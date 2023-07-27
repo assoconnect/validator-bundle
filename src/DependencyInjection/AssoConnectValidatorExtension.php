@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AssoConnect\ValidatorBundle\DependencyInjection;
 
+use AssoConnect\ValidatorBundle\Validator\ConstraintsSetProvider\Field\FieldConstraintsSetProviderInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -18,8 +19,11 @@ class AssoConnectValidatorExtension extends Extension
     {
         $loader = new YamlFileLoader(
             $container,
-            new FileLocator(__DIR__ . '/../Resources/config')
+            new FileLocator(__DIR__ . '/../../config')
         );
         $loader->load('services.yaml');
+
+        $container->registerForAutoconfiguration(FieldConstraintsSetProviderInterface::class)
+            ->addTag('assoconnect.validator_bundle.factory.field');
     }
 }

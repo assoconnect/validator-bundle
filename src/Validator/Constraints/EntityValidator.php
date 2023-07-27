@@ -4,59 +4,42 @@ declare(strict_types=1);
 
 namespace AssoConnect\ValidatorBundle\Validator\Constraints;
 
-use AssoConnect\AbsolutePercentValueBundle\Object\AbsolutePercentValue;
-use AssoConnect\DoctrineTypesBundle\Doctrine\DBAL\Types\LatitudeType;
-use AssoConnect\DoctrineTypesBundle\Doctrine\DBAL\Types\LongitudeType;
-use AssoConnect\DoctrineTypesBundle\Doctrine\DBAL\Types\MoneyType;
-use AssoConnect\PHPDate\AbsoluteDate;
+use AssoConnect\ValidatorBundle\Exception\UnprotectedFieldTypeException;
+use AssoConnect\ValidatorBundle\Validator\ConstraintsSetProvider\Field\FieldConstraintsSetProviderInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
-use Money\Currency as CurrencyObject;
-use Money\Money as MoneyObject;
+use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Symfony\Component\PropertyAccess\Exception\UnexpectedTypeException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\All;
-use Symfony\Component\Validator\Constraints\Bic;
-use Symfony\Component\Validator\Constraints\Country;
-use Symfony\Component\Validator\Constraints\Currency;
-use Symfony\Component\Validator\Constraints\GreaterThan;
-use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
-use Symfony\Component\Validator\Constraints\Iban;
-use Symfony\Component\Validator\Constraints\Ip;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\LessThan;
-use Symfony\Component\Validator\Constraints\LessThanOrEqual;
-use Symfony\Component\Validator\Constraints\Locale;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
-use Symfony\Component\Validator\Constraints\Regex;
-use Symfony\Component\Validator\Constraints\Timezone;
 use Symfony\Component\Validator\Constraints\Type;
-use Symfony\Component\Validator\Constraints\Ulid;
-use Symfony\Component\Validator\Constraints\Uuid;
 use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\ConstraintValidator;
 use Webmozart\Assert\Assert;
 
 /**
  * @Annotation
+ * @phpstan-import-type FieldMapping from ClassMetadataInfo
  */
 class EntityValidator extends ConstraintValidator
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $em;
+    private EntityManagerInterface $em;
+    /** @var FieldConstraintsSetProviderInterface[] */
+    private iterable $fieldConstraintsSetFactories;
 
-    public function __construct(EntityManagerInterface $entityManager)
-    {
+    /**
+     * @param FieldConstraintsSetProviderInterface[] $fieldConstraintsSetFactories
+     */
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        iterable $fieldConstraintsSetFactories
+    ) {
         $this->em = $entityManager;
+        $this->fieldConstraintsSetFactories = $fieldConstraintsSetFactories;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function validate($entity, Constraint $constraint): void
     {
         if (!$constraint instanceof Entity) {
@@ -91,170 +74,18 @@ class EntityValidator extends ConstraintValidator
     }
 
     /**
-     * @param array<mixed> $fieldMapping
-     * @return array<Constraint>
+     * @param FieldMapping $fieldMapping
+     * @return Constraint[]
      */
     public function getConstraintsForType(array $fieldMapping): array
     {
-        $constraints = [];
-
-        switch ($fieldMapping['type']) {
-            case 'absolute_percent_value':
-                $constraints[] = new Type(AbsolutePercentValue::class);
-                break;
-            case 'amount':
-            case 'amountAsBigint':
-                $constraints[] = new Type(MoneyObject::class);
-                break;
-            case 'array':
-                $constraints[] = new Type('array');
-                break;
-            case 'bic':
-                $constraints[] = new Bic();
-                $constraints[] = new Regex('/^[0-9A-Z]+$/');
-                break;
-            case 'bigint':
-                $constraints[] = new Type('integer');
-                if (isset($fieldMapping['options']['unsigned']) && true === $fieldMapping['options']['unsigned']) {
-                    $constraints[] = new GreaterThanOrEqual(0);
-                    $constraints[] = new LessThanOrEqual(pow(2, 64) - 1);
-                } else {
-                    $constraints[] = new GreaterThanOrEqual(- pow(2, 63));
-                    $constraints[] = new LessThanOrEqual(pow(2, 63) - 1);
-                }
-                break;
-            case 'boolean':
-                $constraints[] = new Type('bool');
-                break;
-            case 'country':
-                $constraints[] = new Country();
-                break;
-            case 'currency':
-                $constraints[] = new Currency();
-                $constraints[] = new Type(CurrencyObject::class);
-                break;
-            case 'date':
-            case 'datetime':
-            case 'datetimetz':
-            case 'datetimeutc':
-                $constraints[] = new Type(\DateTime::class);
-                break;
-            case 'date_immutable':
-            case 'datetime_immutable':
-            case 'datetimetz_immutable':
-            case 'datetimeutc_immutable':
-                $constraints[] = new Type(\DateTimeImmutable::class);
-                break;
-            case 'datetimezone':
-                $constraints[] = new Type(\DateTimeZone::class);
-                break;
-            case 'date_absolute':
-                $constraints[] = new Type(AbsoluteDate::class);
-                break;
-            case 'decimal':
-                $constraints[] = new Type('float');
-                Assert::keyExists($fieldMapping, 'precision');
-                Assert::keyExists($fieldMapping, 'scale');
-                $constraints[] = new GreaterThan(- pow(10, $fieldMapping['precision'] - $fieldMapping['scale']));
-                $constraints[] = new LessThan(pow(10, $fieldMapping['precision'] - $fieldMapping['scale']));
-                $constraints[] = new FloatScale($fieldMapping['scale']);
-                break;
-            case 'email':
-                $constraints[] = new Email();
-                $length = $fieldMapping['length'] ?? 255;
-                $constraints[] = new Length(['max' => $length]);
-                break;
-            case 'float':
-                $constraints[] = new Type('float');
-                break;
-            case 'frenchSiren':
-                $constraints[] = new FrenchSiren();
-                break;
-            case 'frenchRna':
-                $constraints[] = new FrenchRna();
-                break;
-            case 'iban':
-                $constraints[] = new Iban();
-                $constraints[] = new Regex('/^[0-9A-Z]+$/');
-                break;
-            case 'integer':
-                $constraints[] = new Type('integer');
-                break;
-            case 'ip':
-                $constraints[] = new Ip(['version' => 'all']);
-                break;
-            case 'json':
-                // TODO: implement JSON validation?
-                break;
-            case 'latitude':
-                $constraints[] = new Latitude();
-                $constraints[] = new FloatScale($fieldMapping['scale'] ?? LatitudeType::DEFAULT_SCALE);
-                break;
-            case 'locale':
-                $constraints[] = new Locale(['canonicalize' => true]);
-                break;
-            case 'longitude':
-                $constraints[] = new Longitude();
-                $constraints[] = new FloatScale($fieldMapping['scale'] ?? LongitudeType::DEFAULT_SCALE);
-                break;
-            case 'money':
-                $constraints[] = new Money();
-                $constraints[] = new FloatScale($fieldMapping['scale'] ?? MoneyType::DEFAULT_SCALE);
-                break;
-            case 'percent':
-                $constraints[] = new Type(\AssoConnect\PHPPercent\Percent::class);
-                $constraints[] = new Percent();
-                break;
-            case 'phone':
-                $constraints[] = new Phone();
-                break;
-            case 'phonelandline':
-                $constraints[] = new PhoneLandline();
-                break;
-            case 'phonemobile':
-                $constraints[] = new PhoneMobile();
-                break;
-            case 'postal':
-                break;
-            case 'simple_array':
-                $constraints[] = new Type('array');
-                break;
-            case 'smallint':
-                $constraints[] = new Type('integer');
-                if (isset($fieldMapping['options']['unsigned']) && true === $fieldMapping['options']['unsigned']) {
-                    $constraints[] = new GreaterThan(0);
-                    $constraints[] = new LessThanOrEqual(pow(2, 16) - 1);
-                } else {
-                    $constraints[] = new GreaterThanOrEqual(- pow(2, 15));
-                    $constraints[] = new LessThanOrEqual(pow(2, 15) - 1);
-                }
-                break;
-            case 'string':
-                $length = $fieldMapping['length'] ?? 255;
-                $constraints[] = new Length(['max' => $length]);
-                if (isset($fieldMapping['nullable']) && true === $fieldMapping['nullable']) {
-                    $constraints[] = new NotBlank(['allowNull' => true]);
-                }
-                break;
-            case 'text':
-                $length = $fieldMapping['length'] ?? 65535;
-                $constraints[] = new Length(['max' => $length, 'charset' => '8bit']);
-                break;
-            case 'timezone':
-                $constraints[] = new Timezone();
-                break;
-            case 'ulid':
-                $constraints[] = new Ulid();
-                break;
-            case 'uuid':
-            case 'uuid_binary_ordered_time':
-                $constraints[] = new Uuid();
-                break;
-            default:
-                throw new \DomainException('Unsupported field type: ' . $fieldMapping['type']);
+        foreach ($this->fieldConstraintsSetFactories as $fieldConstraintsSetProvider) {
+            if ($fieldConstraintsSetProvider->supports($fieldMapping['type'])) {
+                return $fieldConstraintsSetProvider->getConstraints($fieldMapping);
+            }
         }
 
-        return $constraints;
+        throw UnprotectedFieldTypeException::becauseConstraintsNotFoundForType($fieldMapping['type']);
     }
 
     /**
