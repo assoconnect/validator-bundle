@@ -14,7 +14,7 @@ use Symfony\Component\Validator\ConstraintValidatorInterface;
 
 class MoneyValidatorTest extends ConstraintValidatorTestCase
 {
-    public function getConstraint(): Constraint
+    protected function getConstraint(): Constraint
     {
         return new Money(['min' => 0.0, 'max' => 90.0]);
     }

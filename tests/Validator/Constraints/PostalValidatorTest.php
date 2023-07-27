@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 class PostalValidatorTest extends ConstraintValidatorTestCase
 {
-    public function getConstraint(): Constraint
+    protected function getConstraint(): Constraint
     {
         return new Postal([
             'countryPropertyPath' => 'country',

@@ -60,7 +60,7 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
         parent::setUp();
     }
 
-    public function getConstraint(): Constraint
+    protected function getConstraint(): Constraint
     {
         return new Entity();
     }

@@ -11,7 +11,7 @@ use Symfony\Component\Validator\ConstraintValidatorInterface;
 
 class PhoneMobileValidatorTest extends ConstraintValidatorTestCase
 {
-    public function getConstraint(): Constraint
+    protected function getConstraint(): Constraint
     {
         return new PhoneMobile();
     }

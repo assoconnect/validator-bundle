@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Test\ConstraintValidatorTestCase as SymfonyConst
 
 abstract class ConstraintValidatorTestCase extends SymfonyConstraintValidatorTestCase
 {
-    abstract public function getConstraint(): Constraint;
+    abstract protected function getConstraint(): Constraint;
 
     abstract public function createValidator(): ConstraintValidatorInterface;
 

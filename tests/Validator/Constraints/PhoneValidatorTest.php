@@ -10,7 +10,7 @@ use Symfony\Component\Validator\ConstraintValidatorInterface;
 
 class PhoneValidatorTest extends ConstraintValidatorTestCase
 {
-    public function getConstraint(): Constraint
+    protected function getConstraint(): Constraint
     {
         return new Phone();
     }

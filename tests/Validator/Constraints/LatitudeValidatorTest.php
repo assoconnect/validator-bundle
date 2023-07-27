@@ -15,7 +15,7 @@ use Symfony\Component\Validator\ConstraintValidatorInterface;
 
 class LatitudeValidatorTest extends ConstraintValidatorTestCase
 {
-    public function getConstraint(): Constraint
+    protected function getConstraint(): Constraint
     {
         return new Latitude();
     }

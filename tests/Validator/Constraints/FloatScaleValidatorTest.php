@@ -10,7 +10,7 @@ use Symfony\Component\Validator\ConstraintValidatorInterface;
 
 class FloatScaleValidatorTest extends ConstraintValidatorTestCase
 {
-    public function getConstraint(): Constraint
+    protected function getConstraint(): Constraint
     {
         return new FloatScale(['scale' => 2]);
     }

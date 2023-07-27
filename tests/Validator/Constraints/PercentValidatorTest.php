@@ -14,7 +14,7 @@ use Symfony\Component\Validator\ConstraintValidatorInterface;
 
 class PercentValidatorTest extends ConstraintValidatorTestCase
 {
-    public function getConstraint(): Constraint
+    protected function getConstraint(): Constraint
     {
         return new Percent([
             'min' => 10,

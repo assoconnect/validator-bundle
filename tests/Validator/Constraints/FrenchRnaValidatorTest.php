@@ -12,7 +12,7 @@ use Symfony\Component\Validator\ConstraintValidatorInterface;
 
 class FrenchRnaValidatorTest extends ConstraintValidatorTestCase
 {
-    public function getConstraint(): Constraint
+    protected function getConstraint(): Constraint
     {
         return new FrenchRna();
     }
