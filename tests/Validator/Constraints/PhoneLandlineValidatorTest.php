@@ -11,7 +11,7 @@ use Symfony\Component\Validator\ConstraintValidatorInterface;
 
 class PhoneLandlineValidatorTest extends ConstraintValidatorTestCase
 {
-    public function getConstraint(): Constraint
+    protected function getConstraint(): Constraint
     {
         return new PhoneLandline();
     }

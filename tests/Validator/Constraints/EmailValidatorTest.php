@@ -31,7 +31,7 @@ class EmailValidatorTest extends ConstraintValidatorTestCase
         return new EmailValidator($publicSuffixListClient);
     }
 
-    public function getConstraint(): Constraint
+    protected function getConstraint(): Constraint
     {
         return new Email([
             'message' => 'myMessage',
