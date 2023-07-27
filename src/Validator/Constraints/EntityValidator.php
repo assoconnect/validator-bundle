@@ -60,7 +60,7 @@ class EntityValidator extends ConstraintValidator
         if (!$constraint instanceof Entity) {
             throw new \Symfony\Component\Validator\Exception\UnexpectedTypeException(
                 $constraint,
-                __NAMESPACE__ . '\EmployerIdentificationNumber'
+                __NAMESPACE__ . '\Entity'
             );
         }
 
