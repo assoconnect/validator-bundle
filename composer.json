@@ -22,6 +22,11 @@
       "AssoConnect\\ValidatorBundle\\": "src/"
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "AssoConnect\\ValidatorBundle\\Tests\\": "tests/"
+    }
+  },
   "require": {
     "doctrine/doctrine-bundle": "^1.9|^2.0",
     "giggsey/libphonenumber-for-php": "^8.9",
