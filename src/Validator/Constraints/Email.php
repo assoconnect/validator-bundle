@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AssoConnect\ValidatorBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraints\Email as _Email;

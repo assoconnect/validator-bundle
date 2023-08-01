@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AssoConnect\ValidatorBundle\Tests\Validator\Constraints;
 
 use AssoConnect\ValidatorBundle\Test\ConstraintValidatorTestCase;
@@ -138,7 +140,7 @@ class EmailValidatorTest extends ConstraintValidatorTestCase
             'message' => 'myMessage',
             'tldMessage' => 'myTldMessage',
             'dnsMessage' => 'myDnsMessage',
-            'checkDNS'  =>  false
+            'checkDNS'  =>  false,
         ]));
 
         self::assertNoViolation();

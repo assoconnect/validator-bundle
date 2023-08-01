@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AssoConnect\ValidatorBundle\Tests\Validator\Constraints;
 
 use AssoConnect\ValidatorBundle\Validator\Constraints\Entity;

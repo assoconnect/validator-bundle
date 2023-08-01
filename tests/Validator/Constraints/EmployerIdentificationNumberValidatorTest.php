@@ -48,42 +48,42 @@ class EmployerIdentificationNumberValidatorTest extends ConstraintValidatorTestC
         yield 'EIN in wrong format (no -)' => [
             '123456789',
             EmployerIdentificationNumber::WRONG_FORMAT_ERROR,
-            'The value {{ value }} is not a valid employer identification number.'
+            'The value {{ value }} is not a valid employer identification number.',
         ];
         yield 'EIN in wrong format (more than seven digits after the -)' => [
             '03-06047609',
             EmployerIdentificationNumber::WRONG_FORMAT_ERROR,
-            'The value {{ value }} is not a valid employer identification number.'
+            'The value {{ value }} is not a valid employer identification number.',
         ];
         yield 'EIN in wrong format (less than seven digits after the -)' => [
             '03-060476',
             EmployerIdentificationNumber::WRONG_FORMAT_ERROR,
-            'The value {{ value }} is not a valid employer identification number.'
+            'The value {{ value }} is not a valid employer identification number.',
         ];
         yield 'EIN in wrong format (starting with 00)' => [
             '00-0604760',
             EmployerIdentificationNumber::WRONG_FORMAT_ERROR,
-            'The value {{ value }} is not a valid employer identification number.'
+            'The value {{ value }} is not a valid employer identification number.',
         ];
         yield 'EIN in wrong format (2[0-7])' => [
             '28-0604760',
             EmployerIdentificationNumber::WRONG_FORMAT_ERROR,
-            'The value {{ value }} is not a valid employer identification number.'
+            'The value {{ value }} is not a valid employer identification number.',
         ];
         yield 'EIN in wrong format ([468][0-8])' => [
             '49-0604760',
             EmployerIdentificationNumber::WRONG_FORMAT_ERROR,
-            'The value {{ value }} is not a valid employer identification number.'
+            'The value {{ value }} is not a valid employer identification number.',
         ];
         yield 'EIN in wrong format (7[1-7])' => [
             '78-0604760',
             EmployerIdentificationNumber::WRONG_FORMAT_ERROR,
-            'The value {{ value }} is not a valid employer identification number.'
+            'The value {{ value }} is not a valid employer identification number.',
         ];
         yield 'EIN in wrong format (9[0-58-9])' => [
             '96-0604760',
             EmployerIdentificationNumber::WRONG_FORMAT_ERROR,
-            'The value {{ value }} is not a valid employer identification number.'
+            'The value {{ value }} is not a valid employer identification number.',
         ];
     }
 }

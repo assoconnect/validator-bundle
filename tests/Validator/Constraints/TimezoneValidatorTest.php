@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AssoConnect\ValidatorBundle\Validator\Tests\Constraints;
 
 use AssoConnect\ValidatorBundle\Test\ConstraintValidatorTestCase;
@@ -41,7 +43,7 @@ class TimezoneValidatorTest extends ConstraintValidatorTestCase
         yield [
             'EN',
             Timezone::NO_SUCH_TIMEZONE_ERROR,
-            'The value {{ value }} is not a valid timezone.'
+            'The value {{ value }} is not a valid timezone.',
         ];
     }
 }

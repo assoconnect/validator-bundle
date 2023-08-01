@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AssoConnect\ValidatorBundle\Tests\Validator\Constraints;
 
 use AssoConnect\ValidatorBundle\Test\ConstraintValidatorTestCase;
@@ -47,13 +49,13 @@ class PercentValidatorTest extends ConstraintValidatorTestCase
             [
                 '{{ type }}' => 'float',
                 '{{ value }}' => '"a"',
-            ]
+            ],
         ];
 
         yield [
             '',
             NotBlank::IS_BLANK_ERROR,
-            'This value should not be blank.'
+            'This value should not be blank.',
         ];
 
         yield [
@@ -64,7 +66,7 @@ class PercentValidatorTest extends ConstraintValidatorTestCase
                 '{{ value }}' => '5',
                 '{{ compared_value_type }}' => 'int',
                 '{{ compared_value }}' => '10',
-            ]
+            ],
         ];
 
         yield [
@@ -75,7 +77,7 @@ class PercentValidatorTest extends ConstraintValidatorTestCase
                 '{{ value }}' => '60',
                 '{{ compared_value_type }}' => 'int',
                 '{{ compared_value }}' => '50',
-            ]
+            ],
         ];
     }
 }

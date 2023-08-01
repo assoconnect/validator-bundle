@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AssoConnect\ValidatorBundle\Validator\Constraints;
 
 use libphonenumber\PhoneNumberType;
@@ -50,7 +52,7 @@ class Phone extends Constraint
     /**
      * {@inheritDoc}
      */
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return self::class . 'Validator';
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AssoConnect\ValidatorBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
@@ -9,7 +11,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class Entity extends Constraint
 {
-    public function getTargets()
+    public function getTargets(): string
     {
         return self::CLASS_CONSTRAINT;
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AssoConnect\ValidatorBundle\Tests\Validator\Constraints;
 
 use AssoConnect\ValidatorBundle\Test\ConstraintValidatorTestCase;
@@ -38,14 +40,14 @@ class MoneyValidatorTest extends ConstraintValidatorTestCase
             'This value should be of type {{ type }}.',
             [
                 '{{ type }}' => 'float',
-                '{{ value }}' => '"18"'
-            ]
+                '{{ value }}' => '"18"',
+            ],
         ];
 
         yield [
             '',
             NotBlank::IS_BLANK_ERROR,
-            'This value should not be blank.'
+            'This value should not be blank.',
         ];
 
         yield [
@@ -56,7 +58,7 @@ class MoneyValidatorTest extends ConstraintValidatorTestCase
                 '{{ value }}' => '-10',
                 '{{ compared_value_type }}' => 'float',
                 '{{ compared_value }}' => 0,
-            ]
+            ],
         ];
 
         yield [
@@ -67,7 +69,7 @@ class MoneyValidatorTest extends ConstraintValidatorTestCase
                 '{{ value }}' => '100',
                 '{{ compared_value_type }}' => 'float',
                 '{{ compared_value }}' => '90',
-            ]
+            ],
         ];
     }
 }

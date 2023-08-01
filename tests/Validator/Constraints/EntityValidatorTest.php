@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AssoConnect\ValidatorBundle\Tests\Validator\Constraints;
 
 use AssoConnect\ValidatorBundle\Test\ConstraintValidatorTestCase;
@@ -73,7 +75,7 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
     public function testGetConstraintsForTypeUnknown(): void
     {
         $fieldMapping = [
-            'type' => 'fail'
+            'type' => 'fail',
         ];
 
         $this->expectException(\DomainException::class);
@@ -102,12 +104,12 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
     {
         yield [
             ['type' => 'amount'],
-            [new Type(Money::class)]
+            [new Type(Money::class)],
         ];
 
         yield [
             ['type' => 'amountAsBigint'],
-            [new Type(Money::class)]
+            [new Type(Money::class)],
         ];
 
         yield [
@@ -121,12 +123,12 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
         ];
 
         yield [
-            ['type' => 'bigint', 'options' => [ 'unsigned' => true]],
+            ['type' => 'bigint', 'options' => ['unsigned' => true]],
             [new Type('integer'), new GreaterThanOrEqual(0), new LessThanOrEqual(pow(2, 64) - 1)],
         ];
 
         yield [
-            ['type' => 'bigint', 'options' => [ 'unsigned' => false]],
+            ['type' => 'bigint', 'options' => ['unsigned' => false]],
             [new Type('integer'), new GreaterThanOrEqual(- pow(2, 63)), new LessThanOrEqual(pow(2, 63) - 1)],
         ];
 
@@ -172,12 +174,12 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
 
         yield [
             ['type' => 'datetimezone'],
-            [ new Type(\DateTimeZone::class)],
+            [new Type(\DateTimeZone::class)],
         ];
 
         yield [
             ['type' => 'date_absolute'],
-            [ new Type(AbsoluteDate::class)],
+            [new Type(AbsoluteDate::class)],
         ];
 
         yield [
@@ -186,8 +188,8 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
                 new Type('float'),
                 new GreaterThan(- pow(10, 4 - 2)),
                 new LessThan(pow(10, 4 - 2)),
-                new FloatScale(2)
-            ]
+                new FloatScale(2),
+            ],
         ];
 
         yield [
@@ -207,12 +209,12 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
 
         yield [
             ['type' => 'frenchRna'],
-            [new FrenchRna()]
+            [new FrenchRna()],
         ];
 
         yield [
             ['type' => 'frenchSiren'],
-            [new FrenchSiren()]
+            [new FrenchSiren()],
         ];
 
         yield [
@@ -295,12 +297,12 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
         ];
 
         yield [
-            ['type' => 'smallint', 'options' => [ 'unsigned' => true]],
+            ['type' => 'smallint', 'options' => ['unsigned' => true]],
             [new Type('integer'), new GreaterThan(0), new LessThanOrEqual(pow(2, 16) - 1)],
         ];
 
         yield [
-            ['type' => 'smallint', 'options' => [ 'unsigned' => false]],
+            ['type' => 'smallint', 'options' => ['unsigned' => false]],
             [new Type('integer'), new GreaterThanOrEqual(- pow(2, 15)), new LessThanOrEqual(pow(2, 15) - 1)],
         ];
 
@@ -316,12 +318,12 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
 
         yield [
             ['type' => 'string', 'length' => 10],
-            [new Length(['max' => 10])]
+            [new Length(['max' => 10])],
         ];
 
         yield [
             ['type' => 'string', 'nullable' => true],
-            [new Length(['max' => 255]), new NotBlank(['allowNull' => true])]
+            [new Length(['max' => 255]), new NotBlank(['allowNull' => true])],
         ];
 
         yield [
@@ -336,7 +338,7 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
 
         yield [
             ['type' => 'timezone'],
-            [new Timezone()]
+            [new Timezone()],
         ];
 
         yield [
@@ -351,7 +353,7 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
 
         yield [
             ['type' => 'uuid_binary_ordered_time'],
-            [new Uuid()]
+            [new Uuid()],
         ];
     }
 
@@ -462,7 +464,7 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
         ];
         $metadata->embeddedClasses = [
             'embedded' => [
-                'type' => 'bic'
+                'type' => 'bic',
             ],
         ];
         $metadata->associationMappings = [
