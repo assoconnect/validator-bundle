@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AssoConnect\ValidatorBundle\Tests\Validator\Constraints;
 
 use AssoConnect\ValidatorBundle\Test\ConstraintValidatorTestCase;
@@ -35,7 +37,7 @@ class FloatScaleValidatorTest extends ConstraintValidatorTestCase
             [
                 '{{ scale }}' => '2',
                 '{{ value }}' => '0.0001',
-            ]
+            ],
         ];
     }
 }

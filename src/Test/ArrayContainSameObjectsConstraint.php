@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AssoConnect\ValidatorBundle\Test;
 
 use PHPUnit\Framework\Constraint\Constraint;
@@ -24,7 +26,7 @@ class ArrayContainSameObjectsConstraint extends Constraint
      */
     public function matches($other): bool
     {
-        if (count($other) != count($this->expected)) {
+        if (count($other) !== count($this->expected)) {
             return false;
         }
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AssoConnect\ValidatorBundle\Tests\Validator\Constraints;
 
 use AssoConnect\ValidatorBundle\Test\ConstraintValidatorTestCase;
@@ -35,13 +37,13 @@ class LongitudeValidatorTest extends ConstraintValidatorTestCase
         yield [
             'hello',
             Regex::REGEX_FAILED_ERROR,
-            'This value is not valid.'
+            'This value is not valid.',
         ];
 
         yield [
             '',
             NotBlank::IS_BLANK_ERROR,
-            'This value should not be blank.'
+            'This value should not be blank.',
         ];
 
         yield [
@@ -50,8 +52,8 @@ class LongitudeValidatorTest extends ConstraintValidatorTestCase
             'This value should be of type {{ type }}.',
             [
                 '{{ value }}' => '42',
-                '{{ type }}' => 'string'
-            ]
+                '{{ type }}' => 'string',
+            ],
         ];
 
         yield [
@@ -61,8 +63,8 @@ class LongitudeValidatorTest extends ConstraintValidatorTestCase
             [
                 '{{ value }}' => '"-181"',
                 '{{ compared_value }}' => '-180',
-                '{{ compared_value_type }}' => 'int'
-            ]
+                '{{ compared_value_type }}' => 'int',
+            ],
         ];
 
         yield [
@@ -72,8 +74,8 @@ class LongitudeValidatorTest extends ConstraintValidatorTestCase
             [
                 '{{ value }}' => '"181"',
                 '{{ compared_value }}' => '180',
-                '{{ compared_value_type }}' => 'int'
-            ]
+                '{{ compared_value_type }}' => 'int',
+            ],
         ];
     }
 }

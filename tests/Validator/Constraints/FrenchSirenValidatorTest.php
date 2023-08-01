@@ -34,25 +34,25 @@ class FrenchSirenValidatorTest extends ConstraintValidatorTestCase
         yield 'wrong type' => [
             42,
             FrenchSiren::INVALID_FORMAT_ERROR,
-            'The value {{ value }} is not a valid SIREN number.'
+            'The value {{ value }} is not a valid SIREN number.',
         ];
 
         yield 'SIREN with alphabetic character' => [
             '123456A789',
             FrenchSiren::INVALID_FORMAT_ERROR,
-            'The value {{ value }} is not a valid SIREN number.'
+            'The value {{ value }} is not a valid SIREN number.',
         ];
 
         yield 'Too short SIREN' => [
             '73282320',
             FrenchSiren::INVALID_FORMAT_ERROR,
-            'The value {{ value }} is not a valid SIREN number.'
+            'The value {{ value }} is not a valid SIREN number.',
         ];
 
         yield 'Wrong SIREN' => [
             '732829321',
             FrenchSiren::CHECKSUM_FAILED_ERROR,
-            'The value {{ value }} is not a valid SIREN number.'
+            'The value {{ value }} is not a valid SIREN number.',
         ];
     }
 }

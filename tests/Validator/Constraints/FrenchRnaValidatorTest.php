@@ -41,55 +41,55 @@ class FrenchRnaValidatorTest extends ConstraintValidatorTestCase
         yield 'wrong type' => [
             42,
             FrenchRna::INVALID_FORMAT_ERROR,
-            'The value {{ value }} is not a valid RNA identifier.'
+            'The value {{ value }} is not a valid RNA identifier.',
         ];
 
         yield 'RNA with no W at the beginning' => [
             'A941009978',
             FrenchRna::INVALID_FORMAT_ERROR,
-            'The value {{ value }} is not a valid RNA identifier.'
+            'The value {{ value }} is not a valid RNA identifier.',
         ];
 
         yield 'Too short RNA' => [
             'W94100997',
             FrenchRna::INVALID_FORMAT_ERROR,
-            'The value {{ value }} is not a valid RNA identifier.'
+            'The value {{ value }} is not a valid RNA identifier.',
         ];
 
         yield 'Too long RNA (new format) or too short (old format)' => [
             'W9410055997',
             FrenchRna::INVALID_FORMAT_ERROR,
-            'The value {{ value }} is not a valid RNA identifier.'
+            'The value {{ value }} is not a valid RNA identifier.',
         ];
 
         yield 'Classic RNA with lowercase letter' => [
             'W9j1003281',
             FrenchRna::INVALID_FORMAT_ERROR,
-            'The value {{ value }} is not a valid RNA identifier.'
+            'The value {{ value }} is not a valid RNA identifier.',
         ];
 
         yield 'Old RNA with a lowercase letter' => [
             '9r4S9744000501',
             FrenchRna::INVALID_FORMAT_ERROR,
-            'The value {{ value }} is not a valid RNA identifier.'
+            'The value {{ value }} is not a valid RNA identifier.',
         ];
 
         yield 'Old Corse 2B RNA 2C instead of 2B' => [
             '2B2P02C1000013',
             FrenchRna::INVALID_FORMAT_ERROR,
-            'The value {{ value }} is not a valid RNA identifier.'
+            'The value {{ value }} is not a valid RNA identifier.',
         ];
 
         yield 'Old Corse 2A RNA 1A instead of 2A' => [
             '2A4S01A4099171',
             FrenchRna::INVALID_FORMAT_ERROR,
-            'The value {{ value }} is not a valid RNA identifier.'
+            'The value {{ value }} is not a valid RNA identifier.',
         ];
 
         yield 'Classic RNA with invalid letter' => [
             'W2Y2000016',
             FrenchRna::INVALID_FORMAT_ERROR,
-            'The value {{ value }} is not a valid RNA identifier.'
+            'The value {{ value }} is not a valid RNA identifier.',
         ];
     }
 }

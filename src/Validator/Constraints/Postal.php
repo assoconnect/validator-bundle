@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AssoConnect\ValidatorBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
@@ -20,12 +22,12 @@ class Postal extends Constraint
 
     public string $countryPropertyPath;
 
-    public function getDefaultOption()
+    public function getDefaultOption(): string
     {
         return 'countryPropertyPath';
     }
 
-    public function getRequiredOptions()
+    public function getRequiredOptions(): array
     {
         return ['countryPropertyPath'];
     }

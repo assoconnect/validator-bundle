@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AssoConnect\ValidatorBundle\Cache;
 
 use AssoConnect\ValidatorBundle\Validator\Constraints\EmailValidator;

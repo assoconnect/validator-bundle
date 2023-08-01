@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AssoConnect\ValidatorBundle\Tests\Validator\Constraints;
 
 use AssoConnect\ValidatorBundle\Test\ConstraintValidatorTestCase;
@@ -33,7 +35,7 @@ class PhoneLandlineValidatorTest extends ConstraintValidatorTestCase
         yield [
             '+33623456789',
             Phone::INVALID_TYPE_ERROR,
-            'The value {{ value }} is not a valid landline phone number.'
+            'The value {{ value }} is not a valid landline phone number.',
         ];
     }
 }

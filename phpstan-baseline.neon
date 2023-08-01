@@ -1,6 +1,11 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^Using \\!\\=\\= with class\\-string\\|false and class\\-string\\|false is denied$#"
+			count: 1
+			path: src/Test/ArrayContainSameObjectsConstraint.php
+
+		-
 			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Test\\\\Functional\\\\App\\\\Entity\\\\MyEntity has an uninitialized property \\$absoluteDate\\. Give it default value or assign it in the constructor\\.$#"
 			count: 1
 			path: src/Test/Functional/App/Entity/MyEntity.php

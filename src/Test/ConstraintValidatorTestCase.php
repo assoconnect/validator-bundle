@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AssoConnect\ValidatorBundle\Test;
 
 use Symfony\Component\Validator\Constraint;
@@ -57,7 +59,7 @@ abstract class ConstraintValidatorTestCase extends SymfonyConstraintValidatorTes
         $this->buildViolation($message)
             ->setCode($code)
             ->setParameters($parameters ?? [
-                '{{ value }}' =>  is_string($value) ? '"' . $value . '"' : (string) $value
+                '{{ value }}' =>  is_string($value) ? '"' . $value . '"' : (string) $value,
             ])
             ->assertRaised();
     }

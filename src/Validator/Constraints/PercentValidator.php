@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AssoConnect\ValidatorBundle\Validator\Constraints;
 
 use AssoConnect\ValidatorBundle\Dto\ValidatorAndConstraint;
@@ -30,7 +32,7 @@ class PercentValidator extends ComposeValidator
     protected function sanitizeValue($value)
     {
         if ($value instanceof \AssoConnect\PHPPercent\Percent) {
-            $value = $value->toInteger();
+            return $value->toInteger();
         }
         return $value;
     }

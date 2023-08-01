@@ -2,8 +2,12 @@ parameters:
     paths:
         - src/
         - tests/
+    exceptions:
+        uncheckedExceptionClasses:
+            - 'Symfony\Component\Validator\Exception\ConstraintDefinitionException'
+            - 'Symfony\Component\Validator\Exception\InvalidOptionsException'
+            - 'Symfony\Component\Validator\Exception\MissingOptionsException'
 
 includes:
     - vendor/assoconnect/php-quality-config/phpstan.extension.neon
-    - vendor/assoconnect/php-quality-config/phpstan.rules.neon
     - ./phpstan-baseline.neon

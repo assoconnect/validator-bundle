@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AssoConnect\ValidatorBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
@@ -26,13 +28,7 @@ class TimezoneValidator extends ConstraintValidator
             return;
         }
 
-        if ($value instanceof \DateTimeZone) {
-            $value = $value->getName();
-        }
-
-        if (!is_string($value)) {
-            throw new UnexpectedTypeException($value, 'string');
-        }
+        $value = $this->getValue($value);
 
         if (!in_array($value, \DateTimeZone::listIdentifiers(), true)) {
             $this->context->buildViolation($constraint->message)
@@ -40,5 +36,19 @@ class TimezoneValidator extends ConstraintValidator
                 ->setCode(Timezone::NO_SUCH_TIMEZONE_ERROR)
                 ->addViolation();
         }
+    }
+
+    /** @param mixed $value */
+    private function getValue($value): string
+    {
+        if ($value instanceof \DateTimeZone) {
+            return $value->getName();
+        }
+
+        if (!is_string($value)) {
+            throw new UnexpectedTypeException($value, 'string');
+        }
+
+        return $value;
     }
 }

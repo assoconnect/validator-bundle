@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AssoConnect\ValidatorBundle\Tests\Validator\Constraints;
 
 use AssoConnect\ValidatorBundle\Test\ConstraintValidatorTestCase;
@@ -33,19 +35,19 @@ class PhoneValidatorTest extends ConstraintValidatorTestCase
         yield [
             '0123456789',
             Phone::NOT_INTL_FORMAT_ERROR,
-            'The value {{ value }} is not formatted as an international phone number.'
+            'The value {{ value }} is not formatted as an international phone number.',
         ];
 
         yield [
             '+ABC',
             Phone::INVALID_FORMAT_ERROR,
-            'The value {{ value }} is not a valid phone number.'
+            'The value {{ value }} is not a valid phone number.',
         ];
 
         yield [
             '+3310000000',
             Phone::PHONE_NUMBER_NOT_EXIST,
-            'The phone number {{ value }} does not exist.'
+            'The phone number {{ value }} does not exist.',
         ];
     }
 }

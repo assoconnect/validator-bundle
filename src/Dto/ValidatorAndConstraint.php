@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AssoConnect\ValidatorBundle\Dto;
 
 use Symfony\Component\Validator\Constraint;

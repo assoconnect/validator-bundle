@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AssoConnect\ValidatorBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
@@ -18,12 +20,12 @@ class FloatScale extends Constraint
 
     public int $scale;
 
-    public function getDefaultOption()
+    public function getDefaultOption(): string
     {
         return 'scale';
     }
 
-    public function getRequiredOptions()
+    public function getRequiredOptions(): array
     {
         return ['scale'];
     }
