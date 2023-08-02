@@ -259,3 +259,18 @@ parameters:
 			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Validator\\\\Constraints\\\\Postal has an uninitialized property \\$countryPropertyPath\\. Give it default value or assign it in the constructor\\.$#"
 			count: 1
 			path: src/Validator/Constraints/Postal.php
+
+		-
+			message: "#^Method AssoConnect\\\\ValidatorBundle\\\\Validator\\\\ConstraintsSetProvider\\\\Field\\\\IntegerProvider\\:\\:getMaxValue\\(\\) cannot have float\\|int as its return type \\- floats are not allowed\\.$#"
+			count: 1
+			path: src/Validator/ConstraintsSetProvider/Field/IntegerProvider.php
+
+		-
+			message: "#^Method AssoConnect\\\\ValidatorBundle\\\\Validator\\\\ConstraintsSetProvider\\\\Field\\\\IntegerProvider\\:\\:getMinValue\\(\\) cannot have float\\|int as its return type \\- floats are not allowed\\.$#"
+			count: 1
+			path: src/Validator/ConstraintsSetProvider/Field/IntegerProvider.php
+
+		-
+			message: "#^Missing native return typehint float$#"
+			count: 2
+			path: src/Validator/ConstraintsSetProvider/Field/IntegerProvider.php

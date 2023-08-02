@@ -6,8 +6,11 @@ services:
         # fetching services directly from the container via $container->get() won't work.
         # The best practice is to be explicit about your dependencies anyway.
 
+    AssoConnect\ValidatorBundle\Validator\ConstraintsSetProvider\:
+        resource: '../src/Validator/ConstraintsSetProvider/*'
+
     Pdp\Storage\:
-        resource: '../../../../../jeremykendall/php-domain-parser/src/Storage/*'
+        resource: '../../../jeremykendall/php-domain-parser/src/Storage/*'
 
     pdp.cache:
         class: Symfony\Component\Cache\Psr16Cache
@@ -31,13 +34,15 @@ services:
         arguments:
             $cache: '@pdp.cache'
 
-    AssoConnect\ValidatorBundle\Validator\Constraints\EmailValidator:
-        tags:
-            - validator.constraint_validator
-
     AssoConnect\ValidatorBundle\Cache\PublicSuffixListCacheWarmer:
         tags:
             - { name: kernel.cache_warmer }
 
+    AssoConnect\ValidatorBundle\Validator\Constraints\EmailValidator:
+        tags:
+            - validator.constraint_validator
+
     AssoConnect\ValidatorBundle\Validator\Constraints\EntityValidator:
         class: AssoConnect\ValidatorBundle\Validator\Constraints\EntityValidator
+        arguments:
+            $fieldConstraintsSetFactories: !tagged_iterator assoconnect.validator_bundle.factory.field

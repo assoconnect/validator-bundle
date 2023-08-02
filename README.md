@@ -9,11 +9,10 @@ This Symfony bundle provides validators for common scalar values:
 - [Phone Number](/src/Validator/Constraints/PhoneValidator.php)
 - [Latitude](/src/Validator/Constraints/LatitudeValidator.php) and [Longitude](/src/Validator/Constraints/LongitudeValidator.php) values
 - [Monetary value](/src/Validator/Constraints/MoneyValidator.php)
-- [Percent value](/src/Validator/Constraints/PercentValidator.php)
 - [Timezone value](/src/Validator/Constraints/TimezoneValidator.php)
 - [French RNA value](/src/Validator/Constraints/FrenchRnaValidator.php)
 - [French SIREN value](/src/Validator/Constraints/FrenchSirenValidator.php)
 
 See the different constraints source code for available options.
 
-[How to use](src/Resources/doc/index.md)
+[How to use](doc/index.md)
