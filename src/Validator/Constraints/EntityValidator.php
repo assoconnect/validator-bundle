@@ -64,6 +64,9 @@ class EntityValidator extends ConstraintValidator
                 // (ex: path is date.start but date is NULL)
                 try {
                     $value = $propertyAccessor->getValue($entity, $field);
+                    if ($value instanceof \BackedEnum) {
+                        $value = $value->value;
+                    }
                 } catch (UnexpectedTypeException $exception) {
                     $value = null;
                 }

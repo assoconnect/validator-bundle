@@ -6,6 +6,11 @@ parameters:
 			path: src/Test/ArrayContainSameObjectsConstraint.php
 
 		-
+			message: "#^Public property `bool` not marked as readonly\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEmbeddable.php
+
+		-
 			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Test\\\\Functional\\\\App\\\\Entity\\\\MyEntity has an uninitialized property \\$absoluteDate\\. Give it default value or assign it in the constructor\\.$#"
 			count: 1
 			path: src/Test/Functional/App/Entity/MyEntity.php
@@ -231,6 +236,211 @@ parameters:
 			path: src/Test/Functional/App/Entity/MyEntity.php
 
 		-
+			message: "#^Public property `absoluteDate` not marked as readonly\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Public property `array` not marked as readonly\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Public property `bic` not marked as readonly\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Public property `bigintUnsigned` not marked as readonly\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Public property `bigint` not marked as readonly\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Public property `boolean` not marked as readonly\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Public property `country` not marked as readonly\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Public property `currency` not marked as readonly\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Public property `date` not marked as readonly\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Public property `datetime` not marked as readonly\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Public property `decimal` not marked as readonly\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Public property `email` not marked as readonly\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Public property `embeddable` not marked as readonly\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Public property `float` not marked as readonly\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Public property `frenchRNA` not marked as readonly\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Public property `frenchSIREN` not marked as readonly\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Public property `iban` not marked as readonly\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Public property `id` not marked as readonly\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Public property `integer` not marked as readonly\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Public property `ip` not marked as readonly\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Public property `json` not marked as readonly\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Public property `latitude` not marked as readonly\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Public property `locale` not marked as readonly\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Public property `longitude` not marked as readonly\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Public property `mainParent` not marked as readonly\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Public property `money` not marked as readonly\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Public property `notNullable` not marked as readonly\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Public property `parentNotNullable` not marked as readonly\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Public property `parentNullable` not marked as readonly\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Public property `parents` not marked as readonly\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Public property `percent` not marked as readonly\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Public property `phone` not marked as readonly\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Public property `phonelandline` not marked as readonly\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Public property `phonemobile` not marked as readonly\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Public property `smallintUnsigned` not marked as readonly\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Public property `smallint` not marked as readonly\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Public property `string` not marked as readonly\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Public property `text` not marked as readonly\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Public property `timezone` not marked as readonly\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Public property `uuid_binary_ordered_time` not marked as readonly\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
+			message: "#^Public property `uuid` not marked as readonly\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntity.php
+
+		-
 			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Test\\\\Functional\\\\App\\\\Entity\\\\MyEntityParent has an uninitialized property \\$id\\. Give it default value or assign it in the constructor\\.$#"
 			count: 1
 			path: src/Test/Functional/App/Entity/MyEntityParent.php
@@ -241,9 +451,74 @@ parameters:
 			path: src/Test/Functional/App/Entity/MyEntityParent.php
 
 		-
+			message: "#^Public property `id` not marked as readonly\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntityParent.php
+
+		-
+			message: "#^Public property `mainChild` not marked as readonly\\.$#"
+			count: 1
+			path: src/Test/Functional/App/Entity/MyEntityParent.php
+
+		-
+			message: "#^Missing native return typehint mixed$#"
+			count: 1
+			path: src/Validator/Constraints/ComposeValidator.php
+
+		-
+			message: "#^Public property `checkDNS` not marked as readonly\\.$#"
+			count: 1
+			path: src/Validator/Constraints/Email.php
+
+		-
+			message: "#^Public property `dnsMessage` not marked as readonly\\.$#"
+			count: 1
+			path: src/Validator/Constraints/Email.php
+
+		-
+			message: "#^Public property `mode` not marked as readonly\\.$#"
+			count: 1
+			path: src/Validator/Constraints/Email.php
+
+		-
+			message: "#^Public property `tldMessage` not marked as readonly\\.$#"
+			count: 1
+			path: src/Validator/Constraints/Email.php
+
+		-
+			message: "#^Public property `message` not marked as readonly\\.$#"
+			count: 1
+			path: src/Validator/Constraints/EmployerIdentificationNumber.php
+
+		-
+			message: "#^Overwriting variable \\$value while changing its type from BackedEnum to int\\|string$#"
+			count: 1
+			path: src/Validator/Constraints/EntityValidator.php
+
+		-
 			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Validator\\\\Constraints\\\\FloatScale has an uninitialized property \\$scale\\. Give it default value or assign it in the constructor\\.$#"
 			count: 1
 			path: src/Validator/Constraints/FloatScale.php
+
+		-
+			message: "#^Public property `message` not marked as readonly\\.$#"
+			count: 1
+			path: src/Validator/Constraints/FloatScale.php
+
+		-
+			message: "#^Public property `scale` not marked as readonly\\.$#"
+			count: 1
+			path: src/Validator/Constraints/FloatScale.php
+
+		-
+			message: "#^Public property `message` not marked as readonly\\.$#"
+			count: 1
+			path: src/Validator/Constraints/FrenchRna.php
+
+		-
+			message: "#^Public property `message` not marked as readonly\\.$#"
+			count: 1
+			path: src/Validator/Constraints/FrenchSiren.php
 
 		-
 			message: "#^Property AssoConnect\\\\ValidatorBundle\\\\Validator\\\\Constraints\\\\Money\\:\\:\\$max cannot have float as its type \\- floats are not allowed\\.$#"
@@ -256,9 +531,89 @@ parameters:
 			path: src/Validator/Constraints/Money.php
 
 		-
+			message: "#^Public property `max` not marked as readonly\\.$#"
+			count: 1
+			path: src/Validator/Constraints/Money.php
+
+		-
+			message: "#^Public property `min` not marked as readonly\\.$#"
+			count: 1
+			path: src/Validator/Constraints/Money.php
+
+		-
+			message: "#^Public property `inexistantMessage` not marked as readonly\\.$#"
+			count: 1
+			path: src/Validator/Constraints/Phone.php
+
+		-
+			message: "#^Public property `message` not marked as readonly\\.$#"
+			count: 1
+			path: src/Validator/Constraints/Phone.php
+
+		-
+			message: "#^Public property `notIntlFormatMessage` not marked as readonly\\.$#"
+			count: 1
+			path: src/Validator/Constraints/Phone.php
+
+		-
+			message: "#^Public property `tooLongMessage` not marked as readonly\\.$#"
+			count: 1
+			path: src/Validator/Constraints/Phone.php
+
+		-
+			message: "#^Public property `tooShortMessage` not marked as readonly\\.$#"
+			count: 1
+			path: src/Validator/Constraints/Phone.php
+
+		-
+			message: "#^Public property `wrongTypeMessage` not marked as readonly\\.$#"
+			count: 1
+			path: src/Validator/Constraints/Phone.php
+
+		-
+			message: "#^Public property `wrongTypeMessage` not marked as readonly\\.$#"
+			count: 1
+			path: src/Validator/Constraints/PhoneLandline.php
+
+		-
+			message: "#^Public property `wrongTypeMessage` not marked as readonly\\.$#"
+			count: 1
+			path: src/Validator/Constraints/PhoneMobile.php
+
+		-
 			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Validator\\\\Constraints\\\\Postal has an uninitialized property \\$countryPropertyPath\\. Give it default value or assign it in the constructor\\.$#"
 			count: 1
 			path: src/Validator/Constraints/Postal.php
+
+		-
+			message: "#^Public property `countryPropertyPath` not marked as readonly\\.$#"
+			count: 1
+			path: src/Validator/Constraints/Postal.php
+
+		-
+			message: "#^Public property `message` not marked as readonly\\.$#"
+			count: 1
+			path: src/Validator/Constraints/Postal.php
+
+		-
+			message: "#^Public property `missingPostalCodeMessage` not marked as readonly\\.$#"
+			count: 1
+			path: src/Validator/Constraints/Postal.php
+
+		-
+			message: "#^Public property `noPostalCodeMessage` not marked as readonly\\.$#"
+			count: 1
+			path: src/Validator/Constraints/Postal.php
+
+		-
+			message: "#^Public property `unknownCountryMessage` not marked as readonly\\.$#"
+			count: 1
+			path: src/Validator/Constraints/Postal.php
+
+		-
+			message: "#^Public property `message` not marked as readonly\\.$#"
+			count: 1
+			path: src/Validator/Constraints/Timezone.php
 
 		-
 			message: "#^Method AssoConnect\\\\ValidatorBundle\\\\Validator\\\\ConstraintsSetProvider\\\\Field\\\\IntegerProvider\\:\\:getMaxValue\\(\\) cannot have float\\|int as its return type \\- floats are not allowed\\.$#"
