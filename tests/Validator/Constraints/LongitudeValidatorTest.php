@@ -37,6 +37,7 @@ class LongitudeValidatorTest extends ConstraintValidatorTestCase
         yield [
             'hello',
             Regex::REGEX_FAILED_ERROR,
+            'This value is not valid.',
             [
                 '{{ pattern }}' => LongitudeValidator::REGEX,
                 '{{ value }}' => '"hello"',
