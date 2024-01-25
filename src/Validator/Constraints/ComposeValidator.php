@@ -31,7 +31,7 @@ abstract class ComposeValidator extends ConstraintValidator
      * @param mixed $value
      * @return mixed
      */
-    protected function sanitizeValue($value)
+    protected function sanitizeValue($value): mixed
     {
         return $value;
     }

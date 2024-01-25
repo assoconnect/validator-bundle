@@ -38,6 +38,10 @@ class LatitudeValidatorTest extends ConstraintValidatorTestCase
             'hello',
             Regex::REGEX_FAILED_ERROR,
             'This value is not valid.',
+            [
+                '{{ pattern }}' => LatitudeValidator::REGEX,
+                '{{ value }}' => '"hello"',
+            ],
         ];
 
         yield [
