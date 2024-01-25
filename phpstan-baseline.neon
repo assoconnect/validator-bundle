@@ -461,11 +461,6 @@ parameters:
 			path: src/Test/Functional/App/Entity/MyEntityParent.php
 
 		-
-			message: "#^Missing native return typehint mixed$#"
-			count: 1
-			path: src/Validator/Constraints/ComposeValidator.php
-
-		-
 			message: "#^Public property `checkDNS` not marked as readonly\\.$#"
 			count: 1
 			path: src/Validator/Constraints/Email.php
