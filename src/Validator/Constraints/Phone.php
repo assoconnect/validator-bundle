@@ -21,6 +21,7 @@ class Phone extends Constraint
     public const LENGTH_MAX_ERROR = '4e5a9535-133a-4ee5-a0ae-22e519bd3f94';
     public const LENGTH_MIN_ERROR = 'd8a6f526-e6e0-4ac3-9608-0f9936a3773c';
     public const PHONE_NUMBER_NOT_EXIST = 'f32ef12d-cefa-42d9-97f0-520d90276bf0';
+    public const INVALID_COUNTRY_CODE = '5530a448-f887-48c0-8ef8-77f206aa52b6';
 
     /**
      * @return array<int>
@@ -48,6 +49,7 @@ class Phone extends Constraint
     public string $tooLongMessage = 'The phone number {{ value }} is too long.';
     public string $inexistantMessage = 'The phone number {{ value }} does not exist.';
     public string $wrongTypeMessage = 'The value {{ value }} is not an accepted phone number type.';
+    public string $invalidCountryCodeMessage = 'The phone number {{ value }} does not have a valid country code.';
 
     /**
      * {@inheritDoc}

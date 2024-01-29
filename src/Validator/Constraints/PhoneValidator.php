@@ -54,6 +54,13 @@ class PhoneValidator extends ConstraintValidator
                 case NumberParseException::TOO_LONG:
                     $this->buildViolation($value, $constraint->tooLongMessage, Phone::LENGTH_MAX_ERROR);
                     break;
+                case NumberParseException::INVALID_COUNTRY_CODE:
+                    $this->buildViolation(
+                        $value,
+                        $constraint->invalidCountryCodeMessage,
+                        Phone::INVALID_COUNTRY_CODE
+                    );
+                    break;
                 default:
                     throw $exception;
             }
