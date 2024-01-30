@@ -49,5 +49,11 @@ class PhoneValidatorTest extends ConstraintValidatorTestCase
             Phone::PHONE_NUMBER_NOT_EXIST,
             'The phone number {{ value }} does not exist.',
         ];
+
+        yield [
+            '+0123456789',
+            Phone::INVALID_COUNTRY_CODE,
+            'The phone number {{ value }} does not have a valid country code.',
+        ];
     }
 }
