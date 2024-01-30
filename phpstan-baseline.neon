@@ -601,6 +601,11 @@ parameters:
 			path: src/Validator/Constraints/Phone.php
 
 		-
+			message: "#^Public property `invalidCountryCodeMessage` not marked as readonly\\.$#"
+			count: 1
+			path: src/Validator/Constraints/Phone.php
+
+		-
 			message: "#^Public property `wrongTypeMessage` not marked as readonly\\.$#"
 			count: 1
 			path: src/Validator/Constraints/PhoneLandline.php
