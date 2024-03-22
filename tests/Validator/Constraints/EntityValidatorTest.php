@@ -186,22 +186,22 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
             'notowning' => [
                 'isOwningSide' => false,
                 'targetEntity' => MyEntityParent::class,
-                'type' => ClassMetadata::TO_ONE,
+                'type' => ClassMetadataInfo::TO_ONE,
             ],
             'owningToOne' => [
                 'isOwningSide' => true,
-                'type' => ClassMetadata::TO_ONE,
+                'type' => ClassMetadataInfo::TO_ONE,
                 'targetEntity' => MyEntityParent::class,
             ],
             'owningToOneNotNull' => [
                 'isOwningSide' => true,
-                'type' => ClassMetadata::TO_ONE,
+                'type' => ClassMetadataInfo::TO_ONE,
                 'targetEntity' => MyEntityParent::class,
                 'joinColumns' => [['nullable' => false]],
             ],
             'owningToMany' => [
                 'isOwningSide' => true,
-                'type' => ClassMetadata::TO_MANY,
+                'type' => ClassMetadataInfo::TO_MANY,
                 'targetEntity' => MyEntityParent::class,
             ],
             'owningUnknown' => [
