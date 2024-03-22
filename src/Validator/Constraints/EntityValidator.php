@@ -8,6 +8,8 @@ use AssoConnect\ValidatorBundle\Exception\UnprotectedFieldTypeException;
 use AssoConnect\ValidatorBundle\Validator\ConstraintsSetProvider\Field\FieldConstraintsSetProviderInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use ReflectionAttribute;
+use ReflectionClass;
 use Symfony\Component\PropertyAccess\Exception\UnexpectedTypeException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Validator\Constraint;
@@ -152,7 +154,7 @@ class EntityValidator extends ConstraintValidator
 
     private function checkIfFieldNeedsToBeValidated(object $entity, string $field): bool
     {
-        $reflectionClass = new \ReflectionClass($entity::class);
+        $reflectionClass = new ReflectionClass($entity::class);
         $fieldAttributes = $this->getFieldAttributes($reflectionClass, $field);
 
         foreach ($fieldAttributes as $attribute) {
@@ -163,8 +165,8 @@ class EntityValidator extends ConstraintValidator
         return true;
     }
 
-    /** @return \ReflectionAttribute[] */
-    private function getFieldAttributes(\ReflectionClass $reflectionClass, string $field): array
+    /** @return ReflectionAttribute[] */
+    private function getFieldAttributes(ReflectionClass $reflectionClass, string $field): array
     {
         if ($reflectionClass->hasProperty($field)) {
             return $reflectionClass->getProperty($field)->getAttributes();

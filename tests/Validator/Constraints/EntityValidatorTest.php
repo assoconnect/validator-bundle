@@ -11,7 +11,6 @@ use AssoConnect\ValidatorBundle\Validator\Constraints\EntityValidator;
 use AssoConnect\ValidatorBundle\Validator\Constraints\Phone;
 use AssoConnect\ValidatorBundle\Validator\ConstraintsSetProvider\Field\PhoneProvider;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\All;
