@@ -501,6 +501,16 @@ parameters:
 			path: src/Validator/Constraints/EmployerIdentificationNumberValidator.php
 
 		-
+			message: "#^Method AssoConnect\\\\ValidatorBundle\\\\Validator\\\\Constraints\\\\EntityValidator\\:\\:getFieldAttributes\\(\\) has parameter \\$reflectionClass with generic class ReflectionClass but does not specify its types\\: T$#"
+			count: 1
+			path: src/Validator/Constraints/EntityValidator.php
+
+		-
+			message: "#^Method AssoConnect\\\\ValidatorBundle\\\\Validator\\\\Constraints\\\\EntityValidator\\:\\:getFieldAttributes\\(\\) return type with generic class ReflectionAttribute does not specify its types\\: T$#"
+			count: 1
+			path: src/Validator/Constraints/EntityValidator.php
+
+		-
 			message: "#^Method AssoConnect\\\\ValidatorBundle\\\\Validator\\\\Constraints\\\\EntityValidator\\:\\:validate\\(\\) has parameter \\$entity with no type specified\\.$#"
 			count: 1
 			path: src/Validator/Constraints/EntityValidator.php
@@ -576,6 +586,11 @@ parameters:
 			path: src/Validator/Constraints/Phone.php
 
 		-
+			message: "#^Public property `invalidCountryCodeMessage` not marked as readonly\\.$#"
+			count: 1
+			path: src/Validator/Constraints/Phone.php
+
+		-
 			message: "#^Public property `message` not marked as readonly\\.$#"
 			count: 1
 			path: src/Validator/Constraints/Phone.php
@@ -597,11 +612,6 @@ parameters:
 
 		-
 			message: "#^Public property `wrongTypeMessage` not marked as readonly\\.$#"
-			count: 1
-			path: src/Validator/Constraints/Phone.php
-
-		-
-			message: "#^Public property `invalidCountryCodeMessage` not marked as readonly\\.$#"
 			count: 1
 			path: src/Validator/Constraints/Phone.php
 

@@ -11,7 +11,6 @@ use AssoConnect\ValidatorBundle\Validator\Constraints\EntityValidator;
 use AssoConnect\ValidatorBundle\Validator\Constraints\Phone;
 use AssoConnect\ValidatorBundle\Validator\ConstraintsSetProvider\Field\PhoneProvider;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\All;
@@ -186,22 +185,22 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
             'notowning' => [
                 'isOwningSide' => false,
                 'targetEntity' => MyEntityParent::class,
-                'type' => ClassMetadata::TO_ONE,
+                'type' => ClassMetadataInfo::TO_ONE,
             ],
             'owningToOne' => [
                 'isOwningSide' => true,
-                'type' => ClassMetadata::TO_ONE,
+                'type' => ClassMetadataInfo::TO_ONE,
                 'targetEntity' => MyEntityParent::class,
             ],
             'owningToOneNotNull' => [
                 'isOwningSide' => true,
-                'type' => ClassMetadata::TO_ONE,
+                'type' => ClassMetadataInfo::TO_ONE,
                 'targetEntity' => MyEntityParent::class,
                 'joinColumns' => [['nullable' => false]],
             ],
             'owningToMany' => [
                 'isOwningSide' => true,
-                'type' => ClassMetadata::TO_MANY,
+                'type' => ClassMetadataInfo::TO_MANY,
                 'targetEntity' => MyEntityParent::class,
             ],
             'owningUnknown' => [

@@ -7,7 +7,6 @@ namespace AssoConnect\ValidatorBundle\Validator\Constraints;
 use AssoConnect\ValidatorBundle\Exception\UnprotectedFieldTypeException;
 use AssoConnect\ValidatorBundle\Validator\ConstraintsSetProvider\Field\FieldConstraintsSetProviderInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Symfony\Component\PropertyAccess\Exception\UnexpectedTypeException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -57,6 +56,9 @@ class EntityValidator extends ConstraintValidator
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
 
         foreach ($fields as $field) {
+            if (!$this->checkIfFieldNeedsToBeValidated($entity, $field)) {
+                continue;
+            }
             $constraints = $this->getConstraints($class, $field);
 
             if ([] !== $constraints) {
@@ -118,7 +120,7 @@ class EntityValidator extends ConstraintValidator
             $fieldMapping = $metadata->associationMappings[$field];
 
             if (true === $fieldMapping['isOwningSide']) {
-                if (($fieldMapping['type'] & ClassMetadata::TO_ONE) !== 0) {
+                if (($fieldMapping['type'] & ClassMetadataInfo::TO_ONE) !== 0) {
                     // ToOne
                     $constraints[] = new Type($fieldMapping['targetEntity']);
                     // Nullable field
@@ -128,13 +130,13 @@ class EntityValidator extends ConstraintValidator
                     ) {
                         $constraints[] = new NotNull();
                     }
-                } elseif (($fieldMapping['type'] & ClassMetadata::TO_MANY) !== 0) {
+                } elseif (($fieldMapping['type'] & ClassMetadataInfo::TO_MANY) !== 0) {
                     // ToMany
                     $constraints[] = new All(
                         [
-                        'constraints' => [
-                            new Type($fieldMapping['targetEntity']),
-                        ],
+                            'constraints' => [
+                                new Type($fieldMapping['targetEntity']),
+                            ],
                         ]
                     );
                 } else {
@@ -143,8 +145,33 @@ class EntityValidator extends ConstraintValidator
                 }
             }
         } else {
-            throw new \LogicException('Unknown field: ' . $class  . '::$' . $field);
+            throw new \LogicException('Unknown field: ' . $class . '::$' . $field);
         }
         return $constraints;
+    }
+
+    private function checkIfFieldNeedsToBeValidated(object $entity, string $field): bool
+    {
+        $reflectionClass = new \ReflectionClass($entity::class);
+        $fieldAttributes = $this->getFieldAttributes($reflectionClass, $field);
+
+        foreach ($fieldAttributes as $attribute) {
+            if (OnlyValidateOnUpdate::class === $attribute->getName()) {
+                return in_array($field, array_keys($this->em->getUnitOfWork()->getEntityChangeSet($entity)), true);
+            }
+        }
+        return true;
+    }
+
+    /** @return \ReflectionAttribute[] */
+    private function getFieldAttributes(\ReflectionClass $reflectionClass, string $field): array
+    {
+        if ($reflectionClass->hasProperty($field)) {
+            return $reflectionClass->getProperty($field)->getAttributes();
+        } else {
+            return false !== $reflectionClass->getParentClass()
+                ? $this->getFieldAttributes($reflectionClass->getParentClass(), $field)
+                : [];
+        }
     }
 }
