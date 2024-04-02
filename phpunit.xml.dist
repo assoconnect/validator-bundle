@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" bootstrap="./vendor/autoload.php" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
+  <php>
+    <server name="SYMFONY_PHPUNIT_VERSION" value="9"/>
+    <ini name="error_reporting" value="-1"/>
+    <env name="KERNEL_CLASS" value="AssoConnect\ValidatorBundle\Tests\TestKernel"/>
+    <env name="APP_ENV" value="test"/>
+    <env name="APP_DEBUG" value="1"/>
+    <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak"/>
+    <env name="SYMFONY_PHPUNIT_REQUIRE" value="nikic/php-parser:^4.0"/>
+  </php>
   <coverage processUncoveredFiles="true">
     <include>
       <directory suffix=".php">./src</directory>

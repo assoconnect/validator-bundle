@@ -7,7 +7,6 @@ namespace AssoConnect\ValidatorBundle\Tests\Validator\Constraints;
 use AssoConnect\ValidatorBundle\Test\ConstraintValidatorTestCase;
 use AssoConnect\ValidatorBundle\Validator\Constraints\Email;
 use AssoConnect\ValidatorBundle\Validator\Constraints\EmailValidator;
-use DG\BypassFinals;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\HttpFactory;
 use Pdp\Storage\PublicSuffixListPsr18Client;
@@ -20,7 +19,6 @@ class EmailValidatorTest extends ConstraintValidatorTestCase
 {
     public function setUp(): void
     {
-        BypassFinals::enable();
         parent::setUp();
     }
 
