@@ -168,10 +168,11 @@ class EntityValidator extends ConstraintValidator
     {
         if ($reflectionClass->hasProperty($field)) {
             return $reflectionClass->getProperty($field)->getAttributes();
-        } else {
-            return false !== $reflectionClass->getParentClass()
-                ? $this->getFieldAttributes($reflectionClass->getParentClass(), $field)
-                : [];
         }
+
+        if (false === $reflectionClass->getParentClass()) {
+            return [];
+        }
+        return $this->getFieldAttributes($reflectionClass->getParentClass(), $field);
     }
 }
