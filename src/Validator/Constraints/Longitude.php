@@ -12,6 +12,7 @@ use Symfony\Component\Validator\Constraint;
  *
  * @author Sylvain Fabre <sylvain.fabre@assoconnect.com>
  */
+#[\Attribute]
 class Longitude extends Constraint
 {
 }

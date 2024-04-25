@@ -12,6 +12,7 @@ use Symfony\Component\Validator\Constraint;
  *
  * @author Sylvain Fabre <sylvain.fabre@assoconnect.com>
  */
+#[\Attribute]
 class Timezone extends Constraint
 {
     public const NO_SUCH_TIMEZONE_ERROR = 'a0af4293-1f1a-4a1c-a328-979dbf6182a2';
