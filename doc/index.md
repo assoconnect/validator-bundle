@@ -108,10 +108,9 @@ Class CustomEntityValidator extends EntityValidator
 
     protected function getConstraintsForType(string $type) :array
     {
-        if($type === 'email'){
+        if ($type === 'email') {
             return [new Email()];
-        }
-        else{
+        } else {
             return parent::getConstraintsForType($type);
         }
     }
