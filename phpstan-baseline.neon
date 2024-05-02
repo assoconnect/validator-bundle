@@ -561,6 +561,16 @@ parameters:
 			path: src/Validator/Constraints/FrenchSirenValidator.php
 
 		-
+			message: "#^Public property `message` not marked as readonly\\.$#"
+			count: 1
+			path: src/Validator/Constraints/FrenchSiret.php
+
+		-
+			message: "#^Method AssoConnect\\\\ValidatorBundle\\\\Validator\\\\Constraints\\\\FrenchSiretValidator\\:\\:validate\\(\\) has parameter \\$value with no type specified\\.$#"
+			count: 1
+			path: src/Validator/Constraints/FrenchSiretValidator.php
+
+		-
 			message: "#^Property AssoConnect\\\\ValidatorBundle\\\\Validator\\\\Constraints\\\\Money\\:\\:\\$max cannot have float as its type \\- floats are not allowed\\.$#"
 			count: 1
 			path: src/Validator/Constraints/Money.php
