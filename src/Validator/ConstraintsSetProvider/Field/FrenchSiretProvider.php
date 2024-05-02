@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AssoConnect\ValidatorBundle\Validator\ConstraintsSetProvider\Field;
 
 use AssoConnect\DoctrineTypesBundle\Doctrine\DBAL\Types\FrenchSiretType;
+use AssoConnect\ValidatorBundle\Validator\Constraints\FrenchSiret;
 
 class FrenchSiretProvider implements FieldConstraintsSetProviderInterface
 {
@@ -15,6 +16,8 @@ class FrenchSiretProvider implements FieldConstraintsSetProviderInterface
 
     public function getConstraints(array $fieldMapping): array
     {
-        return [];
+        return [
+            new FrenchSiret(),
+        ];
     }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AssoConnect\ValidatorBundle\Tests\Validator\ConstraintsSetProvider\Field;
 
 use AssoConnect\ValidatorBundle\Test\FieldConstraintsSetProviderTestCase;
+use AssoConnect\ValidatorBundle\Validator\Constraints\FrenchSiret;
 use AssoConnect\ValidatorBundle\Validator\ConstraintsSetProvider\Field\FieldConstraintsSetProviderInterface;
 use AssoConnect\ValidatorBundle\Validator\ConstraintsSetProvider\Field\FrenchSiretProvider;
 
@@ -17,6 +18,9 @@ class FrenchSiretProviderTest extends FieldConstraintsSetProviderTestCase
 
     public function getConstraintsForTypeProvider(): iterable
     {
-        yield [['type' => 'frenchSiret'], []];
+        yield [
+            ['type' => 'frenchSiret'],
+            [new FrenchSiret()],
+        ];
     }
 }
