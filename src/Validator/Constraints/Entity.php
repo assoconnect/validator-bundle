@@ -9,6 +9,7 @@ use Symfony\Component\Validator\Constraint;
 /**
  * @Annotation
  */
+#[\Attribute]
 class Entity extends Constraint
 {
     public function getTargets(): string

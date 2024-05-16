@@ -13,6 +13,7 @@ use Symfony\Component\Validator\Constraint;
  *
  * @author Sylvain Fabre <sylvain.fabre@assoconnect.com>
  */
+#[\Attribute]
 class Phone extends Constraint
 {
     public const INVALID_FORMAT_ERROR = '24b57af8-7a39-4612-9239-4a98b72546f5';

@@ -12,6 +12,7 @@ use Symfony\Component\Validator\Constraints\Email as _Email;
  *
  * @author Sylvain Fabre <sylvain.fabre@assoconnect.com>
  */
+#[\Attribute]
 class Email extends _Email
 {
     public const INVALID_TLD_ERROR = 'd125a480-3efd-45dd-9a59-6058fccc4fe4';

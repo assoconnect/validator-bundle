@@ -12,6 +12,7 @@ This Symfony bundle provides validators for common scalar values:
 - [Timezone value](/src/Validator/Constraints/TimezoneValidator.php)
 - [French RNA value](/src/Validator/Constraints/FrenchRnaValidator.php)
 - [French SIREN value](/src/Validator/Constraints/FrenchSirenValidator.php)
+- [French SIRET value](/src/Validator/Constraints/FrenchSiretValidator.php)
 
 See the different constraints source code for available options.
 

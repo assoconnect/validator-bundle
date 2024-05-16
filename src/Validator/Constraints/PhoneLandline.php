@@ -12,6 +12,7 @@ use libphonenumber\PhoneNumberType;
  *
  * @author Sylvain Fabre <sylvain.fabre@assoconnect.com>
  */
+#[\Attribute]
 class PhoneLandline extends Phone
 {
     public function getValidTypes(): array

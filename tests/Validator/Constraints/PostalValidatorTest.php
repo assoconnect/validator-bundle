@@ -29,7 +29,7 @@ class PostalValidatorTest extends ConstraintValidatorTestCase
     public function testMissingPropertyPath(): void
     {
         $this->expectException(MissingOptionsException::class);
-        new Postal();
+        new Postal([]);
     }
 
     public function testMissingObject(): void
