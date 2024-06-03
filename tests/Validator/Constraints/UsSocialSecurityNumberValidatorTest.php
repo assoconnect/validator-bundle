@@ -31,14 +31,29 @@ class UsSocialSecurityNumberValidatorTest extends ConstraintValidatorTestCase
     {
         $invalidMessage = 'The value {{ value }} is not a valid US Social Security Number.';
 
-        yield 'first part is 000' => ['000123456', UsSocialSecurityNumber::INVALID_FORMAT_ERROR, $invalidMessage];
-        yield 'first part is 666' => ['666123456', UsSocialSecurityNumber::INVALID_FORMAT_ERROR, $invalidMessage];
+        yield 'first part is not 3 digits' => [
+            '08-05-1120',
+            UsSocialSecurityNumber::INVALID_FORMAT_ERROR,
+            $invalidMessage
+        ];
+        yield 'second part is not 2 digits' => [
+            '078-5-1120',
+            UsSocialSecurityNumber::INVALID_FORMAT_ERROR,
+            $invalidMessage
+        ];
+        yield 'third part is not 4 digits' => [
+            '078-05-120',
+            UsSocialSecurityNumber::INVALID_FORMAT_ERROR,
+            $invalidMessage
+        ];
+        yield 'first part is 000' => ['000-12-3456', UsSocialSecurityNumber::INVALID_FORMAT_ERROR, $invalidMessage];
+        yield 'first part is 666' => ['666-12-3456', UsSocialSecurityNumber::INVALID_FORMAT_ERROR, $invalidMessage];
         yield 'first part starts with 9' => [
-            '900123456',
+            '900-12-3456',
             UsSocialSecurityNumber::INVALID_FORMAT_ERROR,
             $invalidMessage,
         ];
         yield 'second part is 00' => ['123-00-6789', UsSocialSecurityNumber::INVALID_FORMAT_ERROR, $invalidMessage];
-        yield 'valid 123-45-0000' => ['123-45-0000', UsSocialSecurityNumber::INVALID_FORMAT_ERROR, $invalidMessage];
+        yield 'third part is 0000' => ['123-45-0000', UsSocialSecurityNumber::INVALID_FORMAT_ERROR, $invalidMessage];
     }
 }
