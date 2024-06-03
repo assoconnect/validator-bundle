@@ -26,7 +26,7 @@ class UsSocialSecurityNumberValidatorTest extends ConstraintValidatorTestCase
     {
         yield 'empty US SSN' => [''];
         yield 'null US SSN' => [null];
-        yield 'valid US SSN' => ['123-456-789'];
+        yield 'valid US SSN' => ['123-45-6789'];
         yield 'an other valid US SSN' => ['078-05-1120'];
     }
 
@@ -46,6 +46,16 @@ class UsSocialSecurityNumberValidatorTest extends ConstraintValidatorTestCase
         ];
         yield 'third part is not 4 digits' => [
             '078-05-120',
+            UsSocialSecurityNumber::INVALID_FORMAT_ERROR,
+            $invalidMessage,
+        ];
+        yield 'There is a missing dash in' => [
+            '07805-1120',
+            UsSocialSecurityNumber::INVALID_FORMAT_ERROR,
+            $invalidMessage,
+        ];
+        yield 'A dash is not at the correct place' => [
+            '078-0511-20',
             UsSocialSecurityNumber::INVALID_FORMAT_ERROR,
             $invalidMessage,
         ];
