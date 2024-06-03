@@ -6,6 +6,10 @@ namespace AssoConnect\ValidatorBundle\Tests\Validator\Constraints;
 
 use AssoConnect\ValidatorBundle\Test\ConstraintValidatorTestCase;
 use AssoConnect\ValidatorBundle\Validator\Constraints\UsSocialSecurityNumber;
+use AssoConnect\ValidatorBundle\Validator\Constraints\UsSocialSecurityNumberValidator;
+use AssoConnect\ValidatorBundle\Validator\ConstraintsSetProvider\Field\UsSocialSecurityNumberProvider;
+use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\ConstraintValidatorInterface;
 
 class UsSocialSecurityNumberValidatorTest extends ConstraintValidatorTestCase
 {
