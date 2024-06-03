@@ -25,10 +25,10 @@ class UsSocialSecurityNumberValidatorTest extends ConstraintValidatorTestCase
 
     public function providerValidValues(): iterable
     {
-        yield 'empty SSN' => [''];
-        yield 'null SSN' => [null];
-        yield 'valid SSN' => ['123-456-789'];
-        yield 'an other valid SSN' => ['078-05-1120'];
+        yield 'empty US SSN' => [''];
+        yield 'null US SSN' => [null];
+        yield 'valid US SSN' => ['123-456-789'];
+        yield 'an other valid US SSN' => ['078-05-1120'];
     }
 
     public function providerInvalidValues(): iterable
