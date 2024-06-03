@@ -7,7 +7,6 @@ namespace AssoConnect\ValidatorBundle\Tests\Validator\Constraints;
 use AssoConnect\ValidatorBundle\Test\ConstraintValidatorTestCase;
 use AssoConnect\ValidatorBundle\Validator\Constraints\UsSocialSecurityNumber;
 use AssoConnect\ValidatorBundle\Validator\Constraints\UsSocialSecurityNumberValidator;
-use AssoConnect\ValidatorBundle\Validator\ConstraintsSetProvider\Field\UsSocialSecurityNumberProvider;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
 
@@ -15,7 +14,7 @@ class UsSocialSecurityNumberValidatorTest extends ConstraintValidatorTestCase
 {
     protected function getConstraint(): Constraint
     {
-        return new UsSocialSecurityNumberProvider();
+        return new UsSocialSecurityNumber();
     }
 
     public function createValidator(): ConstraintValidatorInterface
@@ -38,17 +37,17 @@ class UsSocialSecurityNumberValidatorTest extends ConstraintValidatorTestCase
         yield 'first part is not 3 digits' => [
             '08-05-1120',
             UsSocialSecurityNumber::INVALID_FORMAT_ERROR,
-            $invalidMessage
+            $invalidMessage,
         ];
         yield 'second part is not 2 digits' => [
             '078-5-1120',
             UsSocialSecurityNumber::INVALID_FORMAT_ERROR,
-            $invalidMessage
+            $invalidMessage,
         ];
         yield 'third part is not 4 digits' => [
             '078-05-120',
             UsSocialSecurityNumber::INVALID_FORMAT_ERROR,
-            $invalidMessage
+            $invalidMessage,
         ];
         yield 'first part is 000' => ['000-12-3456', UsSocialSecurityNumber::INVALID_FORMAT_ERROR, $invalidMessage];
         yield 'first part is 666' => ['666-12-3456', UsSocialSecurityNumber::INVALID_FORMAT_ERROR, $invalidMessage];

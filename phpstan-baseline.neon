@@ -681,6 +681,11 @@ parameters:
 			path: src/Validator/Constraints/Timezone.php
 
 		-
+			message: "#^Public property `message` not marked as readonly\\.$#"
+			count: 1
+			path: src/Validator/Constraints/UsSocialSecurityNumber.php
+
+		-
 			message: "#^Method AssoConnect\\\\ValidatorBundle\\\\Validator\\\\Constraints\\\\TimezoneValidator\\:\\:validate\\(\\) has parameter \\$value with no type specified\\.$#"
 			count: 1
 			path: src/Validator/Constraints/TimezoneValidator.php
