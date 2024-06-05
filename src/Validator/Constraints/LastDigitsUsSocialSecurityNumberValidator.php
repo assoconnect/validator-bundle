@@ -26,7 +26,7 @@ class LastDigitsUsSocialSecurityNumberValidator extends ConstraintValidator
         if (!is_string($value) || preg_match('/^(?!0000)\d{4}$/', $value) !== 1) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ value }}', $this->formatValue($value))
-                ->setCode(UsSocialSecurityNumber::INVALID_FORMAT_ERROR)
+                ->setCode(LastDigitsUsSocialSecurityNumber::INVALID_FORMAT_ERROR)
                 ->addViolation();
         }
     }
