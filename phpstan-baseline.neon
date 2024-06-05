@@ -571,6 +571,11 @@ parameters:
 			path: src/Validator/Constraints/FrenchSiretValidator.php
 
 		-
+			message: "#^Public property `message` not marked as readonly\\.$#"
+			count: 1
+			path: src/Validator/Constraints/LastDigitsUsSocialSecurityNumber.php
+
+		-
 			message: "#^Property AssoConnect\\\\ValidatorBundle\\\\Validator\\\\Constraints\\\\Money\\:\\:\\$max cannot have float as its type \\- floats are not allowed\\.$#"
 			count: 1
 			path: src/Validator/Constraints/Money.php
