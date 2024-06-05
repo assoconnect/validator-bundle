@@ -7,6 +7,8 @@ namespace AssoConnect\ValidatorBundle\Tests\Validator\Constraints;
 use AssoConnect\ValidatorBundle\Test\ConstraintValidatorTestCase;
 use AssoConnect\ValidatorBundle\Validator\Constraints\LastDigitsUsSocialSecurityNumber;
 use AssoConnect\ValidatorBundle\Validator\Constraints\LastDigitsUsSocialSecurityNumberValidator;
+use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\ConstraintValidatorInterface;
 
 class LastDigitsUsSocialSecurityNumberValidatorTest extends ConstraintValidatorTestCase
 {
