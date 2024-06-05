@@ -25,7 +25,7 @@ class UsSocialSecurityNumberValidator extends ConstraintValidator
 
         if (
             !is_string($value) ||
-            preg_match('/^(?!000|666|9\d\d)\d{3}-(?!00)\d{2}-(?!0000)\d{4}$/', $value) !== 1
+            preg_match('/^(?!000|666|9\d\d)\d{3}(?!00)\d{2}(?!0000)\d{4}$/', $value) !== 1
         ) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ value }}', $this->formatValue($value))
