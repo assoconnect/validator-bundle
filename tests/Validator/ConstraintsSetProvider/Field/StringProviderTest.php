@@ -8,6 +8,7 @@ use AssoConnect\ValidatorBundle\Test\FieldConstraintsSetProviderTestCase;
 use AssoConnect\ValidatorBundle\Validator\ConstraintsSetProvider\Field\FieldConstraintsSetProviderInterface;
 use AssoConnect\ValidatorBundle\Validator\ConstraintsSetProvider\Field\StringProvider;
 use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NoSuspiciousCharacters;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class StringProviderTest extends FieldConstraintsSetProviderTestCase
@@ -21,7 +22,7 @@ class StringProviderTest extends FieldConstraintsSetProviderTestCase
     {
         yield [
             ['type' => 'string'],
-            [new Length(['max' => 255])],
+            [new Length(['max' => 255]), new NoSuspiciousCharacters()],
         ];
 
         yield [
@@ -29,7 +30,7 @@ class StringProviderTest extends FieldConstraintsSetProviderTestCase
                 'type' => 'string',
                 'length' => 10,
             ],
-            [new Length(['max' => 10])],
+            [new Length(['max' => 10]), new NoSuspiciousCharacters()],
         ];
 
         yield [
@@ -39,6 +40,7 @@ class StringProviderTest extends FieldConstraintsSetProviderTestCase
             ],
             [
                 new Length(['max' => 255]),
+                new NoSuspiciousCharacters(),
                 new NotBlank(['allowNull' => true]),
             ],
         ];
