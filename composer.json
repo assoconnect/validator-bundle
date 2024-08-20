@@ -32,7 +32,7 @@
     "giggsey/libphonenumber-for-php": "^8.13",
     "php": "^8.2",
     "symfony/http-kernel": "^5.4|^6.4",
-    "symfony/validator": "^5.4|^6.4",
+    "symfony/validator": "^6.4",
     "egulias/email-validator": "^3.2",
     "symfony/property-access": "^5.4|^6.4",
     "jeremykendall/php-domain-parser": "^6.0",
