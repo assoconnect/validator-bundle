@@ -6,6 +6,7 @@ namespace AssoConnect\ValidatorBundle\Validator\ConstraintsSetProvider\Field;
 
 use AssoConnect\AbsolutePercentValueBundle\Object\AbsolutePercentValue;
 use AssoConnect\DoctrineTypesBundle\Doctrine\DBAL\Types\AbsolutePercentValueType;
+use Doctrine\ORM\Mapping\FieldMapping;
 use Symfony\Component\Validator\Constraints\Type;
 
 class AbsolutePercentValueProvider implements FieldConstraintsSetProviderInterface
@@ -15,7 +16,7 @@ class AbsolutePercentValueProvider implements FieldConstraintsSetProviderInterfa
         return AbsolutePercentValueType::NAME === $type;
     }
 
-    public function getConstraints(array $fieldMapping): array
+    public function getConstraints(FieldMapping $fieldMapping): array
     {
         return [
             new Type(AbsolutePercentValue::class),

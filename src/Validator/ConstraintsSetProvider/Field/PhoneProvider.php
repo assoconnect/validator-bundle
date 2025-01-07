@@ -6,6 +6,7 @@ namespace AssoConnect\ValidatorBundle\Validator\ConstraintsSetProvider\Field;
 
 use AssoConnect\DoctrineTypesBundle\Doctrine\DBAL\Types\PhoneType;
 use AssoConnect\ValidatorBundle\Validator\Constraints\Phone;
+use Doctrine\ORM\Mapping\FieldMapping;
 
 class PhoneProvider implements FieldConstraintsSetProviderInterface
 {
@@ -14,7 +15,7 @@ class PhoneProvider implements FieldConstraintsSetProviderInterface
         return PhoneType::NAME === $type;
     }
 
-    public function getConstraints(array $fieldMapping): array
+    public function getConstraints(FieldMapping $fieldMapping): array
     {
         return [
             new Phone(),

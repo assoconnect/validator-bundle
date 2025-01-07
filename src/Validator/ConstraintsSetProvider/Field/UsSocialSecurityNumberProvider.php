@@ -6,6 +6,7 @@ namespace AssoConnect\ValidatorBundle\Validator\ConstraintsSetProvider\Field;
 
 use AssoConnect\DoctrineTypesBundle\Doctrine\DBAL\Types\UsSocialSecurityNumberType;
 use AssoConnect\ValidatorBundle\Validator\Constraints\UsSocialSecurityNumber;
+use Doctrine\ORM\Mapping\FieldMapping;
 
 class UsSocialSecurityNumberProvider implements FieldConstraintsSetProviderInterface
 {
@@ -14,7 +15,7 @@ class UsSocialSecurityNumberProvider implements FieldConstraintsSetProviderInter
         return UsSocialSecurityNumberType::NAME === $type;
     }
 
-    public function getConstraints(array $fieldMapping): array
+    public function getConstraints(FieldMapping $fieldMapping): array
     {
         return [
             new UsSocialSecurityNumber(),

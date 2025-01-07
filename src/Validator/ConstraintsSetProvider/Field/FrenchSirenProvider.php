@@ -6,6 +6,7 @@ namespace AssoConnect\ValidatorBundle\Validator\ConstraintsSetProvider\Field;
 
 use AssoConnect\DoctrineTypesBundle\Doctrine\DBAL\Types\FrenchSirenType;
 use AssoConnect\ValidatorBundle\Validator\Constraints\FrenchSiren;
+use Doctrine\ORM\Mapping\FieldMapping;
 
 class FrenchSirenProvider implements FieldConstraintsSetProviderInterface
 {
@@ -14,7 +15,7 @@ class FrenchSirenProvider implements FieldConstraintsSetProviderInterface
         return FrenchSirenType::NAME === $type;
     }
 
-    public function getConstraints(array $fieldMapping): array
+    public function getConstraints(FieldMapping $fieldMapping): array
     {
         return [
             new FrenchSiren(),

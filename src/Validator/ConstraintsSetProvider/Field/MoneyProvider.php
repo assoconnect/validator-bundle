@@ -7,6 +7,7 @@ namespace AssoConnect\ValidatorBundle\Validator\ConstraintsSetProvider\Field;
 use AssoConnect\DoctrineTypesBundle\Doctrine\DBAL\Types\MoneyType;
 use AssoConnect\ValidatorBundle\Validator\Constraints\FloatScale;
 use AssoConnect\ValidatorBundle\Validator\Constraints\Money;
+use Doctrine\ORM\Mapping\FieldMapping;
 
 class MoneyProvider implements FieldConstraintsSetProviderInterface
 {
@@ -15,11 +16,11 @@ class MoneyProvider implements FieldConstraintsSetProviderInterface
         return MoneyType::NAME === $type;
     }
 
-    public function getConstraints(array $fieldMapping): array
+    public function getConstraints(FieldMapping $fieldMapping): array
     {
         return [
             new Money(),
-            new FloatScale($fieldMapping['scale'] ?? MoneyType::DEFAULT_SCALE),
+            new FloatScale($fieldMapping->scale ?? MoneyType::DEFAULT_SCALE),
         ];
     }
 }

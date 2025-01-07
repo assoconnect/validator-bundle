@@ -7,6 +7,7 @@ namespace AssoConnect\ValidatorBundle\Validator\ConstraintsSetProvider\Field;
 use AssoConnect\DoctrineTypesBundle\Doctrine\DBAL\Types\LongitudeType;
 use AssoConnect\ValidatorBundle\Validator\Constraints\FloatScale;
 use AssoConnect\ValidatorBundle\Validator\Constraints\Longitude;
+use Doctrine\ORM\Mapping\FieldMapping;
 
 class LongitudeProvider implements FieldConstraintsSetProviderInterface
 {
@@ -15,11 +16,11 @@ class LongitudeProvider implements FieldConstraintsSetProviderInterface
         return LongitudeType::NAME === $type;
     }
 
-    public function getConstraints(array $fieldMapping): array
+    public function getConstraints(FieldMapping $fieldMapping): array
     {
         return [
             new Longitude(),
-            new FloatScale($fieldMapping['scale'] ?? LongitudeType::DEFAULT_SCALE),
+            new FloatScale($fieldMapping->scale ?? LongitudeType::DEFAULT_SCALE),
         ];
     }
 }

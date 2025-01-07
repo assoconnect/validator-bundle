@@ -8,6 +8,7 @@ use AssoConnect\ValidatorBundle\Exception\UnprotectedFieldTypeException;
 use AssoConnect\ValidatorBundle\Validator\ConstraintsSetProvider\Field\FieldConstraintsSetProviderInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Doctrine\ORM\Mapping\FieldMapping;
 use Symfony\Component\PropertyAccess\Exception\UnexpectedTypeException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Validator\Constraint;
@@ -79,13 +80,12 @@ class EntityValidator extends ConstraintValidator
     }
 
     /**
-     * @param FieldMapping $fieldMapping
      * @return Constraint[]
      */
-    public function getConstraintsForType(array $fieldMapping): array
+    public function getConstraintsForType(FieldMapping $fieldMapping): array
     {
         foreach ($this->fieldConstraintsSetFactories as $fieldConstraintsSetProvider) {
-            if ($fieldConstraintsSetProvider->supports($fieldMapping['type'])) {
+            if ($fieldConstraintsSetProvider->supports($fieldMapping->type)) {
                 return $fieldConstraintsSetProvider->getConstraints($fieldMapping);
             }
         }
@@ -105,9 +105,7 @@ class EntityValidator extends ConstraintValidator
         if (array_key_exists($field, $metadata->fieldMappings)) {
             $fieldMapping = $metadata->fieldMappings[$field];
 
-            // Nullable field
-            Assert::keyExists($fieldMapping, 'nullable');
-            if (true !== $fieldMapping['nullable']) {
+            if (true !== $fieldMapping->nullable) {
                 $constraints[] = [new NotNull()];
             }
 
