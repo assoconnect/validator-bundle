@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AssoConnect\ValidatorBundle\Tests\Validator\ConstraintsSetProvider\Field;
 
-use AssoConnect\DoctrineTypesBundle\Doctrine\DBAL\Types\DateTimeMicroSecondsType;
+use AssoConnect\DoctrineTypesBundle\Doctrine\DBAL\Types\DateTimeImmutableMicroSecondsType;
 use AssoConnect\ValidatorBundle\Test\FieldConstraintsSetProviderTestCase;
 use AssoConnect\ValidatorBundle\Validator\ConstraintsSetProvider\Field\DateTimeImmutableProvider;
 use AssoConnect\ValidatorBundle\Validator\ConstraintsSetProvider\Field\FieldConstraintsSetProviderInterface;
@@ -21,27 +21,22 @@ class DateTimeImmutableProviderTest extends FieldConstraintsSetProviderTestCase
     public function getConstraintsForTypeProvider(): iterable
     {
         yield [
-            ['type' => 'date'],
+            ['type' => 'date_immutable'],
             [new Type(DateTimeImmutable::class)],
         ];
 
         yield [
-            ['type' => 'datetime'],
+            ['type' => 'datetime_immutable'],
             [new Type(DateTimeImmutable::class)],
         ];
 
         yield [
-            ['type' => 'datetimetz'],
+            ['type' => 'datetimetz_immutable'],
             [new Type(DateTimeImmutable::class)],
         ];
 
         yield [
-            ['type' => 'datetimeutc'],
-            [new Type(DateTimeImmutable::class)],
-        ];
-
-        yield [
-            ['type' => DateTimeMicroSecondsType::NAME],
+            ['type' => DateTimeImmutableMicroSecondsType::NAME],
             [new Type(DateTimeImmutable::class)],
         ];
     }
