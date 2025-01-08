@@ -12,6 +12,7 @@ use Symfony\Component\Validator\Test\ConstraintValidatorTestCase as SymfonyConst
 
 /**
  * @template T of ConstraintValidator
+ * @template-extends SymfonyConstraintValidatorTestCase<T>
  */
 abstract class ConstraintValidatorTestCase extends SymfonyConstraintValidatorTestCase
 {
