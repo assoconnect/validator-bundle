@@ -8,8 +8,11 @@ use AssoConnect\ValidatorBundle\Test\ConstraintValidatorTestCase;
 use AssoConnect\ValidatorBundle\Validator\Constraints\FrenchSiret;
 use AssoConnect\ValidatorBundle\Validator\Constraints\FrenchSiretValidator;
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\ConstraintValidatorInterface;
+use Symfony\Component\Validator\ConstraintValidator;
 
+/**
+ * @extends ConstraintValidatorTestCase<FrenchSiretValidator>
+ */
 class FrenchSiretValidatorTest extends ConstraintValidatorTestCase
 {
     protected function getConstraint(): Constraint
@@ -17,7 +20,7 @@ class FrenchSiretValidatorTest extends ConstraintValidatorTestCase
         return new FrenchSiret();
     }
 
-    public function createValidator(): ConstraintValidatorInterface
+    public function createValidator(): ConstraintValidator
     {
         return new FrenchSiretValidator();
     }

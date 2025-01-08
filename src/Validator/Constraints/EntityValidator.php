@@ -39,7 +39,7 @@ class EntityValidator extends ConstraintValidator
         $this->fieldConstraintsSetFactories = $fieldConstraintsSetFactories;
     }
 
-    public function validate($entity, Constraint $constraint): void
+    public function validate(mixed $entity, Constraint $constraint): void
     {
         if (!$constraint instanceof Entity) {
             throw new \Symfony\Component\Validator\Exception\UnexpectedTypeException(

@@ -1,16 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Using \\!\\=\\= with class\\-string\\|false and class\\-string\\|false is denied$#"
-			count: 1
-			path: src/Test/ArrayContainSameObjectsConstraint.php
-
-		-
-			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Test\\\\ConstraintValidatorTestCase extends generic class Symfony\\\\Component\\\\Validator\\\\Test\\\\ConstraintValidatorTestCase but does not specify its types\\: T$#"
-			count: 1
-			path: src/Test/ConstraintValidatorTestCase.php
-
-		-
 			message: "#^Public property `bool` not marked as readonly\\.$#"
 			count: 1
 			path: src/Test/Functional/App/Entity/MyEmbeddable.php
@@ -486,19 +476,9 @@ parameters:
 			path: src/Validator/Constraints/Email.php
 
 		-
-			message: "#^Method AssoConnect\\\\ValidatorBundle\\\\Validator\\\\Constraints\\\\EmailValidator\\:\\:validate\\(\\) has parameter \\$value with no type specified\\.$#"
-			count: 1
-			path: src/Validator/Constraints/EmailValidator.php
-
-		-
 			message: "#^Public property `message` not marked as readonly\\.$#"
 			count: 1
 			path: src/Validator/Constraints/EmployerIdentificationNumber.php
-
-		-
-			message: "#^Method AssoConnect\\\\ValidatorBundle\\\\Validator\\\\Constraints\\\\EmployerIdentificationNumberValidator\\:\\:validate\\(\\) has parameter \\$value with no type specified\\.$#"
-			count: 1
-			path: src/Validator/Constraints/EmployerIdentificationNumberValidator.php
 
 		-
 			message: "#^Method AssoConnect\\\\ValidatorBundle\\\\Validator\\\\Constraints\\\\EntityValidator\\:\\:getFieldAttributes\\(\\) has parameter \\$reflectionClass with generic class ReflectionClass but does not specify its types\\: T$#"
@@ -507,11 +487,6 @@ parameters:
 
 		-
 			message: "#^Method AssoConnect\\\\ValidatorBundle\\\\Validator\\\\Constraints\\\\EntityValidator\\:\\:getFieldAttributes\\(\\) return type with generic class ReflectionAttribute does not specify its types\\: T$#"
-			count: 1
-			path: src/Validator/Constraints/EntityValidator.php
-
-		-
-			message: "#^Method AssoConnect\\\\ValidatorBundle\\\\Validator\\\\Constraints\\\\EntityValidator\\:\\:validate\\(\\) has parameter \\$entity with no type specified\\.$#"
 			count: 1
 			path: src/Validator/Constraints/EntityValidator.php
 
@@ -536,19 +511,9 @@ parameters:
 			path: src/Validator/Constraints/FloatScale.php
 
 		-
-			message: "#^Method AssoConnect\\\\ValidatorBundle\\\\Validator\\\\Constraints\\\\FloatScaleValidator\\:\\:validate\\(\\) has parameter \\$value with no type specified\\.$#"
-			count: 1
-			path: src/Validator/Constraints/FloatScaleValidator.php
-
-		-
 			message: "#^Public property `message` not marked as readonly\\.$#"
 			count: 1
 			path: src/Validator/Constraints/FrenchRna.php
-
-		-
-			message: "#^Method AssoConnect\\\\ValidatorBundle\\\\Validator\\\\Constraints\\\\FrenchRnaValidator\\:\\:validate\\(\\) has parameter \\$value with no type specified\\.$#"
-			count: 1
-			path: src/Validator/Constraints/FrenchRnaValidator.php
 
 		-
 			message: "#^Public property `message` not marked as readonly\\.$#"
@@ -556,19 +521,9 @@ parameters:
 			path: src/Validator/Constraints/FrenchSiren.php
 
 		-
-			message: "#^Method AssoConnect\\\\ValidatorBundle\\\\Validator\\\\Constraints\\\\FrenchSirenValidator\\:\\:validate\\(\\) has parameter \\$value with no type specified\\.$#"
-			count: 1
-			path: src/Validator/Constraints/FrenchSirenValidator.php
-
-		-
 			message: "#^Public property `message` not marked as readonly\\.$#"
 			count: 1
 			path: src/Validator/Constraints/FrenchSiret.php
-
-		-
-			message: "#^Method AssoConnect\\\\ValidatorBundle\\\\Validator\\\\Constraints\\\\FrenchSiretValidator\\:\\:validate\\(\\) has parameter \\$value with no type specified\\.$#"
-			count: 1
-			path: src/Validator/Constraints/FrenchSiretValidator.php
 
 		-
 			message: "#^Public property `message` not marked as readonly\\.$#"
@@ -641,11 +596,6 @@ parameters:
 			path: src/Validator/Constraints/PhoneMobile.php
 
 		-
-			message: "#^Method AssoConnect\\\\ValidatorBundle\\\\Validator\\\\Constraints\\\\PhoneValidator\\:\\:validate\\(\\) has parameter \\$value with no type specified\\.$#"
-			count: 1
-			path: src/Validator/Constraints/PhoneValidator.php
-
-		-
 			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Validator\\\\Constraints\\\\Postal has an uninitialized property \\$countryPropertyPath\\. Give it default value or assign it in the constructor\\.$#"
 			count: 1
 			path: src/Validator/Constraints/Postal.php
@@ -676,11 +626,6 @@ parameters:
 			path: src/Validator/Constraints/Postal.php
 
 		-
-			message: "#^Method AssoConnect\\\\ValidatorBundle\\\\Validator\\\\Constraints\\\\PostalValidator\\:\\:validate\\(\\) has parameter \\$value with no type specified\\.$#"
-			count: 1
-			path: src/Validator/Constraints/PostalValidator.php
-
-		-
 			message: "#^Public property `message` not marked as readonly\\.$#"
 			count: 1
 			path: src/Validator/Constraints/Timezone.php
@@ -689,11 +634,6 @@ parameters:
 			message: "#^Public property `message` not marked as readonly\\.$#"
 			count: 1
 			path: src/Validator/Constraints/UsSocialSecurityNumber.php
-
-		-
-			message: "#^Method AssoConnect\\\\ValidatorBundle\\\\Validator\\\\Constraints\\\\TimezoneValidator\\:\\:validate\\(\\) has parameter \\$value with no type specified\\.$#"
-			count: 1
-			path: src/Validator/Constraints/TimezoneValidator.php
 
 		-
 			message: "#^Method AssoConnect\\\\ValidatorBundle\\\\Validator\\\\ConstraintsSetProvider\\\\Field\\\\IntegerProvider\\:\\:getMaxValue\\(\\) cannot have float\\|int as its return type \\- floats are not allowed\\.$#"
@@ -709,8 +649,3 @@ parameters:
 			message: "#^Missing native return typehint float$#"
 			count: 2
 			path: src/Validator/ConstraintsSetProvider/Field/IntegerProvider.php
-
-		-
-			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Tests\\\\Validator\\\\Constraints\\\\PostalValidatorTest extends generic class Symfony\\\\Component\\\\Validator\\\\Test\\\\ConstraintValidatorTestCase but does not specify its types\\: T$#"
-			count: 1
-			path: tests/Validator/Constraints/PostalValidatorTest.php

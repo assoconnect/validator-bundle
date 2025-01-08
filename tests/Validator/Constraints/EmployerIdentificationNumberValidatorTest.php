@@ -8,9 +8,12 @@ use AssoConnect\ValidatorBundle\Test\ConstraintValidatorTestCase;
 use AssoConnect\ValidatorBundle\Validator\Constraints\EmployerIdentificationNumber;
 use AssoConnect\ValidatorBundle\Validator\Constraints\EmployerIdentificationNumberValidator;
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\ConstraintValidatorInterface;
+use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
+/**
+ * @extends ConstraintValidatorTestCase<EmployerIdentificationNumberValidator>
+ */
 class EmployerIdentificationNumberValidatorTest extends ConstraintValidatorTestCase
 {
     protected function getConstraint(): Constraint
@@ -18,7 +21,7 @@ class EmployerIdentificationNumberValidatorTest extends ConstraintValidatorTestC
         return new EmployerIdentificationNumber();
     }
 
-    public function createValidator(): ConstraintValidatorInterface
+    public function createValidator(): ConstraintValidator
     {
         return new EmployerIdentificationNumberValidator();
     }

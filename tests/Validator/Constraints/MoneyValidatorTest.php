@@ -12,8 +12,11 @@ use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Validator\Constraints\LessThan;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
-use Symfony\Component\Validator\ConstraintValidatorInterface;
+use Symfony\Component\Validator\ConstraintValidator;
 
+/**
+ * @extends ConstraintValidatorTestCase<MoneyValidator>
+ */
 class MoneyValidatorTest extends ConstraintValidatorTestCase
 {
     protected function getConstraint(): Constraint
@@ -21,7 +24,7 @@ class MoneyValidatorTest extends ConstraintValidatorTestCase
         return new Money(['min' => 0.0, 'max' => 90.0]);
     }
 
-    public function createValidator(): ConstraintValidatorInterface
+    public function createValidator(): ConstraintValidator
     {
         return new MoneyValidator();
     }

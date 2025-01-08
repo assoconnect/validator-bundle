@@ -32,7 +32,7 @@ class EmailValidator extends _EmailValidator
         $this->publicSuffixListClient = $publicSuffixListClient;
     }
 
-    public function validate($value, Constraint $constraint): void
+    public function validate(mixed $value, Constraint $constraint): void
     {
         if (!$constraint instanceof Email) {
             throw new UnexpectedTypeException($constraint, __NAMESPACE__ . '\Email');

@@ -27,7 +27,6 @@ class PostalValidator extends ConstraintValidator
      * @link https://en.wikipedia.org/wiki/List_of_postal_codes
      */
     private const POSTALS = [
-        null => null,
         'AD' => '^AD[0-9]{3}$', // Andora
         'AE' => null, // United Arab Emirates
         'AF' => self::FOUR_DIGIT_FORMAT, // Afghanistan
@@ -285,7 +284,7 @@ class PostalValidator extends ConstraintValidator
     /**
      * {@inheritDoc}
      */
-    public function validate($value, Constraint $constraint): void
+    public function validate(mixed $value, Constraint $constraint): void
     {
         if (!$constraint instanceof Postal) {
             throw new UnexpectedTypeException($constraint, Postal::class);
@@ -310,6 +309,10 @@ class PostalValidator extends ConstraintValidator
                 0,
                 $e
             );
+        }
+
+        if (null === $country && null === $value) {
+            return;
         }
 
         if (!array_key_exists($country, self::POSTALS)) {

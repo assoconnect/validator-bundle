@@ -12,8 +12,11 @@ use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Validator\Constraints\LessThanOrEqual;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
-use Symfony\Component\Validator\ConstraintValidatorInterface;
+use Symfony\Component\Validator\ConstraintValidator;
 
+/**
+ * @extends ConstraintValidatorTestCase<LongitudeValidator>
+ */
 class LongitudeValidatorTest extends ConstraintValidatorTestCase
 {
     protected function getConstraint(): Constraint
@@ -21,7 +24,7 @@ class LongitudeValidatorTest extends ConstraintValidatorTestCase
         return new Longitude();
     }
 
-    public function createValidator(): ConstraintValidatorInterface
+    public function createValidator(): ConstraintValidator
     {
         return new LongitudeValidator();
     }

@@ -9,8 +9,11 @@ use AssoConnect\ValidatorBundle\Validator\Constraints\Phone;
 use AssoConnect\ValidatorBundle\Validator\Constraints\PhoneMobile;
 use AssoConnect\ValidatorBundle\Validator\Constraints\PhoneValidator;
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\ConstraintValidatorInterface;
+use Symfony\Component\Validator\ConstraintValidator;
 
+/**
+ * @extends ConstraintValidatorTestCase<PhoneValidator>
+ */
 class PhoneMobileValidatorTest extends ConstraintValidatorTestCase
 {
     protected function getConstraint(): Constraint
@@ -18,7 +21,7 @@ class PhoneMobileValidatorTest extends ConstraintValidatorTestCase
         return new PhoneMobile();
     }
 
-    public function createValidator(): ConstraintValidatorInterface
+    public function createValidator(): ConstraintValidator
     {
         return new PhoneValidator();
     }

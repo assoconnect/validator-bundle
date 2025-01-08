@@ -18,7 +18,7 @@ class TimezoneValidator extends ConstraintValidator
     /**
      * {@inheritDoc}
      */
-    public function validate($value, Constraint $constraint): void
+    public function validate(mixed $value, Constraint $constraint): void
     {
         if (!$constraint instanceof Timezone) {
             throw new UnexpectedTypeException($constraint, __NAMESPACE__ . '\Timezone');
@@ -38,8 +38,7 @@ class TimezoneValidator extends ConstraintValidator
         }
     }
 
-    /** @param mixed $value */
-    private function getValue($value): string
+    private function getValue(mixed $value): string
     {
         if ($value instanceof \DateTimeZone) {
             return $value->getName();

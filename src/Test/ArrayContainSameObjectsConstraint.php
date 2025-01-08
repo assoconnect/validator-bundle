@@ -9,29 +9,23 @@ use PHPUnit\Framework\Constraint\Constraint;
 class ArrayContainSameObjectsConstraint extends Constraint
 {
     /**
-     * @var array<mixed>
+     * @param mixed[] $expected
      */
-    private array $expected;
-
-    /**
-     * @param array<mixed> $expected
-     */
-    public function __construct(array $expected)
+    public function __construct(private readonly array $expected)
     {
-        $this->expected = $expected;
     }
 
     /**
      * @param mixed $other
      */
-    public function matches($other): bool
+    public function matches(mixed $other): bool
     {
-        if (count($other) !== count($this->expected)) {
+        if (!is_array($other) || count($other) !== count($this->expected)) {
             return false;
         }
 
         foreach ($other as $key => $element) {
-            if (get_class($element) !== get_class($this->expected[$key])) {
+            if ($element::class !== $this->expected[$key]::class) {
                 return false;
             }
         }
