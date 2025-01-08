@@ -17,9 +17,11 @@ use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\Constraints\Valid;
+use Symfony\Component\Validator\ConstraintValidator;
 
 /**
  * @psalm-import-type FieldMapping from ClassMetadataInfo
+ * @extends ConstraintValidatorTestCase<EntityValidator>
  */
 class EntityValidatorTest extends ConstraintValidatorTestCase
 {
@@ -38,11 +40,9 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
         return new Entity();
     }
 
-    public function createValidator(): EntityValidator
+    public function createValidator(): ConstraintValidator
     {
-        return new EntityValidator($this->em, [
-            new PhoneProvider(),
-        ]);
+        return new EntityValidator($this->em, [new PhoneProvider()]);
     }
 
     public function testGetConstraintsForTypeUnknown(): void
@@ -54,13 +54,11 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
         ];
 
         $this->expectException(\DomainException::class);
-        self::assertInstanceOf(EntityValidator::class, $this->validator);
         $this->validator->getConstraintsForType($fieldMapping);
     }
 
     public function testGetConstraintsForType(): void
     {
-        self::assertInstanceOf(EntityValidator::class, $this->validator);
         self::assertArrayContainsSameObjects(
             $this->validator->getConstraintsForType([
                 'type' => 'phone',
@@ -73,7 +71,6 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
 
     public function testGetConstraintsForNullableField(): void
     {
-        self::assertInstanceOf(EntityValidator::class, $this->validator);
         self::assertArrayContainsSameObjects(
             $this->validator->getConstraints('class', 'nullable'),
             [new Phone()]
@@ -82,7 +79,6 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
 
     public function testGetConstraintsForNotNullableField(): void
     {
-        self::assertInstanceOf(EntityValidator::class, $this->validator);
         self::assertArrayContainsSameObjects(
             $this->validator->getConstraints('class', 'notnullable'),
             [new NotNull(), new Phone()]
@@ -91,7 +87,6 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
 
     public function testGetConstraintsForEmbeddable(): void
     {
-        self::assertInstanceOf(EntityValidator::class, $this->validator);
         self::assertArrayContainsSameObjects(
             $this->validator->getConstraints('class', 'embedded'),
             [new Valid()]
@@ -100,13 +95,11 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
 
     public function testGetConstraintsForRelationNotOWningSide(): void
     {
-        self::assertInstanceOf(EntityValidator::class, $this->validator);
         self::assertEmpty($this->validator->getConstraints('class', 'notowning'));
     }
 
     public function testGetConstraintsForRelationToOne(): void
     {
-        self::assertInstanceOf(EntityValidator::class, $this->validator);
         self::assertArrayContainsSameObjects(
             $this->validator->getConstraints('class', 'owningToOne'),
             [new Type(MyEntityParent::class)]
@@ -115,7 +108,6 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
 
     public function testGetConstraintsForRelationToOneNotNullable(): void
     {
-        self::assertInstanceOf(EntityValidator::class, $this->validator);
         self::assertArrayContainsSameObjects(
             $this->validator->getConstraints('class', 'owningToOneNotNull'),
             [new Type(MyEntityParent::class), new NotNull()]
@@ -124,7 +116,6 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
 
     public function testGetConstraintsForRelationToMany(): void
     {
-        self::assertInstanceOf(EntityValidator::class, $this->validator);
         $constraints = $this->validator->getConstraints('class', 'owningToMany');
         self::assertArrayContainsSameObjects(
             $constraints,
@@ -141,7 +132,6 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
     {
         $this->expectException(\DomainException::class);
 
-        self::assertInstanceOf(EntityValidator::class, $this->validator);
         $this->validator->getConstraints('class', 'owningUnknown');
     }
 
@@ -149,7 +139,6 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
     {
         $this->expectException(\LogicException::class);
 
-        self::assertInstanceOf(EntityValidator::class, $this->validator);
         $this->validator->getConstraints('class', 'unknown');
     }
 

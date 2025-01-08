@@ -284,7 +284,7 @@ class PostalValidator extends ConstraintValidator
     /**
      * {@inheritDoc}
      */
-    public function validate($value, Constraint $constraint): void
+    public function validate(mixed $value, Constraint $constraint): void
     {
         if (!$constraint instanceof Postal) {
             throw new UnexpectedTypeException($constraint, Postal::class);

@@ -8,8 +8,11 @@ use AssoConnect\ValidatorBundle\Test\ConstraintValidatorTestCase;
 use AssoConnect\ValidatorBundle\Validator\Constraints\UsSocialSecurityNumber;
 use AssoConnect\ValidatorBundle\Validator\Constraints\UsSocialSecurityNumberValidator;
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\ConstraintValidatorInterface;
+use Symfony\Component\Validator\ConstraintValidator;
 
+/**
+ * @extends ConstraintValidatorTestCase<UsSocialSecurityNumberValidator>
+ */
 class UsSocialSecurityNumberValidatorTest extends ConstraintValidatorTestCase
 {
     protected function getConstraint(): Constraint
@@ -17,7 +20,7 @@ class UsSocialSecurityNumberValidatorTest extends ConstraintValidatorTestCase
         return new UsSocialSecurityNumber();
     }
 
-    public function createValidator(): ConstraintValidatorInterface
+    public function createValidator(): ConstraintValidator
     {
         return new UsSocialSecurityNumberValidator();
     }

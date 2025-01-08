@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace AssoConnect\ValidatorBundle\Tests\Validator\Constraints;
 
+use AssoConnect\ValidatorBundle\Test\ConstraintValidatorTestCase;
 use AssoConnect\ValidatorBundle\Validator\Constraints\Postal;
 use AssoConnect\ValidatorBundle\Validator\Constraints\PostalValidator;
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\ConstraintValidatorInterface;
+use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
 use Symfony\Component\Validator\Exception\MissingOptionsException;
-use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
+/**
+ * @extends ConstraintValidatorTestCase<PostalValidator>
+ */
 class PostalValidatorTest extends ConstraintValidatorTestCase
 {
     protected function getConstraint(): Constraint
@@ -21,7 +24,7 @@ class PostalValidatorTest extends ConstraintValidatorTestCase
         ]);
     }
 
-    public function createValidator(): ConstraintValidatorInterface
+    public function createValidator(): ConstraintValidator
     {
         return new PostalValidator();
     }
@@ -152,5 +155,15 @@ class PostalValidatorTest extends ConstraintValidatorTestCase
         $this->validator->validate(null, $this->getConstraint());
 
         self::assertNoViolation();
+    }
+
+    public function providerValidValues(): iterable
+    {
+        return [];
+    }
+
+    public function providerInvalidValues(): iterable
+    {
+        return [];
     }
 }

@@ -6,19 +6,22 @@ namespace AssoConnect\ValidatorBundle\Test;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\ExpressionLanguageSyntax;
-use Symfony\Component\Validator\ConstraintValidatorInterface;
+use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase as SymfonyConstraintValidatorTestCase;
 
+/**
+ * @template T of ConstraintValidator
+ */
 abstract class ConstraintValidatorTestCase extends SymfonyConstraintValidatorTestCase
 {
     abstract protected function getConstraint(): Constraint;
 
-    abstract public function createValidator(): ConstraintValidatorInterface;
+    abstract public function createValidator(): ConstraintValidator;
 
     /**
-     * @param array<mixed> $array1
-     * @param array<mixed> $array2
+     * @param mixed[] $array1
+     * @param mixed[] $array2
      */
     protected static function assertArrayContainsSameObjects(array $array1, array $array2, string $message = ''): void
     {

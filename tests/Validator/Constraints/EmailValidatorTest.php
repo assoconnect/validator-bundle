@@ -12,9 +12,12 @@ use GuzzleHttp\Psr7\HttpFactory;
 use Pdp\Storage\PublicSuffixListPsr18Client;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\NotNull;
-use Symfony\Component\Validator\ConstraintValidatorInterface;
+use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
+/**
+ * @extends ConstraintValidatorTestCase<EmailValidator>
+ */
 class EmailValidatorTest extends ConstraintValidatorTestCase
 {
     public function setUp(): void
@@ -22,7 +25,7 @@ class EmailValidatorTest extends ConstraintValidatorTestCase
         parent::setUp();
     }
 
-    public function createValidator(): ConstraintValidatorInterface
+    public function createValidator(): ConstraintValidator
     {
         $publicSuffixListClient = new PublicSuffixListPsr18Client(
             new Client(),

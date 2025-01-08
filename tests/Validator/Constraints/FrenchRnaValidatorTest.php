@@ -8,8 +8,11 @@ use AssoConnect\ValidatorBundle\Test\ConstraintValidatorTestCase;
 use AssoConnect\ValidatorBundle\Validator\Constraints\FrenchRna;
 use AssoConnect\ValidatorBundle\Validator\Constraints\FrenchRnaValidator;
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\ConstraintValidatorInterface;
+use Symfony\Component\Validator\ConstraintValidator;
 
+/**
+ * @extends ConstraintValidatorTestCase<FrenchRnaValidator>
+ */
 class FrenchRnaValidatorTest extends ConstraintValidatorTestCase
 {
     protected function getConstraint(): Constraint
@@ -17,7 +20,7 @@ class FrenchRnaValidatorTest extends ConstraintValidatorTestCase
         return new FrenchRna();
     }
 
-    public function createValidator(): ConstraintValidatorInterface
+    public function createValidator(): ConstraintValidator
     {
         return new FrenchRnaValidator();
     }

@@ -21,7 +21,7 @@ class MoneyValidator extends ComposeValidator
         return Money::class;
     }
 
-    public function getValidatorsAndConstraints($value, Constraint $constraint): array
+    public function getValidatorsAndConstraints(mixed $value, Constraint $constraint): array
     {
         if (!$constraint instanceof Money) {
             throw new UnexpectedTypeException($constraint, Money::class);

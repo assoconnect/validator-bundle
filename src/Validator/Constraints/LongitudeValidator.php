@@ -30,7 +30,7 @@ class LongitudeValidator extends ComposeValidator
         return false;
     }
 
-    public function getValidatorsAndConstraints($value, Constraint $constraint): array
+    public function getValidatorsAndConstraints(mixed $value, Constraint $constraint): array
     {
         if (!$constraint instanceof Longitude) {
             throw new UnexpectedTypeException($constraint, Longitude::class);

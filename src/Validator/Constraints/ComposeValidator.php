@@ -19,27 +19,21 @@ abstract class ComposeValidator extends ConstraintValidator
     abstract protected function getSupportedConstraint(): string;
 
     /**
-     * @param mixed $value
      * @return array<ValidatorAndConstraint>
      */
-    abstract protected function getValidatorsAndConstraints($value, Constraint $constraint): array;
+    abstract protected function getValidatorsAndConstraints(mixed $value, Constraint $constraint): array;
 
     abstract protected function isEmptyStringAccepted(): bool;
 
     /**
      * Used when value type is not accepted by the recursive constraints used in validate() method
-     * @param mixed $value
-     * @return mixed
      */
-    protected function sanitizeValue($value): mixed
+    protected function sanitizeValue(mixed $value): mixed
     {
         return $value;
     }
 
-    /**
-     * @param mixed $value
-     */
-    public function validate($value, Constraint $constraint): void
+    public function validate(mixed $value, Constraint $constraint): void
     {
         $supportedConstraint = $this->getSupportedConstraint();
         if (get_class($constraint) !== $supportedConstraint) {

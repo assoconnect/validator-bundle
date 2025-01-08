@@ -8,9 +8,12 @@ use AssoConnect\ValidatorBundle\Test\ConstraintValidatorTestCase;
 use AssoConnect\ValidatorBundle\Validator\Constraints\Timezone;
 use AssoConnect\ValidatorBundle\Validator\Constraints\TimezoneValidator;
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\ConstraintValidatorInterface;
+use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
+/**
+ * @extends ConstraintValidatorTestCase<TimezoneValidator>
+ */
 class TimezoneValidatorTest extends ConstraintValidatorTestCase
 {
     protected function getConstraint(): Constraint
@@ -18,7 +21,7 @@ class TimezoneValidatorTest extends ConstraintValidatorTestCase
         return new Timezone();
     }
 
-    public function createValidator(): ConstraintValidatorInterface
+    public function createValidator(): ConstraintValidator
     {
         return new TimezoneValidator();
     }
