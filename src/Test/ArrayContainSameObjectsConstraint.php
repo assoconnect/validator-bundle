@@ -15,9 +15,6 @@ class ArrayContainSameObjectsConstraint extends Constraint
     {
     }
 
-    /**
-     * @param mixed $other
-     */
     public function matches(mixed $other): bool
     {
         if (!is_array($other) || count($other) !== count($this->expected)) {
