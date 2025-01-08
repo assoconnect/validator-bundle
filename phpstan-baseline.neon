@@ -1,11 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Using \\!\\=\\= with class\\-string\\|false and class\\-string\\|false is denied$#"
-			count: 1
-			path: src/Test/ArrayContainSameObjectsConstraint.php
-
-		-
 			message: "#^Class AssoConnect\\\\ValidatorBundle\\\\Test\\\\ConstraintValidatorTestCase extends generic class Symfony\\\\Component\\\\Validator\\\\Test\\\\ConstraintValidatorTestCase but does not specify its types\\: T$#"
 			count: 1
 			path: src/Test/ConstraintValidatorTestCase.php
