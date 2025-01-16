@@ -7,7 +7,7 @@ namespace AssoConnect\ValidatorBundle\Validator\Constraints;
 use AssoConnect\ValidatorBundle\Exception\UnprotectedFieldTypeException;
 use AssoConnect\ValidatorBundle\Validator\ConstraintsSetProvider\Field\FieldConstraintsSetProviderInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\FieldMapping;
 use Symfony\Component\PropertyAccess\Exception\UnexpectedTypeException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -21,7 +21,7 @@ use Webmozart\Assert\Assert;
 
 /**
  * @Annotation
- * @phpstan-import-type FieldMapping from ClassMetadataInfo
+ * @phpstan-import-type FieldMapping from ClassMetadata
  */
 class EntityValidator extends ConstraintValidator
 {
