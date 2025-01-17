@@ -118,7 +118,7 @@ class EntityValidator extends ConstraintValidator
             $fieldMapping = $metadata->associationMappings[$field];
 
             if (true === $fieldMapping['isOwningSide']) {
-                if (($fieldMapping['type'] & ClassMetadataInfo::TO_ONE) !== 0) {
+                if (($fieldMapping['type'] & ClassMetadata::TO_ONE) !== 0) {
                     // ToOne
                     $constraints[] = new Type($fieldMapping['targetEntity']);
                     // Nullable field
@@ -128,7 +128,7 @@ class EntityValidator extends ConstraintValidator
                     ) {
                         $constraints[] = new NotNull();
                     }
-                } elseif (($fieldMapping['type'] & ClassMetadataInfo::TO_MANY) !== 0) {
+                } elseif (($fieldMapping['type'] & ClassMetadata::TO_MANY) !== 0) {
                     // ToMany
                     $constraints[] = new All(
                         [

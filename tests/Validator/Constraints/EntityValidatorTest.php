@@ -11,7 +11,7 @@ use AssoConnect\ValidatorBundle\Validator\Constraints\EntityValidator;
 use AssoConnect\ValidatorBundle\Validator\Constraints\Phone;
 use AssoConnect\ValidatorBundle\Validator\ConstraintsSetProvider\Field\PhoneProvider;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\NotNull;
@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\ConstraintValidator;
 
 /**
- * @psalm-import-type FieldMapping from ClassMetadataInfo
+ * @psalm-import-type FieldMapping from ClassMetadata
  * @extends ConstraintValidatorTestCase<EntityValidator>
  */
 class EntityValidatorTest extends ConstraintValidatorTestCase
@@ -174,22 +174,22 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
             'notowning' => [
                 'isOwningSide' => false,
                 'targetEntity' => MyEntityParent::class,
-                'type' => ClassMetadataInfo::TO_ONE,
+                'type' => ClassMetadata::TO_ONE,
             ],
             'owningToOne' => [
                 'isOwningSide' => true,
-                'type' => ClassMetadataInfo::TO_ONE,
+                'type' => ClassMetadata::TO_ONE,
                 'targetEntity' => MyEntityParent::class,
             ],
             'owningToOneNotNull' => [
                 'isOwningSide' => true,
-                'type' => ClassMetadataInfo::TO_ONE,
+                'type' => ClassMetadata::TO_ONE,
                 'targetEntity' => MyEntityParent::class,
                 'joinColumns' => [['nullable' => false]],
             ],
             'owningToMany' => [
                 'isOwningSide' => true,
-                'type' => ClassMetadataInfo::TO_MANY,
+                'type' => ClassMetadata::TO_MANY,
                 'targetEntity' => MyEntityParent::class,
             ],
             'owningUnknown' => [
