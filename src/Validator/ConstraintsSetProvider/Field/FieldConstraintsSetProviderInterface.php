@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace AssoConnect\ValidatorBundle\Validator\ConstraintsSetProvider\Field;
 
-use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\Mapping\FieldMapping;
 use Symfony\Component\Validator\Constraint;
 
 /**
- * @phpstan-import-type FieldMapping from ClassMetadataInfo
+ * @phpstan-import-type FieldMapping from ClassMetadata
  */
 interface FieldConstraintsSetProviderInterface
 {
     public function supports(string $type): bool;
 
     /**
-     * @param FieldMapping $fieldMapping
      * @return Constraint[]
      */
-    public function getConstraints(array $fieldMapping): array;
+    public function getConstraints(FieldMapping $fieldMapping): array;
 }

@@ -7,7 +7,8 @@ namespace AssoConnect\ValidatorBundle\Validator\Constraints;
 use AssoConnect\ValidatorBundle\Exception\UnprotectedFieldTypeException;
 use AssoConnect\ValidatorBundle\Validator\ConstraintsSetProvider\Field\FieldConstraintsSetProviderInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\Mapping\FieldMapping;
 use Symfony\Component\PropertyAccess\Exception\UnexpectedTypeException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Validator\Constraint;
@@ -20,7 +21,7 @@ use Webmozart\Assert\Assert;
 
 /**
  * @Annotation
- * @phpstan-import-type FieldMapping from ClassMetadataInfo
+ * @phpstan-import-type FieldMapping from ClassMetadata
  */
 class EntityValidator extends ConstraintValidator
 {
@@ -79,13 +80,12 @@ class EntityValidator extends ConstraintValidator
     }
 
     /**
-     * @param FieldMapping $fieldMapping
      * @return Constraint[]
      */
-    public function getConstraintsForType(array $fieldMapping): array
+    public function getConstraintsForType(FieldMapping $fieldMapping): array
     {
         foreach ($this->fieldConstraintsSetFactories as $fieldConstraintsSetProvider) {
-            if ($fieldConstraintsSetProvider->supports($fieldMapping['type'])) {
+            if ($fieldConstraintsSetProvider->supports($fieldMapping->type)) {
                 return $fieldConstraintsSetProvider->getConstraints($fieldMapping);
             }
         }
@@ -105,9 +105,7 @@ class EntityValidator extends ConstraintValidator
         if (array_key_exists($field, $metadata->fieldMappings)) {
             $fieldMapping = $metadata->fieldMappings[$field];
 
-            // Nullable field
-            Assert::keyExists($fieldMapping, 'nullable');
-            if (true !== $fieldMapping['nullable']) {
+            if (true !== $fieldMapping->nullable) {
                 $constraints[] = [new NotNull()];
             }
 
@@ -120,7 +118,7 @@ class EntityValidator extends ConstraintValidator
             $fieldMapping = $metadata->associationMappings[$field];
 
             if (true === $fieldMapping['isOwningSide']) {
-                if (($fieldMapping['type'] & ClassMetadataInfo::TO_ONE) !== 0) {
+                if (($fieldMapping['type'] & ClassMetadata::TO_ONE) !== 0) {
                     // ToOne
                     $constraints[] = new Type($fieldMapping['targetEntity']);
                     // Nullable field
@@ -130,7 +128,7 @@ class EntityValidator extends ConstraintValidator
                     ) {
                         $constraints[] = new NotNull();
                     }
-                } elseif (($fieldMapping['type'] & ClassMetadataInfo::TO_MANY) !== 0) {
+                } elseif (($fieldMapping['type'] & ClassMetadata::TO_MANY) !== 0) {
                     // ToMany
                     $constraints[] = new All(
                         [

@@ -6,6 +6,7 @@ namespace AssoConnect\ValidatorBundle\Validator\ConstraintsSetProvider\Field;
 
 use AssoConnect\DoctrineTypesBundle\Doctrine\DBAL\Types\PhoneLandlineType;
 use AssoConnect\ValidatorBundle\Validator\Constraints\PhoneLandline;
+use Doctrine\ORM\Mapping\FieldMapping;
 
 class PhoneLandlineProvider implements FieldConstraintsSetProviderInterface
 {
@@ -14,7 +15,7 @@ class PhoneLandlineProvider implements FieldConstraintsSetProviderInterface
         return PhoneLandlineType::NAME === $type;
     }
 
-    public function getConstraints(array $fieldMapping): array
+    public function getConstraints(FieldMapping $fieldMapping): array
     {
         return [
             new PhoneLandline(),

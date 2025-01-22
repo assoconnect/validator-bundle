@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AssoConnect\ValidatorBundle\Validator\ConstraintsSetProvider\Field;
 
 use AssoConnect\DoctrineTypesBundle\Doctrine\DBAL\Types\PostalType;
+use Doctrine\ORM\Mapping\FieldMapping;
 
 class PostalProvider implements FieldConstraintsSetProviderInterface
 {
@@ -13,7 +14,7 @@ class PostalProvider implements FieldConstraintsSetProviderInterface
         return PostalType::NAME === $type;
     }
 
-    public function getConstraints(array $fieldMapping): array
+    public function getConstraints(FieldMapping $fieldMapping): array
     {
         // TODO: To implement
         return [];

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AssoConnect\ValidatorBundle\Validator\ConstraintsSetProvider\Field;
 
+use Doctrine\ORM\Mapping\FieldMapping;
 use Symfony\Component\Validator\Constraints\Ulid;
 
 class UlidProvider implements FieldConstraintsSetProviderInterface
@@ -13,7 +14,7 @@ class UlidProvider implements FieldConstraintsSetProviderInterface
         return 'ulid' === $type;
     }
 
-    public function getConstraints(array $fieldMapping): array
+    public function getConstraints(FieldMapping $fieldMapping): array
     {
         return [
             new Ulid(),

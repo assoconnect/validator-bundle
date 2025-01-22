@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AssoConnect\ValidatorBundle\Validator\ConstraintsSetProvider\Field;
 
 use AssoConnect\DoctrineTypesBundle\Doctrine\DBAL\Types\IbanType;
+use Doctrine\ORM\Mapping\FieldMapping;
 use Symfony\Component\Validator\Constraints\Iban;
 use Symfony\Component\Validator\Constraints\Regex;
 
@@ -15,7 +16,7 @@ class IbanProvider implements FieldConstraintsSetProviderInterface
         return IbanType::NAME === $type;
     }
 
-    public function getConstraints(array $fieldMapping): array
+    public function getConstraints(FieldMapping $fieldMapping): array
     {
         return [
             new Iban(),

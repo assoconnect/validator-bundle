@@ -6,10 +6,10 @@ namespace AssoConnect\ValidatorBundle\Validator\ConstraintsSetProvider\Field;
 
 use AssoConnect\ValidatorBundle\Validator\Constraints\FloatScale;
 use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping\FieldMapping;
 use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Validator\Constraints\LessThan;
 use Symfony\Component\Validator\Constraints\Type;
-use Webmozart\Assert\Assert;
 
 class DecimalProvider implements FieldConstraintsSetProviderInterface
 {
@@ -18,16 +18,13 @@ class DecimalProvider implements FieldConstraintsSetProviderInterface
         return Types::DECIMAL === $type;
     }
 
-    public function getConstraints(array $fieldMapping): array
+    public function getConstraints(FieldMapping $fieldMapping): array
     {
-        Assert::keyExists($fieldMapping, 'precision');
-        Assert::keyExists($fieldMapping, 'scale');
-
         return [
             new Type('float'),
-            new GreaterThan(- pow(10, $fieldMapping['precision'] - $fieldMapping['scale'])),
-            new LessThan(pow(10, $fieldMapping['precision'] - $fieldMapping['scale'])),
-            new FloatScale($fieldMapping['scale']),
+            new GreaterThan(- pow(10, $fieldMapping->precision - $fieldMapping->scale)),
+            new LessThan(pow(10, $fieldMapping->precision - $fieldMapping->scale)),
+            new FloatScale($fieldMapping->scale),
         ];
     }
 }

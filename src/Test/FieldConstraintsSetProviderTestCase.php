@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AssoConnect\ValidatorBundle\Test;
 
 use AssoConnect\ValidatorBundle\Validator\ConstraintsSetProvider\Field\FieldConstraintsSetProviderInterface;
+use Doctrine\ORM\Mapping\FieldMapping;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\Constraint;
 
@@ -18,14 +19,13 @@ abstract class FieldConstraintsSetProviderTestCase extends TestCase
     abstract protected function getFactory(): FieldConstraintsSetProviderInterface;
 
     /**
-     * @param mixed[] $fieldMapping
      * @param Constraint[] $constraints
      * @dataProvider getConstraintsForTypeProvider
      */
-    public function testGetConstraintsForType(array $fieldMapping, array $constraints): void
+    public function testGetConstraintsForType(FieldMapping $fieldMapping, array $constraints): void
     {
         $factory = $this->getFactory();
-        self::assertTrue($factory->supports($fieldMapping['type']));
+        self::assertTrue($factory->supports($fieldMapping->type));
 
         self::assertArrayContainsSameObjects(
             /** @phpstan-ignore-next-line */
@@ -34,9 +34,8 @@ abstract class FieldConstraintsSetProviderTestCase extends TestCase
         );
     }
 
-    /** @return mixed[] */
+    /** @return iterable{FieldMapping, Constraint[]} */
     abstract public function getConstraintsForTypeProvider(): iterable;
-
     /**
      * @param mixed[] $array1
      * @param mixed[] $array2

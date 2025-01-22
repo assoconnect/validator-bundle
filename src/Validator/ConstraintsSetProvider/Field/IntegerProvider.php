@@ -6,6 +6,7 @@ namespace AssoConnect\ValidatorBundle\Validator\ConstraintsSetProvider\Field;
 
 use AssoConnect\ValidatorBundle\Exception\UnsupportedIntegerTypeException;
 use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping\FieldMapping;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Validator\Constraints\LessThanOrEqual;
 use Symfony\Component\Validator\Constraints\Type;
@@ -28,14 +29,14 @@ class IntegerProvider implements FieldConstraintsSetProviderInterface
         );
     }
 
-    public function getConstraints(array $fieldMapping): array
+    public function getConstraints(FieldMapping $fieldMapping): array
     {
-        $isSigned = !isset($fieldMapping['options']['unsigned']) || false === $fieldMapping['options']['unsigned'];
+        $isSigned = !isset($fieldMapping->options['unsigned']) || false === $fieldMapping->options['unsigned'];
 
         return [
             new Type('integer'),
-            new GreaterThanOrEqual($this->getMinValue($fieldMapping['type'], $isSigned)),
-            new LessThanOrEqual($this->getMaxValue($fieldMapping['type'], $isSigned)),
+            new GreaterThanOrEqual($this->getMinValue($fieldMapping->type, $isSigned)),
+            new LessThanOrEqual($this->getMaxValue($fieldMapping->type, $isSigned)),
 
         ];
     }

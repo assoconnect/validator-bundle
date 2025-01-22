@@ -6,6 +6,7 @@ namespace AssoConnect\ValidatorBundle\Validator\ConstraintsSetProvider\Field;
 
 use DateTime;
 use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping\FieldMapping;
 use Symfony\Component\Validator\Constraints\Type;
 
 class DateTimeProvider implements FieldConstraintsSetProviderInterface
@@ -24,7 +25,7 @@ class DateTimeProvider implements FieldConstraintsSetProviderInterface
         );
     }
 
-    public function getConstraints(array $fieldMapping): array
+    public function getConstraints(FieldMapping $fieldMapping): array
     {
         return [
             new Type(DateTime::class),

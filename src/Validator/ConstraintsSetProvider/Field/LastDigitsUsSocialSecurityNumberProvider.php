@@ -6,6 +6,7 @@ namespace AssoConnect\ValidatorBundle\Validator\ConstraintsSetProvider\Field;
 
 use AssoConnect\DoctrineTypesBundle\Doctrine\DBAL\Types\LastDigitsUsSocialSecurityNumberType;
 use AssoConnect\ValidatorBundle\Validator\Constraints\LastDigitsUsSocialSecurityNumber;
+use Doctrine\ORM\Mapping\FieldMapping;
 
 class LastDigitsUsSocialSecurityNumberProvider implements FieldConstraintsSetProviderInterface
 {
@@ -14,7 +15,7 @@ class LastDigitsUsSocialSecurityNumberProvider implements FieldConstraintsSetPro
         return LastDigitsUsSocialSecurityNumberType::NAME === $type;
     }
 
-    public function getConstraints(array $fieldMapping): array
+    public function getConstraints(FieldMapping $fieldMapping): array
     {
         return [
             new LastDigitsUsSocialSecurityNumber(),
