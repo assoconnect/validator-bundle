@@ -12,7 +12,7 @@ class ArrayProvider implements FieldConstraintsSetProviderInterface
 {
     public function supports(string $type): bool
     {
-        return Types::ARRAY === $type || 'simple_array' === $type;
+        return Types::ARRAY === $type || Types::SIMPLE_ARRAY  === $type;
     }
 
     public function getConstraints(FieldMapping $fieldMapping): array
