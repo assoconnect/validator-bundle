@@ -19,7 +19,6 @@ abstract class FieldConstraintsSetProviderTestCase extends TestCase
     abstract protected function getFactory(): FieldConstraintsSetProviderInterface;
 
     /**
-     * @param FieldMapping $fieldMapping
      * @param Constraint[] $constraints
      * @dataProvider getConstraintsForTypeProvider
      */
@@ -35,9 +34,8 @@ abstract class FieldConstraintsSetProviderTestCase extends TestCase
         );
     }
 
-    /** @return mixed[] */
+    /** @return iterable{FieldMapping, Constraint[]} */
     abstract public function getConstraintsForTypeProvider(): iterable;
-
     /**
      * @param mixed[] $array1
      * @param mixed[] $array2
