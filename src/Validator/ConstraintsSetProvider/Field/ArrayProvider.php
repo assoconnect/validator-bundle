@@ -2,43 +2,23 @@
 
 declare(strict_types=1);
 
-namespace AssoConnect\ValidatorBundle\Tests\Validator\ConstraintsSetProvider\Field;
+namespace AssoConnect\ValidatorBundle\Validator\ConstraintsSetProvider\Field;
 
-use AssoConnect\ValidatorBundle\Test\FieldConstraintsSetProviderTestCase;
-use AssoConnect\ValidatorBundle\Validator\ConstraintsSetProvider\Field\ArrayProvider;
-use AssoConnect\ValidatorBundle\Validator\ConstraintsSetProvider\Field\FieldConstraintsSetProviderInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping\FieldMapping;
 use Symfony\Component\Validator\Constraints\Type;
 
-class ArrayProviderTest extends FieldConstraintsSetProviderTestCase
+class ArrayProvider implements FieldConstraintsSetProviderInterface
 {
-    protected function getFactory(): FieldConstraintsSetProviderInterface
+    public function supports(string $type): bool
     {
-        return new ArrayProvider();
+        return Types::ARRAY === $type || 'simple_array' === $type;
     }
 
-    public function getConstraintsForTypeProvider(): iterable
+    public function getConstraints(FieldMapping $fieldMapping): array
     {
-        yield [
-            FieldMapping::fromMappingArray(
-                [
-                    'type' => Types::ARRAY,
-                    'fieldName' => Types::ARRAY,
-                    'columnName' => Types::ARRAY,
-                ]
-            ),
-            [new Type('array')],
-        ];
-        yield [
-            FieldMapping::fromMappingArray(
-                [
-                    'type' => Types::SIMPLE_ARRAY,
-                    'fieldName' => Types::SIMPLE_ARRAY,
-                    'columnName' => Types::SIMPLE_ARRAY,
-                ]
-            ),
-            [new Type('array')],
+        return [
+            new Type('array'),
         ];
     }
 }

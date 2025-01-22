@@ -7,6 +7,8 @@ namespace AssoConnect\ValidatorBundle\Tests\Validator\ConstraintsSetProvider\Fie
 use AssoConnect\ValidatorBundle\Test\FieldConstraintsSetProviderTestCase;
 use AssoConnect\ValidatorBundle\Validator\ConstraintsSetProvider\Field\ArrayProvider;
 use AssoConnect\ValidatorBundle\Validator\ConstraintsSetProvider\Field\FieldConstraintsSetProviderInterface;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping\FieldMapping;
 use Symfony\Component\Validator\Constraints\Type;
 
 class ArrayProviderTest extends FieldConstraintsSetProviderTestCase
@@ -19,7 +21,23 @@ class ArrayProviderTest extends FieldConstraintsSetProviderTestCase
     public function getConstraintsForTypeProvider(): iterable
     {
         yield [
-            ['type' => 'array'],
+            FieldMapping::fromMappingArray(
+                [
+                    'type' => Types::ARRAY,
+                    'fieldName' => Types::ARRAY,
+                    'columnName' => Types::ARRAY,
+                ]
+            ),
+            [new Type('array')],
+        ];
+        yield [
+            FieldMapping::fromMappingArray(
+                [
+                    'type' => Types::SIMPLE_ARRAY,
+                    'fieldName' => Types::SIMPLE_ARRAY,
+                    'columnName' => Types::SIMPLE_ARRAY,
+                ]
+            ),
             [new Type('array')],
         ];
     }
