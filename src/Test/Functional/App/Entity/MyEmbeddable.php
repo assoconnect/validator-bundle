@@ -6,14 +6,10 @@ namespace AssoConnect\ValidatorBundle\Test\Functional\App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Embeddable()
- */
+#[ORM\Embeddable]
 class MyEmbeddable
 {
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     public bool $bool;
 
     public function __construct(bool $bool)

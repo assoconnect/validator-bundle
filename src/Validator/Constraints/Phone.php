@@ -8,9 +8,6 @@ use libphonenumber\PhoneNumberType;
 use Symfony\Component\Validator\Constraint;
 
 /**
- * @Annotation
- * @Target({"PROPERTY", "METHOD", "ANNOTATION"})
- *
  * @author Sylvain Fabre <sylvain.fabre@assoconnect.com>
  */
 #[\Attribute]

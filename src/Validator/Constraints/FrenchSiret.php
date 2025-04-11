@@ -7,9 +7,6 @@ namespace AssoConnect\ValidatorBundle\Validator\Constraints;
 use Symfony\Component\Validator\Constraints\Luhn;
 
 /**
- * @Annotation
- * @Target({"PROPERTY", "METHOD", "ANNOTATION"})
- *
  * @author Guillaume Wambre <guillaume.wambre@assoconnect.com>
  */
 #[\Attribute]
