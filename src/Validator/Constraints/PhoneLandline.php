@@ -7,9 +7,6 @@ namespace AssoConnect\ValidatorBundle\Validator\Constraints;
 use libphonenumber\PhoneNumberType;
 
 /**
- * @Annotation
- * @Target({"PROPERTY", "METHOD", "ANNOTATION"})
- *
  * @author Sylvain Fabre <sylvain.fabre@assoconnect.com>
  */
 #[\Attribute]

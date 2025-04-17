@@ -6,9 +6,6 @@ namespace AssoConnect\ValidatorBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @Annotation
- */
 #[\Attribute]
 class EmployerIdentificationNumber extends Constraint
 {

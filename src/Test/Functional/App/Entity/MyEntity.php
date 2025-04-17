@@ -9,227 +9,153 @@ use AssoConnect\ValidatorBundle\Validator\Constraints as AssoConnectAssert;
 use Doctrine\ORM\Mapping as ORM;
 use Money\Currency;
 
-/**
- * @AssoConnectAssert\Entity()
- * @ORM\Entity()
- */
+#[
+    AssoConnectAssert\Entity,
+    ORM\Entity,
+]
 class MyEntity
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="NONE")
-     */
+    #[
+        ORM\Id,
+        ORM\Column(type: 'integer'),
+        ORM\GeneratedValue(strategy: 'NONE'),
+    ]
     public int $id;
 
     /**
-     * @ORM\Column(type="array")
      * @var array<mixed>
      */
+    #[ORM\Column(type: 'array')]
     public array $array;
 
-    /**
-     * @ORM\Column(type="bic")
-     */
+    #[ORM\Column(type: 'bic')]
     public string $bic;
 
-    /**
-     * @ORM\Column(type="bigint")
-     */
+    #[ORM\Column(type: 'bigint')]
     public int $bigint;
 
-    /**
-     * @ORM\Column(type="bigint", options={"unsigned"=true})
-     */
+    #[ORM\Column(type: 'bigint', options: ['unsigned' => true])]
     public int $bigintUnsigned;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     public bool $boolean;
 
-    /**
-     * @ORM\Column(type="country")
-     */
+    #[ORM\Column(type: 'country')]
     public string $country;
 
-    /**
-     * @ORM\Column(type="currency")
-     */
+    #[ORM\Column(type: 'currency')]
     public Currency $currency;
 
-    /**
-     * @ORM\Column(type="date")
-     */
+    #[ORM\Column(type: 'date')]
     public \DateTime $date;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     public \DateTime $datetime;
 
-    /**
-     * @ORM\Column(type="decimal", precision=5, scale=3)
-     */
+    #[ORM\Column(type: 'decimal', precision: 5, scale: 3)]
     public float $decimal;
 
-    /**
-     * @ORM\Column(type="email")
-     */
+    #[ORM\Column(type: 'email')]
     public string $email;
 
-    /**
-     * @ORM\Column(type="float")
-     */
+    #[ORM\Column(type: 'float')]
     public float $float;
 
-    /**
-     * @ORM\Column(type="iban")
-     */
+    #[ORM\Column(type: 'iban')]
     public string $iban;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: 'integer')]
     public int $integer;
 
-    /**
-     * @ORM\Column(type="ip")
-     */
+    #[ORM\Column(type: 'ip')]
     public string $ip;
 
-    /**
-     * @ORM\Column(type="json")
-     */
+    #[ORM\Column(type: 'json')]
     public string $json;
 
-    /**
-     * @ORM\Column(type="latitude")
-     */
+    #[ORM\Column(type: 'latitude')]
     public string $latitude;
 
-    /**
-     * @ORM\Column(type="locale")
-     */
+    #[ORM\Column(type: 'locale')]
     public string $locale;
 
-    /**
-     * @ORM\Column(type="longitude")
-     */
+    #[ORM\Column(type: 'longitude')]
     public string $longitude;
 
-    /**
-     * @ORM\Column(type="money")
-     */
+    #[ORM\Column(type: 'money')]
     public float $money;
 
-    /**
-     * @ORM\Column(type="string", nullable=false)
-     */
+    #[ORM\Column(type: 'string', nullable: false)]
     public string $notNullable;
 
-    /**
-     * @ORM\Column(type="percent")
-     */
+    #[ORM\Column(type: 'percent')]
     public float $percent;
 
-    /**
-     * @ORM\Column(type="phone")
-     */
+    #[ORM\Column(type: 'phone')]
     public string $phone;
 
-    /**
-     * @ORM\Column(type="phonelandline")
-     */
+    #[ORM\Column(type: 'phonelandline')]
     public string $phonelandline;
 
-    /**
-     * @ORM\Column(type="phonemobile")
-     */
+    #[ORM\Column(type: 'phonemobile')]
     public string $phonemobile;
 
-    /**
-     * @ORM\Column(type="smallint")
-     */
+    #[ORM\Column(type: 'smallint')]
     public int $smallint;
 
-    /**
-     * @ORM\Column(type="smallint", options={"unsigned"=true})
-     */
+    #[ORM\Column(type: 'smallint', options: ['unsigned' => true])]
     public int $smallintUnsigned;
 
-    /**
-     * @ORM\Column(type="string", length=10)
-     */
+    #[ORM\Column(type: 'string', length: 10)]
     public string $string;
 
-    /**
-     * @ORM\Column(type="text", length=10)
-     */
+    #[ORM\Column(type: 'text', length: 10)]
     public string $text;
 
-    /**
-     * @ORM\Column(type="timezone")
-     */
+    #[ORM\Column(type: 'timezone')]
     public string $timezone;
 
-    /**
-     * @ORM\Column(type="uuid")
-     */
+    #[ORM\Column(type: 'uuid')]
     public string $uuid;
 
-    /**
-     * @ORM\Column(type="uuid_binary_ordered_time")
-     */
+    #[ORM\Column(type: 'uuid_binary_ordered_time')]
     public string $uuid_binary_ordered_time;
 
     /**
      * ASSOCIATIONS
      */
 
-    /**
-     * @ORM\ManyToOne(targetEntity="MyEntityParent")
-     */
+    #[ORM\ManyToOne(targetEntity: MyEntityParent::class)]
     public ?MyEntityParent $parentNullable;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="MyEntityParent")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[
+        ORM\ManyToOne(targetEntity: MyEntityParent::class),
+        ORM\JoinColumn(nullable: false)
+    ]
     public MyEntityParent $parentNotNullable;
 
-    /**
-     * @ORM\OneToMany(targetEntity="MyEntityParent", mappedBy="mainChild")
-     */
+    #[ORM\OneToMany(targetEntity: MyEntityParent::class, mappedBy: 'mainChild')]
     public MyEntityParent $mainParent;
 
     /**
-     * @ORM\ManyToMany(targetEntity="MyEntityParent")
-     * @var array<MyEntityParent>
+     * @var array<MyEntityParent> $parents
      */
+    #[ORM\ManyToMany(targetEntity: MyEntityParent::class)]
     public array $parents;
 
     /**
      * EMBEDDABLES
      */
 
-    /**
-     * @ORM\Embedded(class="MyEmbeddable")
-     */
+    #[ORM\Embedded(class: 'MyEmbeddable')]
     public MyEmbeddable $embeddable;
 
-    /**
-     * @ORM\Column(type="date_absolute")
-     */
+    #[ORM\Column(type: 'date_absolute')]
     public AbsoluteDate $absoluteDate;
 
-    /**
-     * @ORM\Column(type="frenchRna")
-     */
+    #[ORM\Column(type: 'frenchRna')]
     public string $frenchRNA;
 
-    /**
-     * @ORM\Column(type="frenchSiren")
-     */
+    #[ORM\Column(type: 'frenchSiren')]
     public string $frenchSIREN;
 }

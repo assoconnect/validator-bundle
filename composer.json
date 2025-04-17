@@ -49,7 +49,6 @@
   "require-dev": {
     "doctrine/cache": "~1.0",
     "symfony/phpunit-bridge": "^6.4.3",
-    "doctrine/annotations": "~1.0",
     "phpunit/phpunit": "^9.6.16",
     "symfony/framework-bundle": "^6.4",
     "symfony/yaml": "^6.4",

@@ -19,9 +19,9 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Webmozart\Assert\Assert;
 
 /**
- * @Annotation
  * @phpstan-import-type FieldMapping from ClassMetadataInfo
  */
+#[\Attribute]
 class EntityValidator extends ConstraintValidator
 {
     private EntityManagerInterface $em;

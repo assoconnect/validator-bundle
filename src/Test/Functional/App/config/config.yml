@@ -11,7 +11,7 @@ doctrine:
     mappings:
       AssoConnect:
         is_bundle: false
-        type: annotation
+        type: attribute
         dir: '%kernel.project_dir%/src/Test/Functional/App/Entity'
         prefix: 'AssoConnect\ValidatorBundle\Test\Functional\App\Entity'
         alias: App
