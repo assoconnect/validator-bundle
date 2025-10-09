@@ -37,7 +37,7 @@
     "symfony/property-access": "^6.4",
     "jeremykendall/php-domain-parser": "^6.0",
     "moneyphp/money": "^3.0|^4.0",
-    "assoconnect/php-date": "^2.0",
+    "assoconnect/php-date": "dev-tristan-update-dependency",
     "doctrine/orm": "^2.7",
     "symfony/intl": "^5.0|^6.0",
     "assoconnect/doctrine-types-bundle": "^v2.12.0",
