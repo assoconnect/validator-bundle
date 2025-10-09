@@ -40,9 +40,9 @@
     "assoconnect/php-date": "^2.0",
     "doctrine/orm": "^2.7",
     "symfony/intl": "^5.0|^6.0",
-    "assoconnect/doctrine-types-bundle": "^v3.0",
+    "assoconnect/doctrine-types-bundle": "^v2.13",
     "assoconnect/php-percent":"^1.1",
-    "assoconnect/absolute-percent-value-bundle": "^1.2",
+    "assoconnect/absolute-percent-value-bundle": "^1.4",
     "webmozart/assert": "^1.11",
     "psr/simple-cache": "^1.0"
   },
