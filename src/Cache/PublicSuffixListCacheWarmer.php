@@ -20,7 +20,7 @@ class PublicSuffixListCacheWarmer implements CacheWarmerInterface
         $this->rulesStorage = $rulesStorage;
     }
 
-    public function warmUp(string $cacheDir): array
+    public function warmUp(string $cacheDir, ?string $buildDir = null): array
     {
         // This call is done to load the IANA database into the cache
         $this->rulesStorage->get(EmailValidator::PUBLIC_SUFFIX_LIST_URI);
