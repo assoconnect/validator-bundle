@@ -39,7 +39,7 @@
     "moneyphp/money": "^3.0|^4.0",
     "assoconnect/php-date": "^2.0",
     "doctrine/orm": "^2.7",
-    "symfony/intl": "^5.0|^6.0",
+    "symfony/intl": "^5.0|^6.0|^7.0",
     "assoconnect/doctrine-types-bundle": "^v2.13",
     "assoconnect/php-percent":"^1.1",
     "assoconnect/absolute-percent-value-bundle": "^1.4",
