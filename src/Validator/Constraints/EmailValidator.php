@@ -26,7 +26,7 @@ class EmailValidator extends _EmailValidator
 
     public function __construct(
         PublicSuffixListClient $publicSuffixListClient,
-        string $defaultMode = _Email::VALIDATION_MODE_LOOSE
+        string $defaultMode = 'html5'
     ) {
         parent::__construct($defaultMode);
         $this->publicSuffixListClient = $publicSuffixListClient;
