@@ -456,17 +456,22 @@ parameters:
 			path: src/Test/Functional/App/Entity/MyEntityParent.php
 
 		-
+			message: "#^Method AssoConnect\\\\ValidatorBundle\\\\Validator\\\\Constraints\\\\Email\\:\\:__construct\\(\\) has parameter \\$normalizer with no signature specified for callable\\.$#"
+			count: 1
+			path: src/Validator/Constraints/Email.php
+
+		-
+			message: "#^Method AssoConnect\\\\ValidatorBundle\\\\Validator\\\\Constraints\\\\Email\\:\\:__construct\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Validator/Constraints/Email.php
+
+		-
 			message: "#^Public property `checkDNS` not marked as readonly\\.$#"
 			count: 1
 			path: src/Validator/Constraints/Email.php
 
 		-
 			message: "#^Public property `dnsMessage` not marked as readonly\\.$#"
-			count: 1
-			path: src/Validator/Constraints/Email.php
-
-		-
-			message: "#^Public property `mode` not marked as readonly\\.$#"
 			count: 1
 			path: src/Validator/Constraints/Email.php
 
@@ -481,6 +486,11 @@ parameters:
 			path: src/Validator/Constraints/EmployerIdentificationNumber.php
 
 		-
+			message: "#^Return type \\(string\\) of method AssoConnect\\\\ValidatorBundle\\\\Validator\\\\Constraints\\\\Entity\\:\\:getTargets\\(\\) should be covariant with return type \\('class'\\|'property'\\|array\\<'class'\\|'property'\\>\\) of method Symfony\\\\Component\\\\Validator\\\\Constraint\\:\\:getTargets\\(\\)$#"
+			count: 1
+			path: src/Validator/Constraints/Entity.php
+
+		-
 			message: "#^Method AssoConnect\\\\ValidatorBundle\\\\Validator\\\\Constraints\\\\EntityValidator\\:\\:getFieldAttributes\\(\\) has parameter \\$reflectionClass with generic class ReflectionClass but does not specify its types\\: T$#"
 			count: 1
 			path: src/Validator/Constraints/EntityValidator.php
@@ -492,6 +502,11 @@ parameters:
 
 		-
 			message: "#^Overwriting variable \\$value while changing its type from BackedEnum to int\\|string$#"
+			count: 1
+			path: src/Validator/Constraints/EntityValidator.php
+
+		-
+			message: "#^Parameter \\#1 \\$constraints of class Symfony\\\\Component\\\\Validator\\\\Constraints\\\\All constructor expects array\\<Symfony\\\\Component\\\\Validator\\\\Constraint\\>\\|Symfony\\\\Component\\\\Validator\\\\Constraint\\|null, array\\<string, array\\<int, Symfony\\\\Component\\\\Validator\\\\Constraints\\\\Type\\>\\> given\\.$#"
 			count: 1
 			path: src/Validator/Constraints/EntityValidator.php
 
@@ -516,12 +531,12 @@ parameters:
 			path: src/Validator/Constraints/FrenchRna.php
 
 		-
-			message: "#^Public property `message` not marked as readonly\\.$#"
+			message: "#^Method AssoConnect\\\\ValidatorBundle\\\\Validator\\\\Constraints\\\\FrenchSiren\\:\\:__construct\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Validator/Constraints/FrenchSiren.php
 
 		-
-			message: "#^Public property `message` not marked as readonly\\.$#"
+			message: "#^Method AssoConnect\\\\ValidatorBundle\\\\Validator\\\\Constraints\\\\FrenchSiret\\:\\:__construct\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Validator/Constraints/FrenchSiret.php
 
@@ -649,3 +664,13 @@ parameters:
 			message: "#^Missing native return typehint float$#"
 			count: 2
 			path: src/Validator/ConstraintsSetProvider/Field/IntegerProvider.php
+
+		-
+			message: "#^Parameter \\#1 \\$array1 of static method AssoConnect\\\\ValidatorBundle\\\\Test\\\\ConstraintValidatorTestCase\\<AssoConnect\\\\ValidatorBundle\\\\Validator\\\\Constraints\\\\EntityValidator\\>\\:\\:assertArrayContainsSameObjects\\(\\) expects array, array\\|Symfony\\\\Component\\\\Validator\\\\Constraint given\\.$#"
+			count: 1
+			path: tests/Validator/Constraints/EntityValidatorTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$constraints of class Symfony\\\\Component\\\\Validator\\\\Constraints\\\\All constructor expects array\\<Symfony\\\\Component\\\\Validator\\\\Constraint\\>\\|Symfony\\\\Component\\\\Validator\\\\Constraint\\|null, array\\<string, array\\<int, Symfony\\\\Component\\\\Validator\\\\Constraints\\\\Type\\>\\> given\\.$#"
+			count: 1
+			path: tests/Validator/Constraints/EntityValidatorTest.php
