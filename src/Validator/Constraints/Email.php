@@ -18,8 +18,17 @@ class Email extends _Email
     public string $tldMessage = 'The value {{ domain }} is not a valid domain name.';
     public string $dnsMessage = 'The domain {{ domain }} is not setup to received emails.';
 
-    /** @var mixed */
-    public $mode = 'strict';
-
     public bool $checkDNS = false;
+
+    public function __construct(
+        ?array $options = null,
+        ?string $message = null,
+        ?string $mode = null,
+        ?callable $normalizer = null,
+        ?array $groups = null,
+        mixed $payload = null,
+    ) {
+        parent::__construct($options, $message, $mode, $normalizer, $groups, $payload);
+        $this->mode ??= 'strict';
+    }
 }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AssoConnect\ValidatorBundle\Test;
 
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\Constraints\ExpressionLanguageSyntax;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase as SymfonyConstraintValidatorTestCase;
@@ -32,7 +32,7 @@ abstract class ConstraintValidatorTestCase extends SymfonyConstraintValidatorTes
     public function testUnknownConstraintThrowsAnException(): void
     {
         $this->expectException(UnexpectedTypeException::class);
-        $this->validator->validate(0, new ExpressionLanguageSyntax());
+        $this->validator->validate(0, new NotBlank());
     }
 
     /**
