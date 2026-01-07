@@ -54,7 +54,7 @@ abstract class ConstraintValidatorTestCase extends SymfonyConstraintValidatorTes
      * @dataProvider providerInvalidValues
      * @param array<string, mixed>|null $parameters
      */
-    public function testInvalidValues(mixed $value, string $code, string $message, array $parameters = null): void
+    public function testInvalidValues(mixed $value, string $code, string $message, ?array $parameters = null): void
     {
         $this->validator->validate($value, $this->getConstraint());
         $this->buildViolation($message)
