@@ -19,7 +19,7 @@ abstract class ComposeValidator extends ConstraintValidator
     abstract protected function getSupportedConstraint(): string;
 
     /**
-     * @return array<ValidatorAndConstraint>
+     * @return list<ValidatorAndConstraint>
      */
     abstract protected function getValidatorsAndConstraints(mixed $value, Constraint $constraint): array;
 

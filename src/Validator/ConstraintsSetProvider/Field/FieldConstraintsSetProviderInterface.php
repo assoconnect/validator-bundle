@@ -16,7 +16,7 @@ interface FieldConstraintsSetProviderInterface
 
     /**
      * @param FieldMapping $fieldMapping
-     * @return Constraint[]
+     * @return list<Constraint>
      */
     public function getConstraints(array $fieldMapping): array;
 }

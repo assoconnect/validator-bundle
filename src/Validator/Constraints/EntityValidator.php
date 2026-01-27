@@ -80,7 +80,7 @@ class EntityValidator extends ConstraintValidator
 
     /**
      * @param FieldMapping $fieldMapping
-     * @return Constraint[]
+     * @return list<Constraint>
      */
     public function getConstraintsForType(array $fieldMapping): array
     {
