@@ -8,21 +8,15 @@ use AssoConnect\ValidatorBundle\AssoConnectValidatorBundle;
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
-use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\Kernel;
 
 class TestKernel extends Kernel
 {
-    /**
-     * @return array<BundleInterface>
-     */
-    public function registerBundles(): array
+    public function registerBundles(): iterable
     {
-        return [
-            new FrameworkBundle(),
-            new AssoConnectValidatorBundle(),
-            new DoctrineBundle(),
-        ];
+        yield new FrameworkBundle();
+        yield new AssoConnectValidatorBundle();
+        yield new DoctrineBundle();
     }
 
     public function getCacheDir(): string
