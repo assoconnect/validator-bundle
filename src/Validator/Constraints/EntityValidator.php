@@ -21,7 +21,6 @@ use Webmozart\Assert\Assert;
 /**
  * @phpstan-import-type FieldMapping from ClassMetadataInfo
  */
-#[\Attribute]
 class EntityValidator extends ConstraintValidator
 {
     private EntityManagerInterface $em;
