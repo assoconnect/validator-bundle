@@ -122,6 +122,7 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
             [new All(['constraints' => [new Type(MyEntityParent::class)]])]
         );
         self::assertInstanceOf(All::class, $constraints[0]);
+        self::assertIsArray($constraints[0]->constraints);
         self::assertArrayContainsSameObjects(
             $constraints[0]->constraints,
             [new Type(MyEntityParent::class)]
@@ -142,12 +143,12 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
         $this->validator->getConstraints('class', 'unknown');
     }
 
-    public function providerInvalidValues(): iterable
+    public static function providerInvalidValues(): iterable
     {
         return [];
     }
 
-    public function providerValidValues(): iterable
+    public static function providerValidValues(): iterable
     {
         return [];
     }

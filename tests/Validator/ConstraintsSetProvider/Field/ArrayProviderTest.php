@@ -16,7 +16,7 @@ class ArrayProviderTest extends FieldConstraintsSetProviderTestCase
         return new ArrayProvider();
     }
 
-    public function getConstraintsForTypeProvider(): iterable
+    public static function getConstraintsForTypeProvider(): iterable
     {
         yield [
             ['type' => 'array'],

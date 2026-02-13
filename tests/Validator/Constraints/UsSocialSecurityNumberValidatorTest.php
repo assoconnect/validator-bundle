@@ -25,7 +25,7 @@ class UsSocialSecurityNumberValidatorTest extends ConstraintValidatorTestCase
         return new UsSocialSecurityNumberValidator();
     }
 
-    public function providerValidValues(): iterable
+    public static function providerValidValues(): iterable
     {
         yield 'empty US SSN' => [''];
         yield 'null US SSN' => [null];
@@ -33,7 +33,7 @@ class UsSocialSecurityNumberValidatorTest extends ConstraintValidatorTestCase
         yield 'an other valid US SSN' => ['078051120'];
     }
 
-    public function providerInvalidValues(): iterable
+    public static function providerInvalidValues(): iterable
     {
         $invalidMessage = 'The value {{ value }} is not a valid US Social Security Number.';
 

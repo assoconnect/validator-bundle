@@ -16,7 +16,7 @@ class CountryProviderTest extends FieldConstraintsSetProviderTestCase
         return new CountryProvider();
     }
 
-    public function getConstraintsForTypeProvider(): iterable
+    public static function getConstraintsForTypeProvider(): iterable
     {
         yield [
             ['type' => 'country'],

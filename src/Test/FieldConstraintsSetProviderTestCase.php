@@ -35,7 +35,7 @@ abstract class FieldConstraintsSetProviderTestCase extends TestCase
     }
 
     /** @return mixed[] */
-    abstract public function getConstraintsForTypeProvider(): iterable;
+    abstract public static function getConstraintsForTypeProvider(): iterable;
 
     /**
      * @param mixed[] $array1

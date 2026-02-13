@@ -26,7 +26,7 @@ class EmployerIdentificationNumberValidatorTest extends ConstraintValidatorTestC
         return new EmployerIdentificationNumberValidator();
     }
 
-    public function providerValidValues(): iterable
+    public static function providerValidValues(): iterable
     {
         yield 'empty value' => [''];
         yield 'null value' => [null];
@@ -46,7 +46,7 @@ class EmployerIdentificationNumberValidatorTest extends ConstraintValidatorTestC
         $this->validator->validate($value, $this->getConstraint());
     }
 
-    public function providerInvalidValues(): iterable
+    public static function providerInvalidValues(): iterable
     {
         yield 'EIN in wrong format (no -)' => [
             '123456789',

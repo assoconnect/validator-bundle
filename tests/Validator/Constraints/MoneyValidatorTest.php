@@ -29,13 +29,13 @@ class MoneyValidatorTest extends ConstraintValidatorTestCase
         return new MoneyValidator();
     }
 
-    public function providerValidValues(): iterable
+    public static function providerValidValues(): iterable
     {
         yield [18];
         yield [18.1];
     }
 
-    public function providerInvalidValues(): iterable
+    public static function providerInvalidValues(): iterable
     {
         yield 'wrong type' => [
             '18',

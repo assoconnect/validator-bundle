@@ -25,14 +25,14 @@ class FrenchSirenValidatorTest extends ConstraintValidatorTestCase
         return new FrenchSirenValidator();
     }
 
-    public function providerValidValues(): iterable
+    public static function providerValidValues(): iterable
     {
         yield 'empty value' => [''];
         yield 'null value' => [null];
         yield 'valid SIREN' => ['732829320'];
     }
 
-    public function providerInvalidValues(): iterable
+    public static function providerInvalidValues(): iterable
     {
         yield 'wrong type' => [
             42,

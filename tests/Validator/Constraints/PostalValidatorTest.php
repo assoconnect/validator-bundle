@@ -157,12 +157,12 @@ class PostalValidatorTest extends ConstraintValidatorTestCase
         self::assertNoViolation();
     }
 
-    public function providerValidValues(): iterable
+    public static function providerValidValues(): iterable
     {
         return [];
     }
 
-    public function providerInvalidValues(): iterable
+    public static function providerInvalidValues(): iterable
     {
         return [];
     }

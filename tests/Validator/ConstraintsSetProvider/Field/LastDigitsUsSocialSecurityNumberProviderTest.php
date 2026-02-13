@@ -16,7 +16,7 @@ class LastDigitsUsSocialSecurityNumberProviderTest extends FieldConstraintsSetPr
         return new LastDigitsUsSocialSecurityNumberProvider();
     }
 
-    public function getConstraintsForTypeProvider(): iterable
+    public static function getConstraintsForTypeProvider(): iterable
     {
         yield [['type' => 'lastDigitsUsSocialSecurityNumber'], [new LastDigitsUsSocialSecurityNumber()]];
     }

@@ -61,7 +61,7 @@ class EmailValidatorTest extends ConstraintValidatorTestCase
         $this->validator->validate('', new Email());
         self::assertNoViolation();
     }
-    public function providerInvalidValues(): iterable
+    public static function providerInvalidValues(): iterable
     {
         yield [
             'format',
@@ -126,7 +126,7 @@ class EmailValidatorTest extends ConstraintValidatorTestCase
         ];
     }
 
-    public function providerValidValues(): iterable
+    public static function providerValidValues(): iterable
     {
         yield ['valid@mail.com'];
         yield ['valid.valid@mail.com'];

@@ -25,7 +25,7 @@ class LastDigitsUsSocialSecurityNumberValidatorTest extends ConstraintValidatorT
         return new LastDigitsUsSocialSecurityNumberValidator();
     }
 
-    public function providerValidValues(): iterable
+    public static function providerValidValues(): iterable
     {
         yield 'empty US SSN' => [''];
         yield 'null US SSN' => [null];
@@ -34,7 +34,7 @@ class LastDigitsUsSocialSecurityNumberValidatorTest extends ConstraintValidatorT
         yield 'an other valid US SSN: 9999' => ['9999'];
     }
 
-    public function providerInvalidValues(): iterable
+    public static function providerInvalidValues(): iterable
     {
         $invalidMessage = 'The value {{ value }} is not a valid set of ' .
             'last four digits of a US Social Security Number.';

@@ -42,6 +42,7 @@ class FloatScale extends Constraint
         return 'scale';
     }
 
+    /** @return list<string> */
     public function getRequiredOptions(): array
     {
         return ['scale'];

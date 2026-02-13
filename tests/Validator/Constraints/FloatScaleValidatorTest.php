@@ -25,13 +25,13 @@ class FloatScaleValidatorTest extends ConstraintValidatorTestCase
         return new FloatScaleValidator();
     }
 
-    public function providerValidValues(): iterable
+    public static function providerValidValues(): iterable
     {
         yield [2.1];
         yield 'not a float value' => ['2.01'];
     }
 
-    public function providerInvalidValues(): iterable
+    public static function providerInvalidValues(): iterable
     {
         yield 'too precise' => [
             0.0001,

@@ -40,6 +40,7 @@ class Postal extends Constraint
         return 'countryPropertyPath';
     }
 
+    /** @return list<string> */
     public function getRequiredOptions(): array
     {
         return ['countryPropertyPath'];

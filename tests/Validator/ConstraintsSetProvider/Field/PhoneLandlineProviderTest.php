@@ -16,7 +16,7 @@ class PhoneLandlineProviderTest extends FieldConstraintsSetProviderTestCase
         return new PhoneLandlineProvider();
     }
 
-    public function getConstraintsForTypeProvider(): iterable
+    public static function getConstraintsForTypeProvider(): iterable
     {
         yield [
             ['type' => 'phonelandline'],

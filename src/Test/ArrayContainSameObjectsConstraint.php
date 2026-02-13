@@ -22,7 +22,7 @@ class ArrayContainSameObjectsConstraint extends Constraint
         }
 
         foreach ($other as $key => $element) {
-            if ($element::class !== $this->expected[$key]::class) {
+            if ($element::class !== $this->expected[$key]::class) { /** @phpstan-ignore assoconnect.identicalClassComparison */
                 return false;
             }
         }

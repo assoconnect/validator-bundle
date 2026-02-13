@@ -16,7 +16,7 @@ class FrenchRnaProviderTest extends FieldConstraintsSetProviderTestCase
         return new FrenchRnaProvider();
     }
 
-    public function getConstraintsForTypeProvider(): iterable
+    public static function getConstraintsForTypeProvider(): iterable
     {
         yield [
             ['type' => 'frenchRna'],

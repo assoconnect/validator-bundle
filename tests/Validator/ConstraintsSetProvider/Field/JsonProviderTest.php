@@ -15,7 +15,7 @@ class JsonProviderTest extends FieldConstraintsSetProviderTestCase
         return new JsonProvider();
     }
 
-    public function getConstraintsForTypeProvider(): iterable
+    public static function getConstraintsForTypeProvider(): iterable
     {
         yield [
             ['type' => 'json'],

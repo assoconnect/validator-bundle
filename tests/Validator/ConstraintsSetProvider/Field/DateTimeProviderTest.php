@@ -17,7 +17,7 @@ class DateTimeProviderTest extends FieldConstraintsSetProviderTestCase
         return new DateTimeProvider();
     }
 
-    public function getConstraintsForTypeProvider(): iterable
+    public static function getConstraintsForTypeProvider(): iterable
     {
         yield [
             ['type' => 'date'],

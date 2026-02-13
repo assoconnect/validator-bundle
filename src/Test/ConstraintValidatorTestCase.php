@@ -48,7 +48,7 @@ abstract class ConstraintValidatorTestCase extends SymfonyConstraintValidatorTes
     /**
      * @return iterable<mixed>
      */
-    abstract public function providerValidValues(): iterable;
+    abstract public static function providerValidValues(): iterable;
 
     /**
      * @dataProvider providerInvalidValues
@@ -68,5 +68,5 @@ abstract class ConstraintValidatorTestCase extends SymfonyConstraintValidatorTes
     /**
      * @return iterable<mixed>
      */
-    abstract public function providerInvalidValues(): iterable;
+    abstract public static function providerInvalidValues(): iterable;
 }

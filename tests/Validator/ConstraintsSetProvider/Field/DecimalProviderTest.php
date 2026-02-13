@@ -19,7 +19,7 @@ class DecimalProviderTest extends FieldConstraintsSetProviderTestCase
         return new DecimalProvider();
     }
 
-    public function getConstraintsForTypeProvider(): iterable
+    public static function getConstraintsForTypeProvider(): iterable
     {
         yield [
             ['type' => 'decimal', 'precision' => 4, 'scale' => 2],

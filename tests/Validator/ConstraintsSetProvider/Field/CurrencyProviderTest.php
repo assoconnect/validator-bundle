@@ -18,7 +18,7 @@ class CurrencyProviderTest extends FieldConstraintsSetProviderTestCase
         return new CurrencyProvider();
     }
 
-    public function getConstraintsForTypeProvider(): iterable
+    public static function getConstraintsForTypeProvider(): iterable
     {
         yield [
             ['type' => 'currency'],

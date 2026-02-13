@@ -16,7 +16,7 @@ class UuidProviderTest extends FieldConstraintsSetProviderTestCase
         return new UuidProvider();
     }
 
-    public function getConstraintsForTypeProvider(): iterable
+    public static function getConstraintsForTypeProvider(): iterable
     {
         yield [
             ['type' => 'uuid'],

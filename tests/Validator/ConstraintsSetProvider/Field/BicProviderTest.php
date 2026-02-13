@@ -17,7 +17,7 @@ class BicProviderTest extends FieldConstraintsSetProviderTestCase
         return new BicProvider();
     }
 
-    public function getConstraintsForTypeProvider(): iterable
+    public static function getConstraintsForTypeProvider(): iterable
     {
         yield [
             ['type' => 'bic'],

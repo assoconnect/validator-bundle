@@ -15,7 +15,7 @@ class PostalProviderTest extends FieldConstraintsSetProviderTestCase
         return new PostalProvider();
     }
 
-    public function getConstraintsForTypeProvider(): iterable
+    public static function getConstraintsForTypeProvider(): iterable
     {
         yield [
             ['type' => 'postal'],

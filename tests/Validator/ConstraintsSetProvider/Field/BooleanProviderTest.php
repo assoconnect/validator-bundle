@@ -16,7 +16,7 @@ class BooleanProviderTest extends FieldConstraintsSetProviderTestCase
         return new BooleanProvider();
     }
 
-    public function getConstraintsForTypeProvider(): iterable
+    public static function getConstraintsForTypeProvider(): iterable
     {
         yield [
             ['type' => 'boolean'],
