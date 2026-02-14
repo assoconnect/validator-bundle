@@ -32,7 +32,7 @@ class TimezoneValidatorTest extends ConstraintValidatorTestCase
         $this->validator->validate(new \stdClass(), new Timezone());
     }
 
-    public function providerValidValues(): iterable
+    public static function providerValidValues(): iterable
     {
         yield [null];
         yield [''];
@@ -41,7 +41,7 @@ class TimezoneValidatorTest extends ConstraintValidatorTestCase
         yield [new \DateTimeZone('Europe/Paris')];
     }
 
-    public function providerInvalidValues(): iterable
+    public static function providerInvalidValues(): iterable
     {
         yield [
             'EN',

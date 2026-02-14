@@ -18,7 +18,7 @@ class IntegerProviderTest extends FieldConstraintsSetProviderTestCase
         return new IntegerProvider();
     }
 
-    public function getConstraintsForTypeProvider(): iterable
+    public static function getConstraintsForTypeProvider(): iterable
     {
         yield [
             [

@@ -17,7 +17,7 @@ class AmountProviderTest extends FieldConstraintsSetProviderTestCase
         return new AmountProvider();
     }
 
-    public function getConstraintsForTypeProvider(): iterable
+    public static function getConstraintsForTypeProvider(): iterable
     {
         yield [
             ['type' => 'amount'],

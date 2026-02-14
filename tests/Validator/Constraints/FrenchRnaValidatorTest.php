@@ -25,7 +25,7 @@ class FrenchRnaValidatorTest extends ConstraintValidatorTestCase
         return new FrenchRnaValidator();
     }
 
-    public function providerValidValues(): iterable
+    public static function providerValidValues(): iterable
     {
         yield 'empty RNA' => [''];
         yield 'null RNA' => [null];
@@ -39,7 +39,7 @@ class FrenchRnaValidatorTest extends ConstraintValidatorTestCase
         yield 'Classic Corse 2A RNA' => ['W2A1000119'];
     }
 
-    public function providerInvalidValues(): iterable
+    public static function providerInvalidValues(): iterable
     {
         yield 'wrong type' => [
             42,

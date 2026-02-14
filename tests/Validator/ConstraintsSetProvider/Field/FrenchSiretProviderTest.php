@@ -16,7 +16,7 @@ class FrenchSiretProviderTest extends FieldConstraintsSetProviderTestCase
         return new FrenchSiretProvider();
     }
 
-    public function getConstraintsForTypeProvider(): iterable
+    public static function getConstraintsForTypeProvider(): iterable
     {
         yield [
             ['type' => 'frenchSiret'],

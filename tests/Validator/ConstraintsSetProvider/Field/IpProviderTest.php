@@ -16,7 +16,7 @@ class IpProviderTest extends FieldConstraintsSetProviderTestCase
         return new IpProvider();
     }
 
-    public function getConstraintsForTypeProvider(): iterable
+    public static function getConstraintsForTypeProvider(): iterable
     {
         yield [
             ['type' => 'ip'],

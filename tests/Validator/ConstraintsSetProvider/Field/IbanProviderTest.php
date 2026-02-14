@@ -17,7 +17,7 @@ class IbanProviderTest extends FieldConstraintsSetProviderTestCase
         return new IbanProvider();
     }
 
-    public function getConstraintsForTypeProvider(): iterable
+    public static function getConstraintsForTypeProvider(): iterable
     {
         yield [
             ['type' => 'iban'],

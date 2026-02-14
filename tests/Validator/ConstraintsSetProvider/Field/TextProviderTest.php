@@ -16,7 +16,7 @@ class TextProviderTest extends FieldConstraintsSetProviderTestCase
         return new TextProvider();
     }
 
-    public function getConstraintsForTypeProvider(): iterable
+    public static function getConstraintsForTypeProvider(): iterable
     {
         yield [
             ['type' => 'text'],

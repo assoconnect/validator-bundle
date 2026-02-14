@@ -16,7 +16,7 @@ class TimezoneProviderTest extends FieldConstraintsSetProviderTestCase
         return new TimezoneProvider();
     }
 
-    public function getConstraintsForTypeProvider(): iterable
+    public static function getConstraintsForTypeProvider(): iterable
     {
         yield [
             ['type' => 'timezone'],

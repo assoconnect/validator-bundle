@@ -18,7 +18,7 @@ class DateTimeImmutableProviderTest extends FieldConstraintsSetProviderTestCase
         return new DateTimeImmutableProvider();
     }
 
-    public function getConstraintsForTypeProvider(): iterable
+    public static function getConstraintsForTypeProvider(): iterable
     {
         yield [
             ['type' => 'date_immutable'],

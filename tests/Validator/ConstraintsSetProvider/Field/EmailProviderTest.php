@@ -17,7 +17,7 @@ class EmailProviderTest extends FieldConstraintsSetProviderTestCase
         return new EmailProvider();
     }
 
-    public function getConstraintsForTypeProvider(): iterable
+    public static function getConstraintsForTypeProvider(): iterable
     {
         yield [
             ['type' => 'email', 'length' => 10],

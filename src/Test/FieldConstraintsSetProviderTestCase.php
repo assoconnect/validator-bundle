@@ -35,11 +35,11 @@ abstract class FieldConstraintsSetProviderTestCase extends TestCase
     }
 
     /** @return mixed[] */
-    abstract public function getConstraintsForTypeProvider(): iterable;
+    abstract public static function getConstraintsForTypeProvider(): iterable;
 
     /**
-     * @param mixed[] $array1
-     * @param mixed[] $array2
+     * @param object[] $array1
+     * @param object[] $array2
      */
     protected static function assertArrayContainsSameObjects(array $array1, array $array2, string $message = ''): void
     {

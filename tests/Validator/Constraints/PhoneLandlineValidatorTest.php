@@ -26,14 +26,14 @@ class PhoneLandlineValidatorTest extends ConstraintValidatorTestCase
         return new PhoneValidator();
     }
 
-    public function providerValidValues(): iterable
+    public static function providerValidValues(): iterable
     {
         yield [null];
         yield [''];
         yield ['+33123456789'];
     }
 
-    public function providerInvalidValues(): iterable
+    public static function providerInvalidValues(): iterable
     {
         yield [
             '+33623456789',

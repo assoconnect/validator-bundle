@@ -16,7 +16,7 @@ class UsSocialSecurityNumberProviderTest extends FieldConstraintsSetProviderTest
         return new UsSocialSecurityNumberProvider();
     }
 
-    public function getConstraintsForTypeProvider(): iterable
+    public static function getConstraintsForTypeProvider(): iterable
     {
         yield [['type' => 'usSocialSecurityNumber'], [new UsSocialSecurityNumber()]];
     }

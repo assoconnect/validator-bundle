@@ -29,12 +29,12 @@ class LongitudeValidatorTest extends ConstraintValidatorTestCase
         return new LongitudeValidator();
     }
 
-    public function providerValidValues(): iterable
+    public static function providerValidValues(): iterable
     {
         yield ['18'];
     }
 
-    public function providerInvalidValues(): iterable
+    public static function providerInvalidValues(): iterable
     {
         // Skipped as it fails on parameters comparison in lowest dependency mode
 //        yield [

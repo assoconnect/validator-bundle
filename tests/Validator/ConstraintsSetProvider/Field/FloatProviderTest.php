@@ -16,7 +16,7 @@ class FloatProviderTest extends FieldConstraintsSetProviderTestCase
         return new FloatProvider();
     }
 
-    public function getConstraintsForTypeProvider(): iterable
+    public static function getConstraintsForTypeProvider(): iterable
     {
         yield [
             ['type' => 'float'],

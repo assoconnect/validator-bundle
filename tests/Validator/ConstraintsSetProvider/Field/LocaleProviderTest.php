@@ -16,7 +16,7 @@ class LocaleProviderTest extends FieldConstraintsSetProviderTestCase
         return new LocaleProvider();
     }
 
-    public function getConstraintsForTypeProvider(): iterable
+    public static function getConstraintsForTypeProvider(): iterable
     {
         yield [
             ['type' => 'locale'],

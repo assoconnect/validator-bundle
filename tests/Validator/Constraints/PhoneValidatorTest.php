@@ -25,7 +25,7 @@ class PhoneValidatorTest extends ConstraintValidatorTestCase
         return new PhoneValidator();
     }
 
-    public function providerValidValues(): iterable
+    public static function providerValidValues(): iterable
     {
         yield [null];
         yield [''];
@@ -33,7 +33,7 @@ class PhoneValidatorTest extends ConstraintValidatorTestCase
         yield ['+33623456789'];
     }
 
-    public function providerInvalidValues(): iterable
+    public static function providerInvalidValues(): iterable
     {
         yield [
             '0123456789',

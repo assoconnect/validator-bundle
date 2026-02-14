@@ -17,7 +17,7 @@ class MoneyProviderTest extends FieldConstraintsSetProviderTestCase
         return new MoneyProvider();
     }
 
-    public function getConstraintsForTypeProvider(): iterable
+    public static function getConstraintsForTypeProvider(): iterable
     {
         yield [
             [

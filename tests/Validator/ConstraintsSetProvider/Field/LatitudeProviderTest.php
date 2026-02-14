@@ -18,7 +18,7 @@ class LatitudeProviderTest extends FieldConstraintsSetProviderTestCase
         return new LatitudeProvider();
     }
 
-    public function getConstraintsForTypeProvider(): iterable
+    public static function getConstraintsForTypeProvider(): iterable
     {
         yield [
             [

@@ -40,8 +40,7 @@ class IntegerProvider implements FieldConstraintsSetProviderInterface
         ];
     }
 
-    /** @return int|float */
-    private function getMinValue(string $type, bool $isSigned)
+    private function getMinValue(string $type, bool $isSigned): int|float
     {
         if ($isSigned) {
             switch ($type) {
@@ -59,8 +58,7 @@ class IntegerProvider implements FieldConstraintsSetProviderInterface
         return 0;
     }
 
-    /** @return int|float */
-    private function getMaxValue(string $type, bool $isSigned)
+    private function getMaxValue(string $type, bool $isSigned): int|float
     {
         if ($isSigned) {
             switch ($type) {
