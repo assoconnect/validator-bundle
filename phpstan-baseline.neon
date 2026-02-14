@@ -583,30 +583,6 @@ parameters:
 			path: src/Validator/Constraints/EmployerIdentificationNumber.php
 
 		-
-			message: '#^Method AssoConnect\\ValidatorBundle\\Validator\\Constraints\\EntityValidator\:\:getFieldAttributes\(\) has parameter \$reflectionClass with generic class ReflectionClass but does not specify its types\: T$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/Validator/Constraints/EntityValidator.php
-
-		-
-			message: '#^Method AssoConnect\\ValidatorBundle\\Validator\\Constraints\\EntityValidator\:\:getFieldAttributes\(\) return type with generic class ReflectionAttribute does not specify its types\: T$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/Validator/Constraints/EntityValidator.php
-
-		-
-			message: '#^Overwriting variable \$value while changing its type from BackedEnum to int\|string$#'
-			identifier: shipmonk.variableTypeOverwritten
-			count: 1
-			path: src/Validator/Constraints/EntityValidator.php
-
-		-
-			message: '#^Parameter \#1 \$constraints of class Symfony\\Component\\Validator\\Constraints\\All constructor expects array\<Symfony\\Component\\Validator\\Constraint\>\|Symfony\\Component\\Validator\\Constraint\|null, array\<string, array\<int, Symfony\\Component\\Validator\\Constraints\\Type\>\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Validator/Constraints/EntityValidator.php
-
-		-
 			message: '#^Class AssoConnect\\ValidatorBundle\\Validator\\Constraints\\FloatScale has an uninitialized property \$scale\. Give it default value or assign it in the constructor\.$#'
 			identifier: property.uninitialized
 			count: 1
@@ -805,19 +781,7 @@ parameters:
 			path: src/Validator/ConstraintsSetProvider/Field/IntegerProvider.php
 
 		-
-			message: '#^Missing native return typehint float$#'
-			identifier: shipmonk.missingNativeReturnTypehint
-			count: 2
-			path: src/Validator/ConstraintsSetProvider/Field/IntegerProvider.php
-
-		-
 			message: '#^Method registerBundles always return list, but is marked as iterable\<Symfony\\Component\\HttpKernel\\Bundle\\BundleInterface\>$#'
 			identifier: shipmonk.returnListNotUsed
 			count: 1
 			path: tests/TestKernel.php
-
-		-
-			message: '#^Parameter \#1 \$constraints of class Symfony\\Component\\Validator\\Constraints\\All constructor expects array\<Symfony\\Component\\Validator\\Constraint\>\|Symfony\\Component\\Validator\\Constraint\|null, array\<string, array\<int, Symfony\\Component\\Validator\\Constraints\\Type\>\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: tests/Validator/Constraints/EntityValidatorTest.php

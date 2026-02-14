@@ -65,14 +65,14 @@ class EntityValidator extends ConstraintValidator
                 // (ex: path is date.start but date is NULL)
                 try {
                     $value = $propertyAccessor->getValue($entity, $field);
-                    if ($value instanceof \BackedEnum) {
-                        $value = $value->value;
-                    }
                 } catch (UnexpectedTypeException $exception) {
                     $value = null;
                 }
 
-                $validator->atPath($field)->validate($value, $constraints);
+                $validator->atPath($field)->validate(
+                    $value instanceof \BackedEnum ? $value->value : $value,
+                    $constraints
+                );
             }
         }
     }
@@ -131,13 +131,9 @@ class EntityValidator extends ConstraintValidator
                     }
                 } elseif (($fieldMapping['type'] & ClassMetadataInfo::TO_MANY) !== 0) {
                     // ToMany
-                    $constraints[] = new All(
-                        [
-                            'constraints' => [
-                                new Type($fieldMapping['targetEntity']),
-                            ],
-                        ]
-                    );
+                    $constraints[] = new All([
+                        new Type($fieldMapping['targetEntity']),
+                    ]);
                 } else {
                     // Unknown
                     throw new \DomainException('Unknown type: ' . $fieldMapping['type']);
@@ -162,7 +158,10 @@ class EntityValidator extends ConstraintValidator
         return true;
     }
 
-    /** @return \ReflectionAttribute[] */
+    /**
+     * @param \ReflectionClass<object> $reflectionClass
+     * @return \ReflectionAttribute<object>[]
+     */
     private function getFieldAttributes(\ReflectionClass $reflectionClass, string $field): array
     {
         if ($reflectionClass->hasProperty($field)) {
