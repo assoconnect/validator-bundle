@@ -9,7 +9,7 @@ use PHPUnit\Framework\Constraint\Constraint;
 class ArrayContainSameObjectsConstraint extends Constraint
 {
     /**
-     * @param mixed[] $expected
+     * @param object[] $expected
      */
     public function __construct(private readonly array $expected)
     {
@@ -22,7 +22,10 @@ class ArrayContainSameObjectsConstraint extends Constraint
         }
 
         foreach ($other as $key => $element) {
-            if ($element::class !== $this->expected[$key]::class) { /** @phpstan-ignore assoconnect.identicalClassComparison */
+            if (!is_object($element)) {
+                return false;
+            }
+            if ($element::class !== $this->expected[$key]::class) {
                 return false;
             }
         }

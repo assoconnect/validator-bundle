@@ -10,7 +10,6 @@ use Symfony\Component\HttpKernel\Kernel;
 
 class TestKernel extends Kernel
 {
-    /** @return list<\Symfony\Component\HttpKernel\Bundle\BundleInterface> */
     public function registerBundles(): iterable
     {
         return [new FrameworkBundle()];
