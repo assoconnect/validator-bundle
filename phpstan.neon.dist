@@ -2,7 +2,6 @@ parameters:
     paths:
         - src/
         - tests/
-    reportUnmatchedIgnoredErrors: false
     exceptions:
         uncheckedExceptionClasses:
             - 'Symfony\Component\Validator\Exception\ConstraintDefinitionException'
