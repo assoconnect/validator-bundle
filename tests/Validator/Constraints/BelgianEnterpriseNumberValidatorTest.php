@@ -37,7 +37,7 @@ class BelgianEnterpriseNumberValidatorTest extends ConstraintValidatorTestCase
 
     public static function providerInvalidValues(): iterable
     {
-        $expectedMessage = 'The Belgian Enterprise Number {{ value }} is not valid.';
+        $expectedMessage = BelgianEnterpriseNumber::MESSAGE;
         $code = BelgianEnterpriseNumber::WRONG_FORMAT_ERROR;
 
         yield 'too short' => ['012345678', $code, $expectedMessage];
