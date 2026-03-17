@@ -21,14 +21,31 @@ class Email extends _Email
     public bool $checkDNS = false;
 
     public function __construct(
-        ?array $options = null,
         ?string $message = null,
         ?string $mode = null,
         ?callable $normalizer = null,
         ?array $groups = null,
         mixed $payload = null,
+        ?string $tldMessage = null,
+        ?string $dnsMessage = null,
+        ?bool $checkDNS = null,
     ) {
-        parent::__construct($options, $message, $mode, $normalizer, $groups, $payload);
+        parent::__construct(
+            message: $message,
+            mode: $mode,
+            normalizer: $normalizer,
+            groups: $groups,
+            payload: $payload,
+        );
         $this->mode ??= 'strict';
+        if (null !== $tldMessage) {
+            $this->tldMessage = $tldMessage;
+        }
+        if (null !== $dnsMessage) {
+            $this->dnsMessage = $dnsMessage;
+        }
+        if (null !== $checkDNS) {
+            $this->checkDNS = $checkDNS;
+        }
     }
 }

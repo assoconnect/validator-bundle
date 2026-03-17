@@ -20,12 +20,12 @@ class TextProviderTest extends FieldConstraintsSetProviderTestCase
     {
         yield [
             ['type' => 'text'],
-            [new Length(['max' => 65535, 'charset' => '8bit'])],
+            [new Length(max: 65535, charset: '8bit')],
         ];
 
         yield [
             ['type' => 'text', 'length' => 1000],
-            [new Length(['max' => 1000, 'charset' => '8bit'])],
+            [new Length(max: 1000, charset: '8bit')],
         ];
     }
 }

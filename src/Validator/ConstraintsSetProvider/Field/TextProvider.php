@@ -6,6 +6,7 @@ namespace AssoConnect\ValidatorBundle\Validator\ConstraintsSetProvider\Field;
 
 use Doctrine\DBAL\Types\Types;
 use Symfony\Component\Validator\Constraints\Length;
+use Webmozart\Assert\Assert;
 
 class TextProvider implements FieldConstraintsSetProviderInterface
 {
@@ -16,11 +17,11 @@ class TextProvider implements FieldConstraintsSetProviderInterface
 
     public function getConstraints(array $fieldMapping): array
     {
+        $length = $fieldMapping['length'] ?? 65535;
+        Assert::positiveInteger($length);
+
         return [
-            new Length([
-                'max' => $fieldMapping['length'] ?? 65535,
-                'charset' => '8bit',
-            ]),
+            new Length(max: $length, charset: '8bit'),
         ];
     }
 }

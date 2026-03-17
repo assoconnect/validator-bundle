@@ -553,12 +553,6 @@ parameters:
 			path: src/Validator/Constraints/Email.php
 
 		-
-			message: '#^Method AssoConnect\\ValidatorBundle\\Validator\\Constraints\\Email\:\:__construct\(\) has parameter \$options with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Validator/Constraints/Email.php
-
-		-
 			message: '#^Public property `checkDNS` not marked as readonly\.$#'
 			identifier: shipmonk.publicPropertyNotReadonly
 			count: 1
@@ -581,18 +575,6 @@ parameters:
 			identifier: shipmonk.publicPropertyNotReadonly
 			count: 1
 			path: src/Validator/Constraints/EmployerIdentificationNumber.php
-
-		-
-			message: '#^Class AssoConnect\\ValidatorBundle\\Validator\\Constraints\\FloatScale has an uninitialized property \$scale\. Give it default value or assign it in the constructor\.$#'
-			identifier: property.uninitialized
-			count: 1
-			path: src/Validator/Constraints/FloatScale.php
-
-		-
-			message: '#^Method getRequiredOptions always return list, but is marked as array\<string\>$#'
-			identifier: shipmonk.returnListNotUsed
-			count: 1
-			path: src/Validator/Constraints/FloatScale.php
 
 		-
 			message: '#^Public property `message` not marked as readonly\.$#'
@@ -635,6 +617,30 @@ parameters:
 			identifier: shipmonk.publicPropertyNotReadonly
 			count: 1
 			path: src/Validator/Constraints/LastDigitsUsSocialSecurityNumber.php
+
+		-
+			message: '#^Parameter \#1 \$min of method AssoConnect\\ValidatorBundle\\Validator\\Constraints\\Money\:\:__construct\(\) cannot have float as its type \- floats are not allowed\.$#'
+			identifier: float.type
+			count: 1
+			path: src/Validator/Constraints/Money.php
+
+		-
+			message: '#^Parameter \#2 \$max of method AssoConnect\\ValidatorBundle\\Validator\\Constraints\\Money\:\:__construct\(\) cannot have float as its type \- floats are not allowed\.$#'
+			identifier: float.type
+			count: 1
+			path: src/Validator/Constraints/Money.php
+
+		-
+			message: '#^Cannot assign float to \$this\->min \- floats are not allowed\.$#'
+			identifier: float.assign
+			count: 1
+			path: src/Validator/Constraints/Money.php
+
+		-
+			message: '#^Cannot assign float to \$this\->max \- floats are not allowed\.$#'
+			identifier: float.assign
+			count: 1
+			path: src/Validator/Constraints/Money.php
 
 		-
 			message: '#^Property AssoConnect\\ValidatorBundle\\Validator\\Constraints\\Money\:\:\$max cannot have float as its type \- floats are not allowed\.$#'
@@ -713,18 +719,6 @@ parameters:
 			identifier: shipmonk.publicPropertyNotReadonly
 			count: 1
 			path: src/Validator/Constraints/PhoneMobile.php
-
-		-
-			message: '#^Class AssoConnect\\ValidatorBundle\\Validator\\Constraints\\Postal has an uninitialized property \$countryPropertyPath\. Give it default value or assign it in the constructor\.$#'
-			identifier: property.uninitialized
-			count: 1
-			path: src/Validator/Constraints/Postal.php
-
-		-
-			message: '#^Method getRequiredOptions always return list, but is marked as array\<string\>$#'
-			identifier: shipmonk.returnListNotUsed
-			count: 1
-			path: src/Validator/Constraints/Postal.php
 
 		-
 			message: '#^Public property `countryPropertyPath` not marked as readonly\.$#'

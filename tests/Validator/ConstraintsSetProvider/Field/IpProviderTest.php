@@ -20,7 +20,7 @@ class IpProviderTest extends FieldConstraintsSetProviderTestCase
     {
         yield [
             ['type' => 'ip'],
-            [new Ip(['version' => 'all'])],
+            [new Ip(version: 'all')],
         ];
     }
 }

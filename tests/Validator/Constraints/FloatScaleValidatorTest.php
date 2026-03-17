@@ -17,7 +17,7 @@ class FloatScaleValidatorTest extends ConstraintValidatorTestCase
 {
     protected function getConstraint(): Constraint
     {
-        return new FloatScale(['scale' => 2]);
+        return new FloatScale(scale: 2);
     }
 
     public function createValidator(): ConstraintValidator

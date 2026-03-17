@@ -10,7 +10,6 @@ use AssoConnect\ValidatorBundle\Validator\Constraints\PostalValidator;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
-use Symfony\Component\Validator\Exception\MissingOptionsException;
 
 /**
  * @extends ConstraintValidatorTestCase<PostalValidator>
@@ -19,20 +18,12 @@ class PostalValidatorTest extends ConstraintValidatorTestCase
 {
     protected function getConstraint(): Constraint
     {
-        return new Postal([
-            'countryPropertyPath' => 'country',
-        ]);
+        return new Postal(countryPropertyPath: 'country');
     }
 
     public function createValidator(): ConstraintValidator
     {
         return new PostalValidator();
-    }
-
-    public function testMissingPropertyPath(): void
-    {
-        $this->expectException(MissingOptionsException::class);
-        new Postal([]);
     }
 
     public function testMissingObject(): void

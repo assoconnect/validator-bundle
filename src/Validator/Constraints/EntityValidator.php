@@ -131,7 +131,7 @@ class EntityValidator extends ConstraintValidator
                     }
                 } elseif (($fieldMapping['type'] & ClassMetadataInfo::TO_MANY) !== 0) {
                     // ToMany
-                    $constraints[] = new All([
+                    $constraints[] = new All(constraints: [
                         new Type($fieldMapping['targetEntity']),
                     ]);
                 } else {

@@ -20,7 +20,7 @@ class LocaleProviderTest extends FieldConstraintsSetProviderTestCase
     {
         yield [
             ['type' => 'locale'],
-            [new Locale(['canonicalize' => true])],
+            [new Locale(canonicalize: true)],
         ];
     }
 }

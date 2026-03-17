@@ -21,12 +21,12 @@ class EmailProviderTest extends FieldConstraintsSetProviderTestCase
     {
         yield [
             ['type' => 'email', 'length' => 10],
-            [new Email(), new Length(['max' => 10])],
+            [new Email(), new Length(max: 10)],
         ];
 
         yield [
             ['type' => 'email'],
-            [new Email(), new Length(['max' => 255])],
+            [new Email(), new Length(max: 255)],
         ];
     }
 }

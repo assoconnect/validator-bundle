@@ -16,33 +16,13 @@ class Postal extends Constraint
 
     public string $countryPropertyPath;
 
-    /**
-     * @param string|array<mixed> $countryPropertyPath
-     * @param array<mixed> $options
-     */
     public function __construct(
-        $countryPropertyPath,
+        string $countryPropertyPath,
         ?array $groups = null,
         mixed $payload = null,
-        array $options = []
     ) {
-        if (\is_array($countryPropertyPath)) {
-            $options = array_merge($countryPropertyPath, $options);
-        } elseif (null !== $countryPropertyPath) {
-            $options['value'] = $countryPropertyPath;
-        }
-
-        parent::__construct($options, $groups, $payload);
-    }
-
-    public function getDefaultOption(): string
-    {
-        return 'countryPropertyPath';
-    }
-
-    public function getRequiredOptions(): array
-    {
-        return ['countryPropertyPath'];
+        $this->countryPropertyPath = $countryPropertyPath;
+        parent::__construct(groups: $groups, payload: $payload);
     }
 
     public string $message = 'The value {{ value }} is not a valid postal code.';

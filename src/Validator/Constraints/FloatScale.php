@@ -18,32 +18,12 @@ class FloatScale extends Constraint
 
     public int $scale;
 
-    /**
-     * @param int|array<mixed> $scale
-     * @param array<mixed> $options
-     */
     public function __construct(
-        $scale,
+        int $scale,
         ?array $groups = null,
         mixed $payload = null,
-        array $options = []
     ) {
-        if (\is_array($scale)) {
-            $options = array_merge($scale, $options);
-        } elseif (null !== $scale) {
-            $options['value'] = $scale;
-        }
-
-        parent::__construct($options, $groups, $payload);
-    }
-
-    public function getDefaultOption(): string
-    {
-        return 'scale';
-    }
-
-    public function getRequiredOptions(): array
-    {
-        return ['scale'];
+        $this->scale = $scale;
+        parent::__construct(groups: $groups, payload: $payload);
     }
 }

@@ -17,7 +17,7 @@ class LocaleProvider implements FieldConstraintsSetProviderInterface
     public function getConstraints(array $fieldMapping): array
     {
         return [
-            new Locale(['canonicalize' => true]),
+            new Locale(canonicalize: true),
         ];
     }
 }
