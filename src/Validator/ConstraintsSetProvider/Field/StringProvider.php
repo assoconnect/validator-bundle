@@ -7,6 +7,7 @@ namespace AssoConnect\ValidatorBundle\Validator\ConstraintsSetProvider\Field;
 use Doctrine\DBAL\Types\Types;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Webmozart\Assert\Assert;
 
 class StringProvider implements FieldConstraintsSetProviderInterface
 {
@@ -17,10 +18,13 @@ class StringProvider implements FieldConstraintsSetProviderInterface
 
     public function getConstraints(array $fieldMapping): array
     {
-        $constraints = [new Length(['max' => $fieldMapping['length'] ?? 255])];
+        $length = $fieldMapping['length'] ?? 255;
+        Assert::positiveInteger($length);
+
+        $constraints = [new Length(max: $length)];
 
         if (isset($fieldMapping['nullable']) && true === $fieldMapping['nullable']) {
-            $constraints[] = new NotBlank(['allowNull' => true]);
+            $constraints[] = new NotBlank(allowNull: true);
         }
 
         return $constraints;

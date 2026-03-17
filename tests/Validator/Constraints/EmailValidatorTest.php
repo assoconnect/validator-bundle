@@ -36,12 +36,12 @@ class EmailValidatorTest extends ConstraintValidatorTestCase
 
     protected function getConstraint(): Constraint
     {
-        return new Email([
-            'message' => 'myMessage',
-            'tldMessage' => 'myTldMessage',
-            'dnsMessage' => 'myDnsMessage',
-            'checkDNS'  => true,
-        ]);
+        return new Email(
+            message: 'myMessage',
+            tldMessage: 'myTldMessage',
+            dnsMessage: 'myDnsMessage',
+            checkDNS: true,
+        );
     }
 
     public function testValidateUnknownConstraint(): void
@@ -137,12 +137,12 @@ class EmailValidatorTest extends ConstraintValidatorTestCase
 
     public function testDisabledCheckDns(): void
     {
-        $this->validator->validate('john.doe@xn--gmail-9fa.com', new Email([
-            'message' => 'myMessage',
-            'tldMessage' => 'myTldMessage',
-            'dnsMessage' => 'myDnsMessage',
-            'checkDNS'  =>  false,
-        ]));
+        $this->validator->validate('john.doe@xn--gmail-9fa.com', new Email(
+            message: 'myMessage',
+            tldMessage: 'myTldMessage',
+            dnsMessage: 'myDnsMessage',
+            checkDNS: false,
+        ));
 
         self::assertNoViolation();
     }

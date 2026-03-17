@@ -21,7 +21,7 @@ class MoneyValidatorTest extends ConstraintValidatorTestCase
 {
     protected function getConstraint(): Constraint
     {
-        return new Money(['min' => 0.0, 'max' => 90.0]);
+        return new Money(min: 0.0, max: 90.0);
     }
 
     public function createValidator(): ConstraintValidator

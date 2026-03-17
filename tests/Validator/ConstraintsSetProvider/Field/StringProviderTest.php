@@ -21,7 +21,7 @@ class StringProviderTest extends FieldConstraintsSetProviderTestCase
     {
         yield [
             ['type' => 'string'],
-            [new Length(['max' => 255])],
+            [new Length(max: 255)],
         ];
 
         yield [
@@ -29,7 +29,7 @@ class StringProviderTest extends FieldConstraintsSetProviderTestCase
                 'type' => 'string',
                 'length' => 10,
             ],
-            [new Length(['max' => 10])],
+            [new Length(max: 10)],
         ];
 
         yield [
@@ -38,8 +38,8 @@ class StringProviderTest extends FieldConstraintsSetProviderTestCase
                 'nullable' => true,
             ],
             [
-                new Length(['max' => 255]),
-                new NotBlank(['allowNull' => true]),
+                new Length(max: 255),
+                new NotBlank(allowNull: true),
             ],
         ];
     }

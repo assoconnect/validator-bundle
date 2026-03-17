@@ -17,7 +17,7 @@ class IpProvider implements FieldConstraintsSetProviderInterface
     public function getConstraints(array $fieldMapping): array
     {
         return [
-            new Ip(['version' => 'all']),
+            new Ip(version: 'all'),
         ];
     }
 }
