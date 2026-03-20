@@ -38,10 +38,7 @@ jobs:
       - run: vendor/bin/rector process --dry-run
         if: ${{ failure() ||  success() }}
 
-      - run: vendor/bin/simple-phpunit --coverage-clover ./clover.xml --log-junit ./phpunit.report.xml
-        env:
-          XDEBUG_MODE: coverage
-          SYMFONY_DEPRECATIONS_HELPER: disabled
+      - run: XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-clover ./clover.xml --log-junit ./phpunit.report.xml
         if: ${{ failure() ||  success() }}
       
       # https://community.sonarsource.com/t/code-coverage-doesnt-work-with-github-action/16747
