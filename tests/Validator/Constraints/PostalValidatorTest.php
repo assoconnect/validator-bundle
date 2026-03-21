@@ -163,8 +163,12 @@ class PostalValidatorTest extends ConstraintValidatorTestCase
         self::markTestSkipped('No valid values to test for PostalValidator');
     }
 
-    public function testInvalidValues(mixed $value = null, string $code = '', string $message = '', ?array $parameters = null): void
-    {
+    public function testInvalidValues(
+        mixed $value = null,
+        string $code = '',
+        string $message = '',
+        ?array $parameters = null
+    ): void {
         self::markTestSkipped('No invalid values to test for PostalValidator');
     }
 }

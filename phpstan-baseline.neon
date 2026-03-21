@@ -601,18 +601,6 @@ parameters:
 			path: src/Validator/Constraints/FrenchRna.php
 
 		-
-			message: '#^Method AssoConnect\\ValidatorBundle\\Validator\\Constraints\\FrenchSiren\:\:__construct\(\) has parameter \$options with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Validator/Constraints/FrenchSiren.php
-
-		-
-			message: '#^Method AssoConnect\\ValidatorBundle\\Validator\\Constraints\\FrenchSiret\:\:__construct\(\) has parameter \$options with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Validator/Constraints/FrenchSiret.php
-
-		-
 			message: '#^Public property `message` not marked as readonly\.$#'
 			identifier: shipmonk.publicPropertyNotReadonly
 			count: 1
