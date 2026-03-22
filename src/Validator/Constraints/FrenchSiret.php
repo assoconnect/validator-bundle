@@ -14,6 +14,10 @@ class FrenchSiret extends Luhn
 {
     public const INVALID_FORMAT_ERROR = 'cbe06561-776e-45c2-b33c-a73141746d43';
 
+    /**
+     * @param array<string, mixed>|null $options
+     * @param array<string>|null $groups
+     */
     public function __construct(
         ?array $options = null,
         ?string $message = null,

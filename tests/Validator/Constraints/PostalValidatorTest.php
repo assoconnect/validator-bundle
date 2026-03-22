@@ -157,4 +157,18 @@ class PostalValidatorTest extends ConstraintValidatorTestCase
     {
         return [];
     }
+
+    public function testValidValues(mixed $value = null): void
+    {
+        self::markTestSkipped('PostalValidator requires object context with a country property, not a raw value');
+    }
+
+    public function testInvalidValues(
+        mixed $value = null,
+        string $code = '',
+        string $message = '',
+        ?array $parameters = null
+    ): void {
+        self::markTestSkipped('PostalValidator requires object context with a country property, not a raw value');
+    }
 }
