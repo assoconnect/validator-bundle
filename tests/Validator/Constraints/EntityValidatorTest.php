@@ -155,7 +155,7 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
 
     public function testValidValues(mixed $value = null): void
     {
-        self::markTestSkipped('No valid values to test for EntityValidator');
+        self::markTestSkipped('EntityValidator validates fields based on Doctrine metadata, not raw values');
     }
 
     public function testInvalidValues(
@@ -164,7 +164,7 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
         string $message = '',
         ?array $parameters = null
     ): void {
-        self::markTestSkipped('No invalid values to test for EntityValidator');
+        self::markTestSkipped('EntityValidator validates fields based on Doctrine metadata, not raw values');
     }
 
     private function getMockClassMetadata(): \stdClass

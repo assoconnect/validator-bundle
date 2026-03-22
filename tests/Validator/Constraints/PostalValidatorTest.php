@@ -160,7 +160,7 @@ class PostalValidatorTest extends ConstraintValidatorTestCase
 
     public function testValidValues(mixed $value = null): void
     {
-        self::markTestSkipped('No valid values to test for PostalValidator');
+        self::markTestSkipped('PostalValidator requires object context with a country property, not a raw value');
     }
 
     public function testInvalidValues(
@@ -169,6 +169,6 @@ class PostalValidatorTest extends ConstraintValidatorTestCase
         string $message = '',
         ?array $parameters = null
     ): void {
-        self::markTestSkipped('No invalid values to test for PostalValidator');
+        self::markTestSkipped('PostalValidator requires object context with a country property, not a raw value');
     }
 }
