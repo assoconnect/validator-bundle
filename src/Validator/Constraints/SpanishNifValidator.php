@@ -25,7 +25,7 @@ class SpanishNifValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, 'string');
         }
 
-        if (!preg_match('/^[A-Z][A-Z0-9]{8}$/', $value)) {
+        if (1 !== preg_match('/^[A-Z][A-Z0-9]{8}$/', $value)) {
             $this->context->buildViolation($constraint::MESSAGE)
                 ->setParameter('{{ value }}', $this->formatValue($value))
                 ->setCode($constraint::WRONG_FORMAT_ERROR)
