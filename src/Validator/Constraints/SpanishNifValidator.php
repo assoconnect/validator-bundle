@@ -48,15 +48,13 @@ class SpanishNifValidator extends ConstraintValidator
     private function isValid(string $value): bool
     {
         // Strict format: known first letter + 7 digits + 1 control character
-        if (1 !== preg_match(
-                '/^([' . self::VALID_FIRST_LETTERS . '])(\d{7})([0-9A-Z])$/',
-                $value,
-                $matches
-            )) {
+        if (
+            1 !== preg_match('/^([' . self::VALID_FIRST_LETTERS . '])(\d{7})([0-9A-Z])$/', $value, $matches)
+        ) {
             return false;
         }
 
-        [$_, $firstLetter, $digits, $control] = $matches;
+        [, $firstLetter, $digits, $control] = $matches;
 
         $expectedDigit = $this->computeControlDigit($digits);
         $expectedLetter = self::CONTROL_LETTERS[$expectedDigit];
