@@ -31,7 +31,7 @@ class SpanishNifValidatorTest extends ConstraintValidatorTestCase
         yield 'empty string' => [''];
         yield 'type A with digit control' => ['A58818501']; // Wikipedia example
         yield 'type A with digit control (Adyen)' => ['A39000013']; // Adyen docs example
-        yield 'type P with letter control' => ['P2813200B']; // Ayuntamiento de Madrid
+        yield 'type P with letter control' => ['P2813200I']; // Ayuntamiento de Madrid
     }
 
     public static function providerInvalidValues(): iterable
