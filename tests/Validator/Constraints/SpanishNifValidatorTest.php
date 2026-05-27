@@ -29,24 +29,24 @@ class SpanishNifValidatorTest extends ConstraintValidatorTestCase
     {
         yield 'null value' => [null];
         yield 'empty string' => [''];
-        yield 'valid NIF with digit suffix' => ['A12345678'];
-        yield 'valid NIF with letter suffix' => ['B1234567C'];
-        yield 'valid NIF all zeros' => ['Z00000000'];
-        yield 'valid NIF mixed alphanumeric suffix' => ['H1234567A'];
+        yield 'type A with digit control' => ['A58818501']; // Wikipedia example
+        yield 'type A with digit control (Adyen)' => ['A39000013']; // Adyen docs example
+        yield 'type P with letter control' => ['P2813200I']; // Ayuntamiento de Madrid
     }
 
     public static function providerInvalidValues(): iterable
     {
-        $expectedMessage = SpanishNif::MESSAGE;
         $code = SpanishNif::WRONG_FORMAT_ERROR;
+        $message = SpanishNif::MESSAGE;
 
-        yield 'too short' => ['A1234567', $code, $expectedMessage];
-        yield 'too long' => ['A1234567890', $code, $expectedMessage];
-        yield 'starts with digit' => ['112345678', $code, $expectedMessage];
-        yield 'starts with lowercase' => ['a12345678', $code, $expectedMessage];
-        yield 'contains lowercase' => ['A1234567b', $code, $expectedMessage];
-        yield 'contains special characters' => ['A1234-678', $code, $expectedMessage];
-        yield 'contains spaces' => ['A1234 678', $code, $expectedMessage];
-        yield 'single letter' => ['A', $code, $expectedMessage];
+        yield 'too short' => ['A1234567', $code, $message];
+        yield 'too long' => ['A1234567890', $code, $message];
+        yield 'starts with digit' => ['112345678', $code, $message];
+        yield 'starts with lowercase' => ['a12345678', $code, $message];
+        yield 'invalid first letter' => ['Z12345678A', $code, $message];
+        yield 'wrong control digit' => ['A58818502', $code, $message];
+        yield 'wrong control letter' => ['P2813200Z', $code, $message];
+        yield 'contains special character' => ['A1234-678', $code, $message];
+        yield 'contains space' => ['A1234 678', $code, $message];
     }
 }
