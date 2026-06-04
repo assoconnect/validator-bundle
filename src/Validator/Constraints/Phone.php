@@ -22,7 +22,7 @@ class Phone extends Constraint
     public const INVALID_COUNTRY_CODE = '5530a448-f887-48c0-8ef8-77f206aa52b6';
 
     /**
-     * @return list<int>
+     * @return list<PhoneNumberType>
      */
     public function getValidTypes(): array
     {
