@@ -29,24 +29,29 @@ class BelgianEnterpriseNumberValidatorTest extends ConstraintValidatorTestCase
     {
         yield 'null value' => [null];
         yield 'empty string' => [''];
-        yield 'valid number starting with 0' => ['0123456789'];
-        yield 'valid number starting with 1' => ['1234567890'];
-        yield 'valid number starting with 0 all zeros' => ['0000000000'];
-        yield 'valid number starting with 1 all digits' => ['1999999999'];
+        yield 'valid number starting with 0' => ['0123456749'];
+        yield 'valid number starting with 1' => ['1234567894'];
+        yield 'valid number starting with 0 all zeros' => ['0000000097'];
+        yield 'valid number starting with 1 all digits' => ['1999999943'];
     }
 
     public static function providerInvalidValues(): iterable
     {
-        $expectedMessage = BelgianEnterpriseNumber::MESSAGE;
-        $code = BelgianEnterpriseNumber::WRONG_FORMAT_ERROR;
+        $formatMessage = BelgianEnterpriseNumber::MESSAGE;
+        $formatCode = BelgianEnterpriseNumber::WRONG_FORMAT_ERROR;
+        $checksumMessage = BelgianEnterpriseNumber::INVALID_CHECKSUM_MESSAGE;
+        $checksumCode = BelgianEnterpriseNumber::INVALID_CHECKSUM_ERROR;
 
-        yield 'too short' => ['012345678', $code, $expectedMessage];
-        yield 'too long' => ['01234567890', $code, $expectedMessage];
-        yield 'starts with 2' => ['2123456789', $code, $expectedMessage];
-        yield 'starts with 9' => ['9123456789', $code, $expectedMessage];
-        yield 'contains letters' => ['012345678A', $code, $expectedMessage];
-        yield 'contains special characters' => ['01234-6789', $code, $expectedMessage];
-        yield 'contains spaces' => ['0123 56789', $code, $expectedMessage];
-        yield 'single digit' => ['0', $code, $expectedMessage];
+        yield 'too short' => ['012345678', $formatCode, $formatMessage];
+        yield 'too long' => ['01234567890', $formatCode, $formatMessage];
+        yield 'starts with 2' => ['2123456789', $formatCode, $formatMessage];
+        yield 'starts with 9' => ['9123456789', $formatCode, $formatMessage];
+        yield 'contains letters' => ['012345678A', $formatCode, $formatMessage];
+        yield 'contains special characters' => ['01234-6789', $formatCode, $formatMessage];
+        yield 'contains spaces' => ['0123 56789', $formatCode, $formatMessage];
+        yield 'single digit' => ['0', $formatCode, $formatMessage];
+        yield 'wrong checksum starting with 0' => ['0123456789', $checksumCode, $checksumMessage];
+        yield 'wrong checksum starting with 1' => ['1234567890', $checksumCode, $checksumMessage];
+        yield 'wrong checksum all zeros' => ['0000000000', $checksumCode, $checksumMessage];
     }
 }
