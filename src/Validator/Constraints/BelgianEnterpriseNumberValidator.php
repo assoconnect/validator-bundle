@@ -30,6 +30,18 @@ class BelgianEnterpriseNumberValidator extends ConstraintValidator
                 ->setParameter('{{ value }}', $this->formatValue($value))
                 ->setCode($constraint::WRONG_FORMAT_ERROR)
                 ->addViolation();
+            return;
+        }
+
+        $base = (int) substr($value, 0, 8);
+        $expectedChecksum = 97 - ($base % 97);
+        $actualChecksum = (int) substr($value, 8, 2);
+
+        if ($expectedChecksum !== $actualChecksum) {
+            $this->context->buildViolation($constraint::INVALID_CHECKSUM_MESSAGE)
+                ->setParameter('{{ value }}', $this->formatValue($value))
+                ->setCode($constraint::INVALID_CHECKSUM_ERROR)
+                ->addViolation();
         }
     }
 }
