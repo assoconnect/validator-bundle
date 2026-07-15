@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AssoConnect\ValidatorBundle\Test;
 
 use AssoConnect\ValidatorBundle\Validator\ConstraintsSetProvider\Field\FieldConstraintsSetProviderInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\Constraint;
 
@@ -20,8 +21,8 @@ abstract class FieldConstraintsSetProviderTestCase extends TestCase
     /**
      * @param mixed[] $fieldMapping
      * @param Constraint[] $constraints
-     * @dataProvider getConstraintsForTypeProvider
      */
+    #[DataProvider('getConstraintsForTypeProvider')]
     public function testGetConstraintsForType(array $fieldMapping, array $constraints): void
     {
         $factory = $this->getFactory();

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AssoConnect\ValidatorBundle\Test;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -35,9 +36,7 @@ abstract class ConstraintValidatorTestCase extends SymfonyConstraintValidatorTes
         $this->validator->validate(0, new NotBlank());
     }
 
-    /**
-     * @dataProvider providerValidValues
-     */
+    #[DataProvider('providerValidValues')]
     public function testValidValues(mixed $value): void
     {
         $this->validator->validate($value, $this->getConstraint());
@@ -51,9 +50,9 @@ abstract class ConstraintValidatorTestCase extends SymfonyConstraintValidatorTes
     abstract public static function providerValidValues(): iterable;
 
     /**
-     * @dataProvider providerInvalidValues
      * @param array<string, mixed>|null $parameters
      */
+    #[DataProvider('providerInvalidValues')]
     public function testInvalidValues(mixed $value, string $code, string $message, ?array $parameters = null): void
     {
         $this->validator->validate($value, $this->getConstraint());
