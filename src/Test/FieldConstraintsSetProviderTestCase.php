@@ -29,7 +29,6 @@ abstract class FieldConstraintsSetProviderTestCase extends TestCase
         self::assertTrue($factory->supports($fieldMapping['type']));
 
         self::assertArrayContainsSameObjects(
-            /** @phpstan-ignore-next-line */
             $factory->getConstraints($fieldMapping),
             $constraints
         );

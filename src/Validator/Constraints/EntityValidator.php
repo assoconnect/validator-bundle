@@ -7,7 +7,9 @@ namespace AssoConnect\ValidatorBundle\Validator\Constraints;
 use AssoConnect\ValidatorBundle\Exception\UnprotectedFieldTypeException;
 use AssoConnect\ValidatorBundle\Validator\ConstraintsSetProvider\Field\FieldConstraintsSetProviderInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Doctrine\ORM\Mapping\AssociationMapping;
+use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\Mapping\ToOneOwningSideMapping;
 use Symfony\Component\PropertyAccess\Exception\UnexpectedTypeException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Validator\Constraint;
@@ -18,9 +20,6 @@ use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\ConstraintValidator;
 use Webmozart\Assert\Assert;
 
-/**
- * @phpstan-import-type FieldMapping from ClassMetadataInfo
- */
 class EntityValidator extends ConstraintValidator
 {
     private EntityManagerInterface $em;
@@ -50,7 +49,7 @@ class EntityValidator extends ConstraintValidator
         Assert::object($entity);
         $class = get_class($entity);
         $metadata = $this->em->getClassMetadata($class);
-        $fields = array_keys($metadata->getReflectionProperties());
+        $fields = array_keys(self::reflectionPropertiesToArray($metadata->getReflectionProperties()));
         $validator = $this->context->getValidator()->inContext($this->context);
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
 
@@ -78,7 +77,7 @@ class EntityValidator extends ConstraintValidator
     }
 
     /**
-     * @param FieldMapping $fieldMapping
+     * @param mixed[] $fieldMapping
      * @return list<Constraint>
      */
     public function getConstraintsForType(array $fieldMapping): array
@@ -102,7 +101,10 @@ class EntityValidator extends ConstraintValidator
         $constraints = [];
 
         if (array_key_exists($field, $metadata->fieldMappings)) {
-            $fieldMapping = $metadata->fieldMappings[$field];
+            $mapping = $metadata->fieldMappings[$field];
+
+            // ORM 3 turns field mappings into objects; normalize to the array shape providers expect
+            $fieldMapping = is_array($mapping) ? $mapping : get_object_vars($mapping);
 
             // Nullable field
             Assert::keyExists($fieldMapping, 'nullable');
@@ -116,33 +118,77 @@ class EntityValidator extends ConstraintValidator
         } elseif (array_key_exists($field, $metadata->embeddedClasses)) {
             $constraints[] = new Valid();
         } elseif (array_key_exists($field, $metadata->associationMappings)) {
-            $fieldMapping = $metadata->associationMappings[$field];
+            $associationMapping = $metadata->associationMappings[$field];
 
-            if (true === $fieldMapping['isOwningSide']) {
-                if (($fieldMapping['type'] & ClassMetadataInfo::TO_ONE) !== 0) {
+            if (is_array($associationMapping)) {
+                // ORM 2
+                $isOwningSide = true === $associationMapping['isOwningSide'];
+                $type = $associationMapping['type'];
+                $targetEntity = $associationMapping['targetEntity'] ?? null;
+                $isJoinColumnNullable = !isset($associationMapping['joinColumns'][0]['nullable'])
+                    || true === $associationMapping['joinColumns'][0]['nullable'];
+            } else {
+                // ORM 3
+                [$isOwningSide, $type, $targetEntity, $isJoinColumnNullable] =
+                    self::extractAssociationMappingValues($associationMapping);
+            }
+
+            if ($isOwningSide) {
+                if (($type & ClassMetadata::TO_ONE) !== 0) {
                     // ToOne
-                    $constraints[] = new Type($fieldMapping['targetEntity']);
+                    $constraints[] = new Type($targetEntity);
                     // Nullable field
-                    if (
-                        isset($fieldMapping['joinColumns'][0]['nullable'])
-                        && true !== $fieldMapping['joinColumns'][0]['nullable']
-                    ) {
+                    if (!$isJoinColumnNullable) {
                         $constraints[] = new NotNull();
                     }
-                } elseif (($fieldMapping['type'] & ClassMetadataInfo::TO_MANY) !== 0) {
+                } elseif (($type & ClassMetadata::TO_MANY) !== 0) {
                     // ToMany
                     $constraints[] = new All(constraints: [
-                        new Type($fieldMapping['targetEntity']),
+                        new Type($targetEntity),
                     ]);
                 } else {
                     // Unknown
-                    throw new \DomainException('Unknown type: ' . $fieldMapping['type']);
+                    throw new \DomainException('Unknown type: ' . $type);
                 }
             }
         } else {
             throw new \LogicException('Unknown field: ' . $class . '::$' . $field);
         }
         return $constraints;
+    }
+
+    /**
+     * ORM 3-only path: coverage depends on the installed ORM major
+     * @codeCoverageIgnore
+     * @return array{bool, int, string, bool}
+     */
+    private static function extractAssociationMappingValues(AssociationMapping $associationMapping): array
+    {
+        $isJoinColumnNullable = true;
+        if ($associationMapping instanceof ToOneOwningSideMapping) {
+            $joinColumn = $associationMapping->joinColumns[0] ?? null;
+            $isJoinColumnNullable = null === $joinColumn || false !== $joinColumn->nullable;
+        }
+
+        return [
+            $associationMapping->isOwningSide(),
+            $associationMapping->type(),
+            $associationMapping->targetEntity,
+            $isJoinColumnNullable,
+        ];
+    }
+
+    /**
+     * ORM 3.5+ may return a LegacyReflectionFields object instead of an array (native lazy objects).
+     * Excluded from coverage: the object path cannot be built without the full metadata factory.
+     *
+     * @codeCoverageIgnore
+     * @param array<string, \ReflectionProperty|null>|\Traversable<string, \ReflectionProperty|null> $properties
+     * @return array<string, \ReflectionProperty|null>
+     */
+    private static function reflectionPropertiesToArray(iterable $properties): array
+    {
+        return $properties instanceof \Traversable ? iterator_to_array($properties, true) : $properties;
     }
 
     private function checkIfFieldNeedsToBeValidated(object $entity, string $field): bool
