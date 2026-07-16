@@ -11,7 +11,11 @@ use AssoConnect\ValidatorBundle\Validator\Constraints\EntityValidator;
 use AssoConnect\ValidatorBundle\Validator\Constraints\Phone;
 use AssoConnect\ValidatorBundle\Validator\ConstraintsSetProvider\Field\PhoneProvider;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\Mapping\FieldMapping;
+use Doctrine\ORM\Mapping\ManyToManyOwningSideMapping;
+use Doctrine\ORM\Mapping\ManyToOneAssociationMapping;
+use Doctrine\ORM\Mapping\OneToManyAssociationMapping;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\NotNull;
@@ -20,17 +24,20 @@ use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\ConstraintValidator;
 
 /**
- * @psalm-import-type FieldMapping from ClassMetadataInfo
  * @extends ConstraintValidatorTestCase<EntityValidator>
  */
 class EntityValidatorTest extends ConstraintValidatorTestCase
 {
     protected EntityManagerInterface $em;
 
+    /** @var ClassMetadata<MyEntityParent> */
+    protected ClassMetadata $classMetadata;
+
     protected function setUp(): void
     {
+        $this->classMetadata = $this->getMockClassMetadata();
         $this->em = $this->createMock(EntityManagerInterface::class);
-        $this->em->method('getClassMetadata')->willReturn($this->getMockClassMetadata());
+        $this->em->method('getClassMetadata')->willReturn($this->classMetadata);
 
         parent::setUp();
     }
@@ -143,6 +150,109 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
         $this->validator->getConstraints('class', 'unknown');
     }
 
+    public function testValidateChecksEveryMappedField(): void
+    {
+        $entity = new class {
+            public readonly ?string $nullable;
+
+            public function __construct()
+            {
+                $this->nullable = '+33611223344';
+            }
+        };
+        $this->classMetadata->reflFields = [
+            'nullable' => new \ReflectionProperty($entity, 'nullable'),
+        ];
+
+        $this->expectValidateValueAt(0, 'nullable', '+33611223344', [new Phone()]);
+
+        $this->validator->validate($entity, new Entity());
+    }
+
+    public function testGetConstraintsForNotNullableFieldWithOrm3MappingObject(): void
+    {
+        self::skipUnlessOrm3();
+
+        $metadata = new ClassMetadata(MyEntityParent::class);
+        $metadata->fieldMappings = [
+            'notnullable' => FieldMapping::fromMappingArray([
+                'type' => 'phone',
+                'fieldName' => 'notnullable',
+                'columnName' => 'notnullable',
+                'nullable' => false,
+            ]),
+        ];
+
+        self::assertArrayContainsSameObjects(
+            $this->createValidatorForMetadata($metadata)->getConstraints('class', 'notnullable'),
+            [new NotNull(), new Phone()]
+        );
+    }
+
+    public function testGetConstraintsForRelationsWithOrm3MappingObjects(): void
+    {
+        self::skipUnlessOrm3();
+
+        $metadata = new ClassMetadata(MyEntityParent::class);
+        $metadata->associationMappings = [
+            'notowning' => OneToManyAssociationMapping::fromMappingArray([
+                'fieldName' => 'notowning',
+                'sourceEntity' => MyEntityParent::class,
+                'targetEntity' => MyEntityParent::class,
+                'mappedBy' => 'parent',
+            ]),
+            'owningToOne' => ManyToOneAssociationMapping::fromMappingArray([
+                'fieldName' => 'owningToOne',
+                'sourceEntity' => MyEntityParent::class,
+                'targetEntity' => MyEntityParent::class,
+            ]),
+            'owningToOneNotNull' => ManyToOneAssociationMapping::fromMappingArray([
+                'fieldName' => 'owningToOneNotNull',
+                'sourceEntity' => MyEntityParent::class,
+                'targetEntity' => MyEntityParent::class,
+                'joinColumns' => [['name' => 'parent_id', 'referencedColumnName' => 'id', 'nullable' => false]],
+            ]),
+            'owningToMany' => ManyToManyOwningSideMapping::fromMappingArray([
+                'fieldName' => 'owningToMany',
+                'sourceEntity' => MyEntityParent::class,
+                'targetEntity' => MyEntityParent::class,
+            ]),
+        ];
+        $validator = $this->createValidatorForMetadata($metadata);
+
+        self::assertEmpty($validator->getConstraints('class', 'notowning'));
+        self::assertArrayContainsSameObjects(
+            $validator->getConstraints('class', 'owningToOne'),
+            [new Type(MyEntityParent::class)]
+        );
+        self::assertArrayContainsSameObjects(
+            $validator->getConstraints('class', 'owningToOneNotNull'),
+            [new Type(MyEntityParent::class), new NotNull()]
+        );
+        self::assertArrayContainsSameObjects(
+            $validator->getConstraints('class', 'owningToMany'),
+            [new All(constraints: [new Type(MyEntityParent::class)])]
+        );
+    }
+
+    private static function skipUnlessOrm3(): void
+    {
+        if (!class_exists(FieldMapping::class)) {
+            self::markTestSkipped('Requires the doctrine/orm 3 mapping objects');
+        }
+    }
+
+    /**
+     * @param ClassMetadata<MyEntityParent> $metadata
+     */
+    private function createValidatorForMetadata(ClassMetadata $metadata): EntityValidator
+    {
+        $em = $this->createMock(EntityManagerInterface::class);
+        $em->method('getClassMetadata')->willReturn($metadata);
+
+        return new EntityValidator($em, [new PhoneProvider()]);
+    }
+
     public static function providerInvalidValues(): iterable
     {
         return [];
@@ -167,9 +277,12 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
         self::markTestSkipped('EntityValidator validates fields based on Doctrine metadata, not raw values');
     }
 
-    private function getMockClassMetadata(): \stdClass
+    /**
+     * @return ClassMetadata<MyEntityParent>
+     */
+    private function getMockClassMetadata(): ClassMetadata
     {
-        $metadata = new \stdClass();
+        $metadata = new ClassMetadata(MyEntityParent::class);
         $metadata->fieldMappings = [
             'nullable' => [
                 'type' => 'phone',
@@ -189,22 +302,22 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
             'notowning' => [
                 'isOwningSide' => false,
                 'targetEntity' => MyEntityParent::class,
-                'type' => ClassMetadataInfo::TO_ONE,
+                'type' => ClassMetadata::TO_ONE,
             ],
             'owningToOne' => [
                 'isOwningSide' => true,
-                'type' => ClassMetadataInfo::TO_ONE,
+                'type' => ClassMetadata::TO_ONE,
                 'targetEntity' => MyEntityParent::class,
             ],
             'owningToOneNotNull' => [
                 'isOwningSide' => true,
-                'type' => ClassMetadataInfo::TO_ONE,
+                'type' => ClassMetadata::TO_ONE,
                 'targetEntity' => MyEntityParent::class,
                 'joinColumns' => [['nullable' => false]],
             ],
             'owningToMany' => [
                 'isOwningSide' => true,
-                'type' => ClassMetadataInfo::TO_MANY,
+                'type' => ClassMetadata::TO_MANY,
                 'targetEntity' => MyEntityParent::class,
             ],
             'owningUnknown' => [

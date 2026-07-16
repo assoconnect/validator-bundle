@@ -22,6 +22,8 @@ class DecimalProvider implements FieldConstraintsSetProviderInterface
     {
         Assert::keyExists($fieldMapping, 'precision');
         Assert::keyExists($fieldMapping, 'scale');
+        Assert::integer($fieldMapping['precision']);
+        Assert::integer($fieldMapping['scale']);
 
         return [
             new Type('float'),
