@@ -58,6 +58,10 @@
                 <source>The value {{ value }} is not a valid RNA identifier.</source>
                 <target>The value {{ value }} is not a valid RNA identifier.</target>
             </trans-unit>
+            <trans-unit id="15">
+                <source>The intra-EU VAT number {{ value }} is not valid.</source>
+                <target>The intra-EU VAT number {{ value }} is not valid.</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
