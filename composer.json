@@ -33,7 +33,7 @@
     "php": "^8.4",
     "symfony/http-kernel": "^7.0",
     "symfony/validator": "^7.0",
-    "egulias/email-validator": "^3.2|^4.0",
+    "egulias/email-validator": "^4.0",
     "symfony/property-access": "^7.0",
     "jeremykendall/php-domain-parser": "^6.0",
     "moneyphp/money": "^3.0|^4.0",
