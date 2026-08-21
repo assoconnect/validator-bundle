@@ -39,11 +39,18 @@ class PublicSuffixListCacheChainTest extends KernelTestCase
             ? self::$kernel->getCacheDir()
             : sys_get_temp_dir();
 
-        self::assertSame([], $warmer->warmUp($cacheDir));
-        self::assertSame(1, $stub->getRequestCount());
+        // The kernel boot may already have run the warmer, depending on the Symfony version
+        $requestsBeforeWarmup = $stub->getRequestCount();
 
         self::assertSame([], $warmer->warmUp($cacheDir));
-        self::assertSame(1, $stub->getRequestCount(), 'The second warm-up must be served from the PSR-16 cache');
+        self::assertSame($requestsBeforeWarmup + 1, $stub->getRequestCount());
+
+        self::assertSame([], $warmer->warmUp($cacheDir));
+        self::assertSame(
+            $requestsBeforeWarmup + 1,
+            $stub->getRequestCount(),
+            'The second warm-up must be served from the PSR-16 cache'
+        );
 
         self::assertTrue(interface_exists(CacheInterface::class, false));
     }
