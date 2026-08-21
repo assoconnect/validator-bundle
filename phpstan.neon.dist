@@ -8,32 +8,12 @@ parameters:
             - 'Symfony\Component\Validator\Exception\InvalidOptionsException'
             - 'Symfony\Component\Validator\Exception\MissingOptionsException'
 
-    # The errors below depend on which ORM major is installed (^2.20|^3.0 are both supported),
-    # so each analysis run only matches part of them.
-    reportUnmatchedIgnoredErrors: false
     ignoreErrors:
-        # ORM 3-only mapping classes, unknown when ORM 2 is installed
-        -
-            message: '#Doctrine\\ORM\\Mapping\\(FieldMapping|AssociationMapping|ToOneOwningSideMapping|OneToManyAssociationMapping|ManyToOneAssociationMapping|ManyToManyOwningSideMapping)#'
-            identifier: class.notFound
-        # The tests feed ORM 2 array-shaped mappings into ClassMetadata on both majors on purpose,
-        # and build ORM 3 mapping objects from minimal fixture arrays
-        -
-            path: tests/Validator/Constraints/EntityValidatorTest.php
-            identifier: assign.propertyType
+        # The tests build ORM mapping objects from minimal fixture arrays that do not
+        # carry every offset of the fromMappingArray() array shape
         -
             path: tests/Validator/Constraints/EntityValidatorTest.php
             identifier: argument.type
-        # The ORM 2 (array) / ORM 3 (object) runtime detection is dead code for whichever major is installed
-        -
-            path: src/Validator/Constraints/EntityValidator.php
-            identifier: function.alreadyNarrowedType
-        -
-            path: src/Validator/Constraints/EntityValidator.php
-            identifier: nullCoalesce.offset
-        -
-            path: src/Validator/Constraints/EntityValidator.php
-            identifier: function.impossibleType
 
 includes:
     - vendor/assoconnect/php-quality-config/phpstan.extension.neon

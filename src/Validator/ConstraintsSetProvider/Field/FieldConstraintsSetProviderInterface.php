@@ -11,8 +11,8 @@ interface FieldConstraintsSetProviderInterface
     public function supports(string $type): bool;
 
     /**
-     * The field mapping is always the ORM 2 array shape: on ORM 3, EntityValidator
-     * normalizes the FieldMapping object back to an array before calling providers.
+     * The field mapping is the array shape of the ORM FieldMapping object,
+     * as normalized by EntityValidator before calling providers.
      *
      * @param mixed[] $fieldMapping
      * @return list<Constraint>
