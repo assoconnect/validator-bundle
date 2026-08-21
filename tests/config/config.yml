@@ -1,0 +1,11 @@
+framework:
+  test: true
+
+services:
+  AssoConnect\ValidatorBundle\Tests\Stub\PublicSuffixListClientStub:
+    public: true
+
+  Psr\Http\Client\ClientInterface: '@AssoConnect\ValidatorBundle\Tests\Stub\PublicSuffixListClientStub'
+
+  Psr\Http\Message\RequestFactoryInterface:
+    class: GuzzleHttp\Psr7\HttpFactory

@@ -9,8 +9,7 @@ services:
     AssoConnect\ValidatorBundle\Validator\ConstraintsSetProvider\:
         resource: '../src/Validator/ConstraintsSetProvider/*'
 
-    Pdp\Storage\:
-        resource: '../../../jeremykendall/php-domain-parser/src/Storage/*'
+    Pdp\Storage\PublicSuffixListPsr18Client: ~
 
     pdp.cache:
         class: Symfony\Component\Cache\Psr16Cache
