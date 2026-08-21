@@ -5,7 +5,7 @@ framework:
     enabled: false
   validation:
     enabled: true
-    enable_annotations: true
+    enable_attributes: true
 doctrine:
   orm:
     mappings:

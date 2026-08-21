@@ -51,6 +51,7 @@
     "doctrine/cache": "~1.0",
     "symfony/phpunit-bridge": "^7.0",
     "symfony/framework-bundle": "^7.0",
+    "symfony/var-exporter": "^7.0",
     "symfony/yaml": "^7.0",
     "dg/bypass-finals": "^1.1",
     "assoconnect/php-quality-config": "^2.2",
