@@ -9,6 +9,7 @@ use AssoConnect\ValidatorBundle\Validator\ConstraintsSetProvider\Field\FieldCons
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PropertyAccess\Exception\UnexpectedTypeException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\NotNull;
@@ -22,6 +23,11 @@ class EntityValidator extends ConstraintValidator
     private EntityManagerInterface $em;
     /** @var FieldConstraintsSetProviderInterface[] */
     private iterable $fieldConstraintsSetFactories;
+    private ?PropertyAccessorInterface $propertyAccessor = null;
+    /** @var array<string, array<string, array<Constraint>>> */
+    private array $constraintsCache = [];
+    /** @var array<string, array<string, bool>> */
+    private array $onlyValidateOnUpdateCache = [];
 
     /**
      * @param FieldConstraintsSetProviderInterface[] $fieldConstraintsSetFactories
@@ -48,7 +54,7 @@ class EntityValidator extends ConstraintValidator
         $metadata = $this->em->getClassMetadata($class);
         $fields = array_keys(self::reflectionPropertiesToArray($metadata->getReflectionProperties()));
         $validator = $this->context->getValidator()->inContext($this->context);
-        $propertyAccessor = PropertyAccess::createPropertyAccessor();
+        $propertyAccessor = $this->propertyAccessor ??= PropertyAccess::createPropertyAccessor();
 
         foreach ($fields as $field) {
             if (!$this->checkIfFieldNeedsToBeValidated($entity, $field)) {
@@ -89,9 +95,20 @@ class EntityValidator extends ConstraintValidator
     }
 
     /**
+     * Constraints only depend on the Doctrine mapping, so they are memoized per class and field.
+     * Sharing the constraint instances is safe: constraints are immutable value objects.
+     *
      * @return array<Constraint>
      */
     public function getConstraints(string $class, string $field): array
+    {
+        return $this->constraintsCache[$class][$field] ??= $this->buildConstraints($class, $field);
+    }
+
+    /**
+     * @return array<Constraint>
+     */
+    private function buildConstraints(string $class, string $field): array
     {
         $metadata = $this->em->getClassMetadata($class);
 
@@ -148,15 +165,32 @@ class EntityValidator extends ConstraintValidator
 
     private function checkIfFieldNeedsToBeValidated(object $entity, string $field): bool
     {
-        $reflectionClass = new \ReflectionClass($entity::class);
-        $fieldAttributes = $this->getFieldAttributes($reflectionClass, $field);
+        $class = $entity::class;
+        $hasOnlyValidateOnUpdate = $this->onlyValidateOnUpdateCache[$class][$field]
+            ??= $this->hasOnlyValidateOnUpdateAttribute($class, $field);
+
+        if ($hasOnlyValidateOnUpdate) {
+            return in_array($field, array_keys($this->em->getUnitOfWork()->getEntityChangeSet($entity)), true);
+        }
+        return true;
+    }
+
+    /**
+     * Whether the field carries the OnlyValidateOnUpdate attribute only depends on the class
+     * definition, so it is memoized per class and field to avoid repeated reflection.
+     *
+     * @param class-string $class
+     */
+    private function hasOnlyValidateOnUpdateAttribute(string $class, string $field): bool
+    {
+        $fieldAttributes = $this->getFieldAttributes(new \ReflectionClass($class), $field);
 
         foreach ($fieldAttributes as $attribute) {
             if (OnlyValidateOnUpdate::class === $attribute->getName()) {
-                return in_array($field, array_keys($this->em->getUnitOfWork()->getEntityChangeSet($entity)), true);
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     /**
