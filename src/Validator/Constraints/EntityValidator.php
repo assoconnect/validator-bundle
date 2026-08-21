@@ -7,9 +7,6 @@ namespace AssoConnect\ValidatorBundle\Validator\Constraints;
 use AssoConnect\ValidatorBundle\Exception\UnprotectedFieldTypeException;
 use AssoConnect\ValidatorBundle\Validator\ConstraintsSetProvider\Field\FieldConstraintsSetProviderInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping\AssociationMapping;
-use Doctrine\ORM\Mapping\ClassMetadata;
-use Doctrine\ORM\Mapping\ToOneOwningSideMapping;
 use Symfony\Component\PropertyAccess\Exception\UnexpectedTypeException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Validator\Constraint;
@@ -101,10 +98,8 @@ class EntityValidator extends ConstraintValidator
         $constraints = [];
 
         if (array_key_exists($field, $metadata->fieldMappings)) {
-            $mapping = $metadata->fieldMappings[$field];
-
-            // ORM 3 turns field mappings into objects; normalize to the array shape providers expect
-            $fieldMapping = is_array($mapping) ? $mapping : get_object_vars($mapping);
+            // Normalize the FieldMapping object to the array shape providers expect
+            $fieldMapping = get_object_vars($metadata->fieldMappings[$field]);
 
             // Nullable field
             Assert::keyExists($fieldMapping, 'nullable');
@@ -120,62 +115,22 @@ class EntityValidator extends ConstraintValidator
         } elseif (array_key_exists($field, $metadata->associationMappings)) {
             $associationMapping = $metadata->associationMappings[$field];
 
-            if (is_array($associationMapping)) {
-                // ORM 2
-                $isOwningSide = true === $associationMapping['isOwningSide'];
-                $type = $associationMapping['type'];
-                $targetEntity = $associationMapping['targetEntity'] ?? null;
-                $isJoinColumnNullable = !isset($associationMapping['joinColumns'][0]['nullable'])
-                    || true === $associationMapping['joinColumns'][0]['nullable'];
-            } else {
-                // ORM 3
-                [$isOwningSide, $type, $targetEntity, $isJoinColumnNullable] =
-                    self::extractAssociationMappingValues($associationMapping);
-            }
-
-            if ($isOwningSide) {
-                if (($type & ClassMetadata::TO_ONE) !== 0) {
-                    // ToOne
-                    $constraints[] = new Type($targetEntity);
-                    // Nullable field
-                    if (!$isJoinColumnNullable) {
-                        $constraints[] = new NotNull();
-                    }
-                } elseif (($type & ClassMetadata::TO_MANY) !== 0) {
-                    // ToMany
-                    $constraints[] = new All(constraints: [
-                        new Type($targetEntity),
-                    ]);
-                } else {
-                    // Unknown
-                    throw new \DomainException('Unknown type: ' . $type);
+            if ($associationMapping->isToOneOwningSide()) {
+                $constraints[] = new Type($associationMapping->targetEntity);
+                // Nullable field
+                $joinColumn = $associationMapping->joinColumns[0] ?? null;
+                if (null !== $joinColumn && false === $joinColumn->nullable) {
+                    $constraints[] = new NotNull();
                 }
+            } elseif ($associationMapping->isOwningSide()) {
+                $constraints[] = new All(constraints: [
+                    new Type($associationMapping->targetEntity),
+                ]);
             }
         } else {
             throw new \LogicException('Unknown field: ' . $class . '::$' . $field);
         }
         return $constraints;
-    }
-
-    /**
-     * ORM 3-only path: coverage depends on the installed ORM major
-     * @codeCoverageIgnore
-     * @return array{bool, int, string, bool}
-     */
-    private static function extractAssociationMappingValues(AssociationMapping $associationMapping): array
-    {
-        $isJoinColumnNullable = true;
-        if ($associationMapping instanceof ToOneOwningSideMapping) {
-            $joinColumn = $associationMapping->joinColumns[0] ?? null;
-            $isJoinColumnNullable = null === $joinColumn || false !== $joinColumn->nullable;
-        }
-
-        return [
-            $associationMapping->isOwningSide(),
-            $associationMapping->type(),
-            $associationMapping->targetEntity,
-            $isJoinColumnNullable,
-        ];
     }
 
     /**

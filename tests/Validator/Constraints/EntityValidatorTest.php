@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AssoConnect\ValidatorBundle\Tests\Validator\Constraints;
 
 use AssoConnect\ValidatorBundle\Test\ConstraintValidatorTestCase;
+use AssoConnect\ValidatorBundle\Test\Functional\App\Entity\MyEmbeddable;
 use AssoConnect\ValidatorBundle\Test\Functional\App\Entity\MyEntityParent;
 use AssoConnect\ValidatorBundle\Validator\Constraints\Entity;
 use AssoConnect\ValidatorBundle\Validator\Constraints\EntityValidator;
@@ -12,6 +13,7 @@ use AssoConnect\ValidatorBundle\Validator\Constraints\Phone;
 use AssoConnect\ValidatorBundle\Validator\ConstraintsSetProvider\Field\PhoneProvider;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\Mapping\EmbeddedClassMapping;
 use Doctrine\ORM\Mapping\FieldMapping;
 use Doctrine\ORM\Mapping\ManyToManyOwningSideMapping;
 use Doctrine\ORM\Mapping\ManyToOneAssociationMapping;
@@ -136,13 +138,6 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
         );
     }
 
-    public function testGetConstraintsForRelationUnknown(): void
-    {
-        $this->expectException(\DomainException::class);
-
-        $this->validator->getConstraints('class', 'owningUnknown');
-    }
-
     public function testGetConstraintsForUnknownField(): void
     {
         $this->expectException(\LogicException::class);
@@ -167,90 +162,6 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
         $this->expectValidateValueAt(0, 'nullable', '+33611223344', [new Phone()]);
 
         $this->validator->validate($entity, new Entity());
-    }
-
-    public function testGetConstraintsForNotNullableFieldWithOrm3MappingObject(): void
-    {
-        self::skipUnlessOrm3();
-
-        $metadata = new ClassMetadata(MyEntityParent::class);
-        $metadata->fieldMappings = [
-            'notnullable' => FieldMapping::fromMappingArray([
-                'type' => 'phone',
-                'fieldName' => 'notnullable',
-                'columnName' => 'notnullable',
-                'nullable' => false,
-            ]),
-        ];
-
-        self::assertArrayContainsSameObjects(
-            $this->createValidatorForMetadata($metadata)->getConstraints('class', 'notnullable'),
-            [new NotNull(), new Phone()]
-        );
-    }
-
-    public function testGetConstraintsForRelationsWithOrm3MappingObjects(): void
-    {
-        self::skipUnlessOrm3();
-
-        $metadata = new ClassMetadata(MyEntityParent::class);
-        $metadata->associationMappings = [
-            'notowning' => OneToManyAssociationMapping::fromMappingArray([
-                'fieldName' => 'notowning',
-                'sourceEntity' => MyEntityParent::class,
-                'targetEntity' => MyEntityParent::class,
-                'mappedBy' => 'parent',
-            ]),
-            'owningToOne' => ManyToOneAssociationMapping::fromMappingArray([
-                'fieldName' => 'owningToOne',
-                'sourceEntity' => MyEntityParent::class,
-                'targetEntity' => MyEntityParent::class,
-            ]),
-            'owningToOneNotNull' => ManyToOneAssociationMapping::fromMappingArray([
-                'fieldName' => 'owningToOneNotNull',
-                'sourceEntity' => MyEntityParent::class,
-                'targetEntity' => MyEntityParent::class,
-                'joinColumns' => [['name' => 'parent_id', 'referencedColumnName' => 'id', 'nullable' => false]],
-            ]),
-            'owningToMany' => ManyToManyOwningSideMapping::fromMappingArray([
-                'fieldName' => 'owningToMany',
-                'sourceEntity' => MyEntityParent::class,
-                'targetEntity' => MyEntityParent::class,
-            ]),
-        ];
-        $validator = $this->createValidatorForMetadata($metadata);
-
-        self::assertEmpty($validator->getConstraints('class', 'notowning'));
-        self::assertArrayContainsSameObjects(
-            $validator->getConstraints('class', 'owningToOne'),
-            [new Type(MyEntityParent::class)]
-        );
-        self::assertArrayContainsSameObjects(
-            $validator->getConstraints('class', 'owningToOneNotNull'),
-            [new Type(MyEntityParent::class), new NotNull()]
-        );
-        self::assertArrayContainsSameObjects(
-            $validator->getConstraints('class', 'owningToMany'),
-            [new All(constraints: [new Type(MyEntityParent::class)])]
-        );
-    }
-
-    private static function skipUnlessOrm3(): void
-    {
-        if (!class_exists(FieldMapping::class)) {
-            self::markTestSkipped('Requires the doctrine/orm 3 mapping objects');
-        }
-    }
-
-    /**
-     * @param ClassMetadata<MyEntityParent> $metadata
-     */
-    private function createValidatorForMetadata(ClassMetadata $metadata): EntityValidator
-    {
-        $em = $this->createMock(EntityManagerInterface::class);
-        $em->method('getClassMetadata')->willReturn($metadata);
-
-        return new EntityValidator($em, [new PhoneProvider()]);
     }
 
     public static function providerInvalidValues(): iterable
@@ -284,46 +195,45 @@ class EntityValidatorTest extends ConstraintValidatorTestCase
     {
         $metadata = new ClassMetadata(MyEntityParent::class);
         $metadata->fieldMappings = [
-            'nullable' => [
+            'nullable' => FieldMapping::fromMappingArray([
                 'type' => 'phone',
+                'fieldName' => 'nullable',
+                'columnName' => 'nullable',
                 'nullable' => true,
-            ],
-            'notnullable' => [
+            ]),
+            'notnullable' => FieldMapping::fromMappingArray([
                 'type' => 'phone',
+                'fieldName' => 'notnullable',
+                'columnName' => 'notnullable',
                 'nullable' => false,
-            ],
+            ]),
         ];
         $metadata->embeddedClasses = [
-            'embedded' => [
-                'type' => 'bic',
-            ],
+            'embedded' => new EmbeddedClassMapping(MyEmbeddable::class),
         ];
         $metadata->associationMappings = [
-            'notowning' => [
-                'isOwningSide' => false,
+            'notowning' => OneToManyAssociationMapping::fromMappingArray([
+                'fieldName' => 'notowning',
+                'sourceEntity' => MyEntityParent::class,
                 'targetEntity' => MyEntityParent::class,
-                'type' => ClassMetadata::TO_ONE,
-            ],
-            'owningToOne' => [
-                'isOwningSide' => true,
-                'type' => ClassMetadata::TO_ONE,
+                'mappedBy' => 'parent',
+            ]),
+            'owningToOne' => ManyToOneAssociationMapping::fromMappingArray([
+                'fieldName' => 'owningToOne',
+                'sourceEntity' => MyEntityParent::class,
                 'targetEntity' => MyEntityParent::class,
-            ],
-            'owningToOneNotNull' => [
-                'isOwningSide' => true,
-                'type' => ClassMetadata::TO_ONE,
+            ]),
+            'owningToOneNotNull' => ManyToOneAssociationMapping::fromMappingArray([
+                'fieldName' => 'owningToOneNotNull',
+                'sourceEntity' => MyEntityParent::class,
                 'targetEntity' => MyEntityParent::class,
-                'joinColumns' => [['nullable' => false]],
-            ],
-            'owningToMany' => [
-                'isOwningSide' => true,
-                'type' => ClassMetadata::TO_MANY,
+                'joinColumns' => [['name' => 'parent_id', 'referencedColumnName' => 'id', 'nullable' => false]],
+            ]),
+            'owningToMany' => ManyToManyOwningSideMapping::fromMappingArray([
+                'fieldName' => 'owningToMany',
+                'sourceEntity' => MyEntityParent::class,
                 'targetEntity' => MyEntityParent::class,
-            ],
-            'owningUnknown' => [
-                'isOwningSide' => true,
-                'type' => 0,
-            ],
+            ]),
         ];
 
         return $metadata;
