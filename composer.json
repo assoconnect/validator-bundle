@@ -56,7 +56,8 @@
     "assoconnect/php-quality-config": "^2.2",
     "guzzlehttp/guzzle": "^7.7",
     "guzzlehttp/psr7": "^2.4.5",
-    "phpstan/phpstan-symfony": "^2"
+    "phpstan/phpstan-symfony": "^2",
+    "shipmonk/phpstan-rules": "^4.4"
   },
   "config": {
     "allow-plugins": {
