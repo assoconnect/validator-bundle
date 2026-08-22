@@ -761,9 +761,3 @@ parameters:
 			identifier: float.type
 			count: 1
 			path: src/Validator/ConstraintsSetProvider/Field/IntegerProvider.php
-
-		-
-			message: '#^Method registerBundles always return list, but is marked as iterable\<Symfony\\Component\\HttpKernel\\Bundle\\BundleInterface\>$#'
-			identifier: shipmonk.returnListNotUsed
-			count: 1
-			path: tests/TestKernel.php
