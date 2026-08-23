@@ -22,7 +22,11 @@ services:
             $namespace: 'jeremykendall_php-domain-parser'
             $directory: '%kernel.cache_dir%'
 
-    Pdp\Storage\PublicSuffixListClient: '@Pdp\Storage\RulesStorage'
+    Pdp\Storage\PublicSuffixListClient: '@AssoConnect\ValidatorBundle\Cache\MemoizingPublicSuffixListClient'
+
+    AssoConnect\ValidatorBundle\Cache\MemoizingPublicSuffixListClient:
+        arguments:
+            $decorated: '@Pdp\Storage\RulesStorage'
 
     Pdp\Storage\RulesStorage:
         arguments:
