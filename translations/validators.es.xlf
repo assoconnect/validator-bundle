@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="1">
+                <source>The value {{ domain }} is not a valid domain name.</source>
+                <target>El valor {{ domain }} no es un nombre de dominio válido.</target>
+            </trans-unit>
+            <trans-unit id="2">
+                <source>The domain {{ domain }} is not setup to received emails.</source>
+                <target>El dominio {{ domain }} no está configurado para recibir correos electrónicos.</target>
+            </trans-unit>
+            <trans-unit id="3">
+                <source>The value {{ value }} is not a valid phone number.</source>
+                <target>El valor {{ value }} no es un número de teléfono válido.</target>
+            </trans-unit>
+            <trans-unit id="4">
+                <source>The value {{ value }} is not formatted as an international phone number.</source>
+                <target>El valor {{ value }} no tiene el formato de un número de teléfono internacional.</target>
+            </trans-unit>
+            <trans-unit id="5">
+                <source>The phone number {{ value }} is too short.</source>
+                <target>El número de teléfono {{ value }} es demasiado corto.</target>
+            </trans-unit>
+            <trans-unit id="6">
+                <source>The phone number {{ value }} is too long.</source>
+                <target>El número de teléfono {{ value }} es demasiado largo.</target>
+            </trans-unit>
+            <trans-unit id="7">
+                <source>The phone number {{ value }} does not exist.</source>
+                <target>El número de teléfono {{ value }} no existe.</target>
+            </trans-unit>
+            <trans-unit id="8">
+                <source>The value {{ value }} is not an accepted phone number type.</source>
+                <target>El valor {{ value }} no es un tipo de número de teléfono aceptado.</target>
+            </trans-unit>
+            <trans-unit id="9">
+                <source>The value {{ value }} is not a valid landline phone number.</source>
+                <target>El valor {{ value }} no es un número de teléfono fijo válido.</target>
+            </trans-unit>
+            <trans-unit id="10">
+                <source>The value {{ value }} is not a valid mobile phone number.</source>
+                <target>El valor {{ value }} no es un número de teléfono móvil válido.</target>
+            </trans-unit>
+            <trans-unit id="11">
+                <source>The float precision is limited to {{ precision }} numbers.</source>
+                <target>La precisión está limitada a {{ precision }} decimales.</target>
+            </trans-unit>
+            <trans-unit id="12">
+                <source>The value {{ value }} is not a valid timezone.</source>
+                <target>El valor {{ value }} no es una zona horaria válida.</target>
+            </trans-unit>
+            <trans-unit id="13">
+                <source>The value {{ value }} is not a valid SIREN number.</source>
+                <target>El valor {{ value }} no es un número SIREN válido.</target>
+            </trans-unit>
+            <trans-unit id="14">
+                <source>The value {{ value }} is not a valid RNA identifier.</source>
+                <target>El valor {{ value }} no es un identificador RNA válido.</target>
+            </trans-unit>
+            <trans-unit id="15">
+                <source>The intra-EU VAT number {{ value }} is not valid.</source>
+                <target>El número de IVA intracomunitario {{ value }} no es válido.</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
