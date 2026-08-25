@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AssoConnect\ValidatorBundle\Validator\Constraints;
 
+use Symfony\Component\Validator\Attribute\HasNamedArguments;
 use Symfony\Component\Validator\Constraint;
 
 /**
@@ -16,13 +17,16 @@ class FrenchRna extends Constraint
 
     public string $message = 'The value {{ value }} is not a valid RNA identifier.';
 
+    /**
+     * @param array<string>|null $groups
+     */
+    #[HasNamedArguments]
     public function __construct(
-        ?array $options = null,
         ?string $message = null,
         ?array $groups = null,
         mixed $payload = null,
     ) {
-        parent::__construct($options, $groups, $payload);
+        parent::__construct(groups: $groups, payload: $payload);
 
         $this->message = $message ?? $this->message;
     }

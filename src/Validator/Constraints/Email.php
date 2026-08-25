@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AssoConnect\ValidatorBundle\Validator\Constraints;
 
+use Symfony\Component\Validator\Attribute\HasNamedArguments;
 use Symfony\Component\Validator\Constraints\Email as _Email;
 
 /**
@@ -20,6 +21,7 @@ class Email extends _Email
 
     public bool $checkDNS = false;
 
+    #[HasNamedArguments]
     public function __construct(
         ?string $message = null,
         ?string $mode = null,

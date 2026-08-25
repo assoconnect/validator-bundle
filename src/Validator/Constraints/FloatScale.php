@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AssoConnect\ValidatorBundle\Validator\Constraints;
 
+use Symfony\Component\Validator\Attribute\HasNamedArguments;
 use Symfony\Component\Validator\Constraint;
 
 /**
@@ -18,6 +19,10 @@ class FloatScale extends Constraint
 
     public int $scale;
 
+    /**
+     * @param array<string>|null $groups
+     */
+    #[HasNamedArguments]
     public function __construct(
         int $scale,
         ?array $groups = null,

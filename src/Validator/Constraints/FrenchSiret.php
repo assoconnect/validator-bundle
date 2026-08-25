@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AssoConnect\ValidatorBundle\Validator\Constraints;
 
+use Symfony\Component\Validator\Attribute\HasNamedArguments;
 use Symfony\Component\Validator\Constraints\Luhn;
 
 /**
@@ -15,20 +16,18 @@ class FrenchSiret extends Luhn
     public const INVALID_FORMAT_ERROR = 'cbe06561-776e-45c2-b33c-a73141746d43';
 
     /**
-     * @param array<string, mixed>|null $options
      * @param array<string>|null $groups
      */
+    #[HasNamedArguments]
     public function __construct(
-        ?array $options = null,
         ?string $message = null,
         ?array $groups = null,
         mixed $payload = null,
     ) {
         parent::__construct(
-            $options,
-            $message ?? 'The value {{ value }} is not a valid SIRET number.',
-            $groups,
-            $payload,
+            message: $message ?? 'The value {{ value }} is not a valid SIRET number.',
+            groups: $groups,
+            payload: $payload,
         );
     }
 }

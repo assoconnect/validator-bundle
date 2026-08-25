@@ -589,12 +589,6 @@ parameters:
 			path: src/Validator/Constraints/FloatScale.php
 
 		-
-			message: '#^Method AssoConnect\\ValidatorBundle\\Validator\\Constraints\\FrenchRna\:\:__construct\(\) has parameter \$options with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Validator/Constraints/FrenchRna.php
-
-		-
 			message: '#^Public property `message` not marked as readonly\.$#'
 			identifier: shipmonk.publicPropertyNotReadonly
 			count: 1
