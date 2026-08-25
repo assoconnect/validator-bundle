@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AssoConnect\ValidatorBundle\Validator\Constraints;
 
+use Symfony\Component\Validator\Attribute\HasNamedArguments;
 use Symfony\Component\Validator\Constraint;
 
 #[\Attribute]
@@ -16,6 +17,10 @@ class Postal extends Constraint
 
     public string $countryPropertyPath;
 
+    /**
+     * @param array<string>|null $groups
+     */
+    #[HasNamedArguments]
     public function __construct(
         string $countryPropertyPath,
         ?array $groups = null,

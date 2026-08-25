@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AssoConnect\ValidatorBundle\Validator\Constraints;
 
+use Symfony\Component\Validator\Attribute\HasNamedArguments;
 use Symfony\Component\Validator\Constraint;
 
 /**
@@ -17,6 +18,10 @@ class Money extends Constraint
     public float $min = 0.0;
     public float $max = self::MAX;
 
+    /**
+     * @param array<string>|null $groups
+     */
+    #[HasNamedArguments]
     public function __construct(
         float $min = 0.0,
         float $max = self::MAX,
