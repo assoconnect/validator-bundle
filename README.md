@@ -14,6 +14,7 @@ This Symfony bundle provides validators for common scalar values:
 - [French SIREN value](/src/Validator/Constraints/FrenchSirenValidator.php)
 - [French SIRET value](/src/Validator/Constraints/FrenchSiretValidator.php)
 - [Dutch KVK number](/src/Validator/Constraints/DutchKvkNumberValidator.php)
+- [Italian Fiscal Code](/src/Validator/Constraints/ItalianFiscalCodeValidator.php)
 
 See the different constraints source code for available options.
 
