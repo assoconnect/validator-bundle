@@ -40,7 +40,7 @@
     "assoconnect/php-date": "^2.0",
     "doctrine/orm": "^3.0",
     "symfony/intl": "^7.0|^8.0",
-    "assoconnect/doctrine-types-bundle": "^v2.16",
+    "assoconnect/doctrine-types-bundle": "^2.18",
     "assoconnect/php-percent":"^1.1",
     "assoconnect/absolute-percent-value-bundle": "^1.5",
     "webmozart/assert": "^1.11",
