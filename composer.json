@@ -43,7 +43,7 @@
     "assoconnect/doctrine-types-bundle": "^2.18",
     "assoconnect/php-percent":"^1.1",
     "assoconnect/absolute-percent-value-bundle": "^1.5",
-    "webmozart/assert": "^1.11",
+    "webmozart/assert": "^1.11 || ^2.0",
     "psr/simple-cache": "^1.0",
     "symfony/cache": "^7.0|^8.0"
   },
