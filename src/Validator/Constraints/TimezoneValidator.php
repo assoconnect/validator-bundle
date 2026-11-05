@@ -30,7 +30,8 @@ class TimezoneValidator extends ConstraintValidator
 
         $value = $this->getValue($value);
 
-        if (!in_array($value, \DateTimeZone::listIdentifiers(), true)) {
+        // \DateTimeZone accepts backward-compatible aliases (US/Hawaii), so stored values may hold them.
+        if (!in_array($value, \DateTimeZone::listIdentifiers(\DateTimeZone::ALL_WITH_BC), true)) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ value }}', $this->formatValue($value))
                 ->setCode(Timezone::NO_SUCH_TIMEZONE_ERROR)

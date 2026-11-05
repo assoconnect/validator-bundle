@@ -32,6 +32,21 @@ class TimezoneValidatorTest extends ConstraintValidatorTestCase
         $this->validator->validate(new \stdClass(), new Timezone());
     }
 
+    public function testAcceptsBackwardCompatibleAlias(): void
+    {
+        $aliases = array_diff(
+            \DateTimeZone::listIdentifiers(\DateTimeZone::ALL_WITH_BC),
+            \DateTimeZone::listIdentifiers(),
+        );
+        if ([] === $aliases) {
+            self::markTestSkipped('The timezone database of this platform has no backward-compatible alias.');
+        }
+
+        $this->validator->validate(reset($aliases), new Timezone());
+
+        $this->assertNoViolation();
+    }
+
     public static function providerValidValues(): iterable
     {
         yield [null];
@@ -45,6 +60,11 @@ class TimezoneValidatorTest extends ConstraintValidatorTestCase
     {
         yield [
             'EN',
+            Timezone::NO_SUCH_TIMEZONE_ERROR,
+            'The value {{ value }} is not a valid timezone.',
+        ];
+        yield [
+            'US/Atlantis',
             Timezone::NO_SUCH_TIMEZONE_ERROR,
             'The value {{ value }} is not a valid timezone.',
         ];
